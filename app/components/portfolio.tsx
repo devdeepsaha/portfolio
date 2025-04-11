@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import Zoom from "react-medium-image-zoom";
+import "react-medium-image-zoom/dist/styles.css";
 import "../css/Portfolio.css";
 
 type Work = {
@@ -75,90 +77,89 @@ export default function Portfolio() {
       year: "2024",
     },
     {
-      id:7,
+      id: 7,
       title: "Quote",
       category: "Digital",
       image: "digital/BadDec.jpg",
       year: "2024",
     },
     {
-      id:8,
+      id: 8,
       title: "Healing ",
       category: "Digital",
       image: "digital/Heal.jpg",
       year: "2025",
     },
     {
-      id:9,
+      id: 9,
       title: "Abacus Premiere League",
       category: "Digital",
       images: ["digital/APL1.jpg", "digital/APL2.png"],
       year: "2024",
     },
     {
-      id:10,
+      id: 10,
       title: "Points Table",
       category: "Digital",
       image: "digital/point.jpg",
       year: "2024",
     },
     {
-      id:11,
+      id: 11,
       title: "AIEM",
       category: "Logos",
       images: ["logos/A1.jpg", "logos/A2.jpg", "logos/A3.jpg"],
       year: "2025",
     },
     {
-      id:12,
+      id: 12,
       title: "Team Logos",
       category: "Logos",
       images: ["logos/Apollo 11.png", "logos/BLACK KNIGHT.png", "logos/ruling rangers.png"],
       year: "2025",
     },
     {
-      id:13,
+      id: 13,
       title: "ARPEGGIO",
       category: "Logos",
       image: "logos/ARPEGGIO.jpg",
       year: "2025",
     },
     {
-      id:14,
+      id: 14,
       title: "NOTEMATION",
       category: "Logos",
       images: ["logos/N2.mp4", "logos/N1.png"],
       year: "2024",
     },
     {
-      id:15,
+      id: 15,
       title: "LONG POSTER",
-      category: "posters",
+      category: "Posters",
       image: "posters/Arpeggio3.jpg",
       year: "2025",
     },
     {
-      id:16,
+      id: 16,
       title: "T-SHIRT",
       category: "T-shirts",
       image: "tshirts/F1.jpg",
       year: "2025",
     },
     {
-      id:17,
+      id: 17,
       title: "T-SHIRT",
       category: "T-shirts",
       image: "tshirts/F2.jpg",
       year: "2025",
     },
     {
-      id:18,
+      id: 18,
       title: "T-SHIRT",
       category: "T-shirts",
       image: "tshirts/back.jpg",
       year: "2025",
     },
-
   ];
 
   const filteredWorks = works.filter((work) =>
@@ -324,11 +325,13 @@ export default function Portfolio() {
                     loop
                   />
                 ) : (
-                  <img
-                    src={selectedWork.images[fullscreenIndex]}
-                    alt={selectedWork.title}
-                    className="fullscreen-image"
-                  />
+                  <Zoom>
+                    <img
+                      src={selectedWork.images[fullscreenIndex]}
+                      alt={selectedWork.title}
+                      className="fullscreen-image"
+                    />
+                  </Zoom>
                 )}
                 <button className="arrow left" onClick={() => changeFullscreenImage("prev")}>
                   ‹
@@ -346,11 +349,13 @@ export default function Portfolio() {
                 loop
               />
             ) : (
-              <img
-                src={selectedWork.image || "/placeholder.svg"}
-                alt={selectedWork.title}
-                className="fullscreen-image"
-              />
+              <Zoom>
+                <img
+                  src={selectedWork.image || "/placeholder.svg"}
+                  alt={selectedWork.title}
+                  className="fullscreen-image"
+                />
+              </Zoom>
             )}
             <div className="fullscreen-caption">
               <h2>{selectedWork.title}</h2>
