@@ -1,0 +1,149 @@
+.contact-section {
+  position: relative;
+  overflow: hidden;
+  background-color: #18181b; /* Equivalent to bg-zinc-900 */
+  padding: 80px 0;
+}
+
+.container {
+  position: relative;
+  z-index: 10;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.contact-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.contact-header h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.contact-header p {
+  color: #a1a1aa; /* Equivalent to text-gray-400 */
+}
+
+.contact-form-container {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.message-box {
+  min-height: 120px;
+}
+
+@keyframes gradientFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.submit-button {
+  --start-color: #0f0c29;
+  --middle-color: #302b63;
+  --end-color: #24243e;
+
+  background: linear-gradient(
+    270deg,
+    var(--start-color),
+    var(--middle-color),
+    var(--end-color)
+  );
+  background-size: 600% 600%;
+  animation: gradientFlow 8s ease infinite;
+
+  width: 100%;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+
+  /* This makes the variable change transition gradually */
+  transition: background 1s ease, color 0.3s ease;
+}
+
+.submit-button:hover {
+  animation: gradientFlow 8s ease infinite;
+
+  /* Instead of switching vars directly, we use backdrop layer */
+  background: linear-gradient(
+    270deg,
+rgb(199, 37, 236),
+rgb(13, 25, 69),
+rgb(29, 8, 48)
+  );
+  background-size: 600% 600%;
+}
+
+
+
+.background-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.3;
+}
+
+.background-overlay svg {
+  height: 100%;
+  width: 100%;
+}
+
+.name,
+.email,
+.message-box {
+  background: linear-gradient(120deg, #1f1c2c, #1f1e22, #171719);
+  color: rgb(221, 221, 232);
+  border: 0px; /* Equivalent to border-gray-600 */
+}
+
+.success-popup {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1e1e1e;
+  color: #fff;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 0 10px #00ff88;
+  z-index: 999;
+  animation: fadeInOut 3s ease forwards;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 10px);
+  }
+  10% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -10px);
+  }
+}
