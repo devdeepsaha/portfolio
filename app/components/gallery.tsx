@@ -10,13 +10,22 @@ type GalleryItem = {
   src?: string;
   alt: string;
   title: string;
+  width?: string;
+  height?: string;
+  objectFit?: "cover" | "contain" | "fill" | "none" | "scale-down";
+  position?: string;
 };
+
+const isVideoFile = (file: string) =>
+  file.endsWith(".mp4") || file.endsWith(".webm") || file.endsWith(".mov");
 
 export default function Gallery() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
 
-  const [activeIndexes, setActiveIndexes] = useState<Record<number, number>>({});
+  const [activeIndexes, setActiveIndexes] = useState<Record<number, number>>(
+    {}
+  );
   const [selectedItem, setSelectedItem] = useState<{
     item: GalleryItem;
     index: number;
@@ -24,10 +33,43 @@ export default function Gallery() {
   } | null>(null);
 
   const images: GalleryItem[] = [
-    { images: ["/cube.png", "/cube-alt.png"], alt: "Art piece 1", title: "Ethereal Dreams" },
-    { src: "/broken.png", alt: "Art piece 2", title: "Urban Symphony" },
-    { images: ["/window.png", "/windowframe2.png"], alt: "Art piece 3", title: "Digital Nostalgia" },
-    { src: "/cube.png", alt: "Art piece 4", title: "Abstract Reality" },
+    {
+      images: ["Books/MP1.png", "Books/MP2.png"],
+      alt: "Magazine",
+      title: "MACHINAGE",
+      width: "auto",
+      height: "100%",
+      objectFit: "contain",
+      position: "center",
+    },
+    {
+      images: ["Tshirts/F1.jpg", "Tshirts/F2.jpg"],
+      alt: "T-shirt Design",
+      title: "T-shirt Design",
+      width: "auto",
+      height: "402px",
+      objectFit: "cover",
+      position: "center",
+    },
+    {
+      src: "Logos/N2.mp4",
+      alt: "NOTEMATION",
+      title: "NOTEMATION",
+      width: "100%",
+      height: "402px",
+      objectFit: "cover",
+      position: "50% 50%",
+    },
+    {
+      images: [
+        "3d/gun.mp4",
+      ],
+      alt: "Gun",
+      title: "Product Animation",
+      width: "100%",
+      height: "402px",
+      objectFit: "cover",
+    },
   ];
 
   const handlePrev = (i: number) => {
@@ -61,9 +103,8 @@ export default function Gallery() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [selectedItem]);
 
-  // Autoplay carousel (but NOT in fullscreen)
   useEffect(() => {
-    if (selectedItem) return; // Don't autoplay in fullscreen
+    if (selectedItem) return;
 
     const interval = setInterval(() => {
       images.forEach((img, i) => {
@@ -75,7 +116,7 @@ export default function Gallery() {
           });
         }
       });
-    }, 3000); // every 3 seconds
+    }, 3000);
 
     return () => clearInterval(interval);
   }, [selectedItem]);
@@ -96,14 +137,19 @@ export default function Gallery() {
           <div className="gallery-grid">
             {images.map((img, i) => {
               const activeIndex = activeIndexes[i] || 0;
-              const currentImage = img.images ? img.images[activeIndex] : img.src;
+              const currentMedia = img.images
+                ? img.images[activeIndex]
+                : img.src;
+              const isVideo = currentMedia && isVideoFile(currentMedia);
 
               return (
                 <motion.div
                   key={i}
                   className="gallery-item"
                   initial={{ opacity: 0, y: 20 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                  animate={
+                    isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
+                  }
                   transition={{ duration: 0.8, delay: i * 0.2 }}
                   onClick={() =>
                     setSelectedItem({
@@ -114,14 +160,40 @@ export default function Gallery() {
                   }
                 >
                   <div className="gallery-image">
-                    <motion.img
-                      key={currentImage}
-                      src={currentImage}
-                      alt={img.alt}
-                      initial={{ x: 250, opacity: 0 }}
-                      animate={{ x: 0, opacity: 1 }}
-                      transition={{ duration: 0.6 }}
-                    />
+                    {isVideo ? (
+                      <motion.video
+                        key={currentMedia}
+                        src={currentMedia}
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        style={{
+                          width: img.width || "100%",
+                          height: img.height || "auto",
+                          objectFit: img.objectFit || "cover",
+                          objectPosition: img.position || "center",
+                        }}
+                        initial={{ x: 250, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        transition={{ duration: 0.6 }}
+                      />
+                    ) : (
+                      <motion.img
+                        key={currentMedia}
+                        src={currentMedia}
+                        alt={img.alt}
+                        style={{
+                          width: img.width || "100%",
+                          height: img.height || "auto",
+                          objectFit: img.objectFit || "cover",
+                          objectPosition: img.position || "center",
+                        }}
+                        initial={{ x: 250, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        transition={{ duration: 0.6 }}
+                      />
+                    )}
                     {img.images && img.images.length > 1 && (
                       <>
                         <button
@@ -155,7 +227,6 @@ export default function Gallery() {
         </div>
       </section>
 
-      {/* Fullscreen Overlay */}
       {selectedItem && (
         <div
           className="fullscreen-overlay"
@@ -171,15 +242,44 @@ export default function Gallery() {
             >
               ✖
             </button>
-            <img
-              src={
-                selectedItem.item.images
-                  ? selectedItem.item.images[selectedItem.imageIndex]
-                  : selectedItem.item.src || "/placeholder.svg"
-              }
-              alt={selectedItem.item.alt}
-              className="fullscreen-image"
-            />
+            {(() => {
+              const media =
+                selectedItem.item.images?.[selectedItem.imageIndex] ??
+                selectedItem.item.src ??
+                "/placeholder.svg";
+              const isVideo = isVideoFile(media);
+
+              return isVideo ? (
+                <video
+                  src={media}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="fullscreen-image"
+                  style={{
+                    objectFit: selectedItem.item.objectFit || "contain",
+                    objectPosition: selectedItem.item.position || "center",
+                    width: selectedItem.item.width || "80%",
+                    height: selectedItem.item.height || "auto",
+                    maxHeight: "90vh",
+                  }}
+                />
+              ) : (
+                <img
+                  src={media}
+                  alt={selectedItem.item.alt}
+                  className="fullscreen-image"
+                  style={{
+                    objectFit: selectedItem.item.objectFit || "contain",
+                    objectPosition: selectedItem.item.position || "center",
+                    width: selectedItem.item.width || "80%",
+                    height: selectedItem.item.height || "auto",
+                    maxHeight: "90vh",
+                  }}
+                />
+              );
+            })()}
             {selectedItem.item.images &&
               selectedItem.item.images.length > 1 && (
                 <>
@@ -192,7 +292,8 @@ export default function Gallery() {
                           ? {
                               ...prev,
                               imageIndex:
-                                (prev.imageIndex - 1 +
+                                (prev.imageIndex -
+                                  1 +
                                   selectedItem.item.images!.length) %
                                 selectedItem.item.images!.length,
                             }
