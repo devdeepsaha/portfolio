@@ -3,57 +3,71 @@
 @import url("https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap");
 
 .hero-container {
-    position: relative;
-    height: 100vh;
-    width: 100%;
-    overflow: hidden;
-  }
-  
-  .hero-canvas {
-    position: absolute;
-    inset: 0;
-    height: 100%;
-    width: 100%;
-    background-color: black;
-  }
-  
-  .hero-content {
-    position: relative;
-    z-index: 10;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    padding: 0 1rem;
-    text-align: center;
-  }
-  
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+.hero-canvas {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  width: 100%;
+  background-color: black;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 0 1rem;
+  text-align: center;
+}
+
+.hero-title {
+  font-family: "Abril Fatface", sans-serif;
+  margin-bottom: 1.5rem;
+  font-size: 5rem;
+  font-weight: normal;
+  letter-spacing: 0m;
+  color: white;
+}
+
+.hero-subtitle {
+  max-width: 600px;
+  font-size: 1.25rem;
+  color: gray;
+}
+
+@media (min-width: 640px) {
   .hero-title {
-    font-family: "Abril Fatface", sans-serif;
-    margin-bottom: 1.5rem;
     font-size: 5rem;
-    font-weight: normal;
-    letter-spacing: 0m;
-    color: white;
   }
-  
+}
+
+@media (min-width: 1024px) {
+  .hero-title {
+    font-size: 6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
   .hero-subtitle {
-    max-width: 600px;
-    font-size: 1.25rem;
-    color: gray;
+    font-size: 1rem;
+    max-width: 90%;
   }
-  
-  
-  @media (min-width: 640px) {
-    .hero-title {
-      font-size: 5rem;
-    }
+
+  .hero-content {
+    padding: 0 0.5rem;
   }
-  
-  @media (min-width: 1024px) {
-    .hero-title {
-      font-size: 6rem;
-    }
-  }
-  
+}

@@ -60,14 +60,14 @@ export default function Gallery() {
       height: "402px",
       objectFit: "cover",
       position: "50% 50%",
-    },
+    }, 
     {
       images: ["Books/B1.jpg"],
       alt: "Book",
       title: "BOOK COVER",
       width: "100%",
       height: "402px",
-      objectFit: "contain",
+      objectFit: "cover",
       position: "center",
     },
   ];
