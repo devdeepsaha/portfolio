@@ -46,14 +46,17 @@ export default function Contact() {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const res = await fetch("https://formsubmit.co/ajax/dhanbadtech12@gmail.com", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify(values),
-      });
+      const res = await fetch(
+        "https://formsubmit.co/ajax/devdeep120205@gmail.com",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify(values),
+        }
+      );
 
       if (res.ok) {
         setShowPopup(true);
@@ -92,7 +95,10 @@ export default function Contact() {
           className="contact-form-container"
         >
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="contact-form">
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="contact-form"
+            >
               <FormField
                 control={form.control}
                 name="name"
@@ -100,7 +106,11 @@ export default function Contact() {
                   <FormItem>
                     <FormLabel>Name</FormLabel>
                     <FormControl>
-                      <Input className="name" placeholder="Your name" {...field} />
+                      <Input
+                        className="name"
+                        placeholder="Your name"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -113,7 +123,11 @@ export default function Contact() {
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input className="email" placeholder="your@email.com" {...field} />
+                      <Input
+                        className="email"
+                        placeholder="your@email.com"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
