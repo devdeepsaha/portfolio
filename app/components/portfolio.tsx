@@ -19,7 +19,9 @@ type Work = {
 
 export default function Portfolio() {
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [activeImageIndex, setActiveImageIndex] = useState<Record<number, number>>({});
+  const [activeImageIndex, setActiveImageIndex] = useState<
+    Record<number, number>
+  >({});
   const [selectedWork, setSelectedWork] = useState<Work | null>(null);
   const [fullscreenIndex, setFullscreenIndex] = useState<number>(0);
 
@@ -115,7 +117,11 @@ export default function Portfolio() {
       id: 12,
       title: "Team Logos",
       category: "Logos",
-      images: ["logos/Apollo 11.png", "logos/BLACK KNIGHT.png", "logos/ruling rangers.png"],
+      images: [
+        "logos/Apollo 11.png",
+        "logos/BLACK KNIGHT.png",
+        "logos/ruling rangers.png",
+      ],
       year: "2025",
     },
     {
@@ -159,6 +165,117 @@ export default function Portfolio() {
       category: "T-shirts",
       image: "tshirts/back.jpg",
       year: "2025",
+    },
+    {
+      id: 19,
+      title: "BOOK",
+      category: "3d renders",
+      images: ["3d/book.jpg", "3d/BookCloseup.jpg", "3d/booktopview.jpg"],
+      year: "2024",
+    },
+    {
+      id: 20,
+      title: "BOTTLE",
+      category: "3d renders",
+      image: "3d/bottle1.png",
+      year: "2024",
+    },
+    {
+      id: 21,
+      title: "Christmas",
+      category: "3d renders",
+      images: ["3d/CloseupChristmasTree.jpg", "3d/ColourfulLights.jpg", "3d/gift.jpg", "3d/snow tree.jpg"],
+      year: "2024",
+    },
+    {
+      id: 22,
+      title: "Vending Machine",
+      category: "3d renders",
+      images: ["3d/CloseupSnowVending.png", "3d/ice.png", "3d/snowlamp.png"],
+      year: "2024",
+    },
+    {
+      id: 23,
+      title: "Cube",
+      category: "3d renders",
+      images: [
+        "3d/CUBE4.mp4",
+        "3d/CUBE1.mp4",
+        "3d/CUBE3.mp4",
+        "3d/CUBE5.mp4",
+        "3d/CUBE6.jpg",
+      ],
+      year: "2024",
+    },
+    {
+      id: 24,
+      title: "DICE",
+      category: "3d renders",
+      image: "3d/Dice.mp4",
+      year: "2024",
+    },
+    {
+      id: 25,
+      title: "DONUT",
+      category: "3d renders",
+      image: "3d/donut.png",
+      year: "2024",
+    },
+    {
+      id: 26,
+      title: "GLASS",
+      category: "3d renders",
+      images: ["3d/dream catcher 2.png", "3d/glass.png"],
+      year: "2024",
+    },
+    {
+      id: 27,
+      title: "GUN",
+      category: "3d renders",
+      image: "3d/gun.mp4",
+      year: "2024",
+    },
+    {
+      id: 28,
+      title: "LAMP",
+      category: "3d renders",
+      image: "3d/LAMP.mp4",
+      year: "2024",
+    },
+    {
+      id: 29,
+      title: "NUMBERS",
+      category: "3d renders",
+      images: ["3d/NUM1.mp4", "3d/NUM2.mp4"],
+      year: "2024",
+    },
+    {
+      id: 30,
+      title: "OBJECTS IN A ROOM",
+      category: "3d renders",
+      images: [ "3d/photoframe.jpg", "3d/plant.jpg", "3d/plant close.jpg"],
+      year: "2024",
+    },
+    {
+      id: 31,
+      title: "POKEBALL",
+      category: "3d renders",
+      images: ["3d/poke.png", "3d/rollpoke.png", "3d/rollpoke2.png"],
+      year: "2024",
+    },
+    {
+      id: 32,
+      title: "WATER",
+      category: "3d renders",
+      image: "3d/WATER.mp4",
+      year: "2024",
+    },
+    {
+      id: 33,
+      title: "WINDOW",
+      category: "3d renders",
+      images: ["3d/W1.png", "3d/W2.png", "3d/W3.png", "3d/W4.png", "3d/W5.png", "3d/W6.png", "3d/W7.png"],
+      year: "2024",
     },
   ];
 
@@ -208,7 +325,9 @@ export default function Portfolio() {
               key={category}
               variant={selectedCategory === category ? "default" : "outline"}
               onClick={() => setSelectedCategory(category)}
-              className={`button ${selectedCategory === category ? "active" : ""}`}
+              className={`button ${
+                selectedCategory === category ? "active" : ""
+              }`}
             >
               {category}
             </Button>
@@ -231,7 +350,9 @@ export default function Portfolio() {
                     <div className="cardImageWrapper">
                       {work.images ? (
                         <>
-                          {isVideo(work.images[activeImageIndex[work.id] || 0]) ? (
+                          {isVideo(
+                            work.images[activeImageIndex[work.id] || 0]
+                          ) ? (
                             <video
                               src={work.images[activeImageIndex[work.id] || 0]}
                               className="cardImage"
@@ -269,7 +390,8 @@ export default function Portfolio() {
                               setActiveImageIndex((prev) => ({
                                 ...prev,
                                 [work.id]:
-                                  (prev[work.id] ?? 0) === work.images!.length - 1
+                                  (prev[work.id] ?? 0) ===
+                                  work.images!.length - 1
                                     ? 0
                                     : (prev[work.id] ?? 0) + 1,
                               }));
@@ -294,7 +416,10 @@ export default function Portfolio() {
                           className="cardImage"
                         />
                       )}
-                      <div className="overlay" onClick={() => openFullscreen(work)}>
+                      <div
+                        className="overlay"
+                        onClick={() => openFullscreen(work)}
+                      >
                         <h3 className="cardTitle">{work.title}</h3>
                         <p className="cardYear">{work.year}</p>
                       </div>
@@ -309,9 +434,18 @@ export default function Portfolio() {
 
       {/* Fullscreen View */}
       {selectedWork && (
-        <div className="fullscreen-overlay" onClick={() => setSelectedWork(null)}>
-          <div className="fullscreen-content" onClick={(e) => e.stopPropagation()}>
-            <button className="close-button" onClick={() => setSelectedWork(null)}>
+        <div
+          className="fullscreen-overlay"
+          onClick={() => setSelectedWork(null)}
+        >
+          <div
+            className="fullscreen-content"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              className="close-button"
+              onClick={() => setSelectedWork(null)}
+            >
               ✕
             </button>
             {selectedWork.images ? (
@@ -333,10 +467,16 @@ export default function Portfolio() {
                     />
                   </Zoom>
                 )}
-                <button className="arrow left" onClick={() => changeFullscreenImage("prev")}>
+                <button
+                  className="arrow left"
+                  onClick={() => changeFullscreenImage("prev")}
+                >
                   ‹
                 </button>
-                <button className="arrow right" onClick={() => changeFullscreenImage("next")}>
+                <button
+                  className="arrow right"
+                  onClick={() => changeFullscreenImage("next")}
+                >
                   ›
                 </button>
               </>
