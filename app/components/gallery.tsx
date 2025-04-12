@@ -26,6 +26,7 @@ export default function Gallery() {
   const [activeIndexes, setActiveIndexes] = useState<Record<number, number>>(
     {}
   );
+  const [imageLoaded, setImageLoaded] = useState<Record<number, boolean>>({});
   const [selectedItem, setSelectedItem] = useState<{
     item: GalleryItem;
     index: number;
@@ -45,34 +46,34 @@ export default function Gallery() {
     {
       images: ["Tshirts/F1.jpg", "Tshirts/F2.jpg"],
       alt: "T-shirt Design",
-      title: "T-shirt Design",
+      title: "T-SHIRT DESIGN",
       width: "auto",
       height: "402px",
       objectFit: "cover",
       position: "center",
     },
     {
-      src: "Logos/N2.mp4",
-      alt: "NOTEMATION",
-      title: "NOTEMATION",
+      src: "3d/LAMP.mp4",
+      alt: "LAMP",
+      title: "3D LAMP",
       width: "100%",
       height: "402px",
       objectFit: "cover",
       position: "50% 50%",
-    },
+    }, 
     {
-      images: [
-        "3d/gun.mp4",
-      ],
-      alt: "Gun",
-      title: "Product Animation",
+      images: ["Books/B1.jpg"],
+      alt: "Book",
+      title: "BOOK COVER",
       width: "100%",
       height: "402px",
       objectFit: "cover",
+      position: "center",
     },
   ];
 
   const handlePrev = (i: number) => {
+    setImageLoaded((prev) => ({ ...prev, [i]: false }));
     setActiveIndexes((prev) => {
       const total = images[i].images?.length || 1;
       const current = prev[i] || 0;
@@ -81,6 +82,7 @@ export default function Gallery() {
   };
 
   const handleNext = (i: number) => {
+    setImageLoaded((prev) => ({ ...prev, [i]: false }));
     setActiveIndexes((prev) => {
       const total = images[i].images?.length || 1;
       const current = prev[i] || 0;
@@ -109,6 +111,7 @@ export default function Gallery() {
     const interval = setInterval(() => {
       images.forEach((img, i) => {
         if (img.images && img.images.length > 1) {
+          setImageLoaded((prev) => ({ ...prev, [i]: false }));
           setActiveIndexes((prev) => {
             const total = img.images!.length;
             const current = prev[i] || 0;
@@ -120,6 +123,16 @@ export default function Gallery() {
 
     return () => clearInterval(interval);
   }, [selectedItem]);
+
+  // Preload images
+  useEffect(() => {
+    images.forEach((img) => {
+      img.images?.forEach((src) => {
+        const preload = new Image();
+        preload.src = src;
+      });
+    });
+  }, []);
 
   return (
     <>
@@ -174,24 +187,27 @@ export default function Gallery() {
                           objectFit: img.objectFit || "cover",
                           objectPosition: img.position || "center",
                         }}
-                        initial={{ x: 250, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        transition={{ duration: 0.6 }}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5 }}
                       />
                     ) : (
                       <motion.img
                         key={currentMedia}
                         src={currentMedia}
                         alt={img.alt}
+                        onLoad={() =>
+                          setImageLoaded((prev) => ({ ...prev, [i]: true }))
+                        }
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: imageLoaded[i] ? 1 : 0 }}
+                        transition={{ duration: 0.5 }}
                         style={{
                           width: img.width || "100%",
                           height: img.height || "auto",
                           objectFit: img.objectFit || "cover",
                           objectPosition: img.position || "center",
                         }}
-                        initial={{ x: 250, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        transition={{ duration: 0.6 }}
                       />
                     )}
                     {img.images && img.images.length > 1 && (
