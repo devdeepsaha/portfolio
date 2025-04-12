@@ -52,9 +52,9 @@ export default function Gallery() {
       position: "center",
     },
     {
-      src: "Logos/N2.mp4",
-      alt: "NOTEMATION",
-      title: "NOTEMATION",
+      src: "3d/LAMP.mp4",
+      alt: "LAMP",
+      title: " 3D LAMP",
       width: "100%",
       height: "402px",
       objectFit: "cover",
@@ -62,10 +62,10 @@ export default function Gallery() {
     },
     {
       images: [
-        "3d/gun.mp4",
+        "Books/B1.jpg",
       ],
-      alt: "Gun",
-      title: "Product Animation",
+      alt: "  Book",
+      title: "Book Cover",
       width: "100%",
       height: "402px",
       objectFit: "cover",
