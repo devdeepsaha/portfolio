@@ -184,7 +184,12 @@ export default function Portfolio() {
       id: 21,
       title: "Christmas",
       category: "3d renders",
-      images: ["3d/CloseupChristmasTree.jpg", "3d/ColourfulLights.jpg", "3d/gift.jpg", "3d/snow tree.jpg"],
+      images: [
+        "3d/CloseupChristmasTree.jpg",
+        "3d/ColourfulLights.jpg",
+        "3d/gift.jpg",
+        "3d/snow tree.jpg",
+      ],
       year: "2024",
     },
     {
@@ -253,7 +258,7 @@ export default function Portfolio() {
       id: 30,
       title: "OBJECTS IN A ROOM",
       category: "3d renders",
-      images: [ "3d/photoframe.jpg", "3d/plant.jpg", "3d/plant close.jpg"],
+      images: ["3d/photoframe.jpg", "3d/plant.jpg", "3d/plant close.jpg"],
       year: "2024",
     },
     {
@@ -274,7 +279,15 @@ export default function Portfolio() {
       id: 33,
       title: "WINDOW",
       category: "3d renders",
-      images: ["3d/W1.png", "3d/W2.png", "3d/W3.png", "3d/W4.png", "3d/W5.png", "3d/W6.png", "3d/W7.png"],
+      images: [
+        "3d/W1.png",
+        "3d/W2.png",
+        "3d/W3.png",
+        "3d/W4.png",
+        "3d/W5.png",
+        "3d/W6.png",
+        "3d/W7.png",
+      ],
       year: "2024",
     },
   ];
@@ -347,7 +360,10 @@ export default function Portfolio() {
               >
                 <Card className="card">
                   <CardContent className="cardContent">
-                    <div className="cardImageWrapper">
+                    <div
+                      className="cardImageWrapper"
+                      onClick={() => openFullscreen(work)}
+                    >
                       {work.images ? (
                         <>
                           {isVideo(
@@ -416,10 +432,7 @@ export default function Portfolio() {
                           className="cardImage"
                         />
                       )}
-                      <div
-                        className="overlay"
-                        onClick={() => openFullscreen(work)}
-                      >
+                      <div className="overlay">
                         <h3 className="cardTitle">{work.title}</h3>
                         <p className="cardYear">{work.year}</p>
                       </div>
