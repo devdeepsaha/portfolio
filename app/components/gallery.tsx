@@ -35,7 +35,7 @@ export default function Gallery() {
 
   const images: GalleryItem[] = [
     {
-      images: ["Books/MP1.png", "Books/MP2.png"],
+      images: ["Books/MP1.PNG", "Books/MP2.PNG"],
       alt: "Magazine",
       title: "MACHINAGE",
       width: "auto",
@@ -53,7 +53,7 @@ export default function Gallery() {
       position: "center",
     },
     {
-      src: "3d/LAMP.mp4",
+      src: "3d/Lamp.mp4",
       alt: "LAMP",
       title: "3D LAMP",
       width: "100%",
