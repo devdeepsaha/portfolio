@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import "../css/Hero.css"; // Importing external CSS
+import "../css/hero.css"; // Importing external CSS
 
 export default function Hero() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
