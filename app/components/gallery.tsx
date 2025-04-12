@@ -62,7 +62,7 @@ export default function Gallery() {
       position: "50% 50%",
     }, 
     {
-      images: ["3D/gun.mp4"],
+      images: ["3d/gun.mp4"],
       alt: "Gun",
       title: "PRODUCT ANIMATION",
       width: "100%",

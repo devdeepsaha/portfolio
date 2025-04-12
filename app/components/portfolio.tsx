@@ -47,7 +47,7 @@ export default function Portfolio() {
       id: 2,
       title: "MACHINAGE",
       category: "Magazines & Books",
-      images: ["books/MP1.PNG", "books/MP2.PNG"],
+      images: ["Books/MP1.PNG", "Books/MP2.PNG"],
       year: "2025",
     },
     {
@@ -149,7 +149,7 @@ export default function Portfolio() {
       id: 16,
       title: "T-SHIRT",
       category: "T-shirts",
-      image: "tshirts/F1.jpg",
+      image: "Tshirts/F1.jpg",
       year: "2025",
     },
     {
