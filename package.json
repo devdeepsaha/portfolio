@@ -9,8 +9,8 @@
     "lint": "next lint"
   },
   "engines": {
-  "node": "22.x"
-}, 
+    "node": "22.x"
+  },
   "dependencies": {
     "@emotion/is-prop-valid": "latest",
     "@hookform/resolvers": "latest",
@@ -58,6 +58,7 @@
     "react-hook-form": "latest",
     "react-medium-image-zoom": "^5.2.14",
     "react-resizable-panels": "^2.1.7",
+    "react-simple-typewriter": "^5.0.1",
     "recharts": "2.15.0",
     "sonner": "^1.7.1",
     "swiper": "^11.2.6",

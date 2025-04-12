@@ -1,8 +1,9 @@
-import Hero from "./components/hero"
-import Gallery from "./components/gallery"
-import Portfolio from "./components/portfolio"
-import Contact from "./components/contact"
-import Footer from "./components/footer"
+import Hero from "./components/hero";
+import Gallery from "./components/gallery";
+import Portfolio from "./components/portfolio";
+import Contact from "./components/contact";
+import Footer from "./components/footer";
+import About from "./components/AboutMe";
 
 export default function Page() {
   return (
@@ -10,9 +11,9 @@ export default function Page() {
       <Hero />
       <Gallery />
       <Portfolio />
+      <About />
       <Contact />
       <Footer />
     </main>
-  )
+  );
 }
-

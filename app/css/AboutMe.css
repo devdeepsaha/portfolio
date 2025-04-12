@@ -1,0 +1,134 @@
+@import url("https://fonts.googleapis.com/css2?family=Doto:wght@397&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Jersey+10+Charted&display=swap");
+
+.about-section {
+  padding: 5rem 2rem;
+  background: linear-gradient(
+    135deg,
+    rgb(6, 5, 15),
+    rgb(20, 20, 27),
+    rgb(8, 8, 12)
+  );
+  color: #e0f7fa;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.about-container {
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  justify-content: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 3rem;
+  flex-wrap: wrap;
+}
+
+.about-image-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.about-image {
+  border-radius: 200px;
+  object-fit: cover;
+}
+
+.logo-image {
+  width: auto;
+  height: 100%;
+  transform: scale(0.8);
+  position: relative;
+  bottom: 90px;
+}
+
+.about-content {
+  flex: 2;
+  max-width: 600px;
+  text-align: left;
+}
+
+.about-content h2 {
+  font-family: "Doto", sans-serif;
+  font-variation-settings: "ROND" 100;
+  font-size: 3rem;
+  color: #00ffc3;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 1px #00ffc3, 0 0 10px #00ffc3;
+}
+
+.about-content p {
+  font-family: "Doto", sans-serif;
+  font-weight: normal;
+  font-size: 1.5rem;
+  line-height: 1.8;
+  color: #b2fef7;
+  text-shadow: 0 0 8px rgba(0, 98, 255, 0.5);
+}
+
+.typewriter {
+  font-family: "Jersey 10 Charted", sans-serif;
+  color: rgb(103, 227, 81);
+  font-weight: normal;
+  font-size: 1.5rem;
+  margin-left: 0.5rem;
+}
+
+/* Responsive Fixes */
+.typewriter-break {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .about-container {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .about-content {
+    text-align: center;
+    max-width: 90%;
+  }
+
+  .about-content h2 {
+    font-size: 2.5rem;
+    position: relative;
+    bottom: 180px;
+  }
+
+  .about-content p {
+    font-size: 1.1rem;
+    position: relative;
+    bottom: 180px;
+  }
+
+  .typewriter {
+    display: block;
+    margin-top: 0.5rem;
+  }
+
+  .typewriter-break {
+    display: inline;
+  }
+
+  .about-image {
+    transform: scale(0.8);
+  }
+
+  .logo-image {
+    bottom: 100px;
+    transform: scale(0.6);
+  }
+
+  .download-button {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+    position: relative;
+    bottom: 130px;
+  }
+}
