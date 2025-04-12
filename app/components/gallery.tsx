@@ -62,9 +62,9 @@ export default function Gallery() {
       position: "50% 50%",
     }, 
     {
-      images: ["Books/B1.jpg"],
-      alt: "Book",
-      title: "BOOK COVER",
+      images: ["3D/gun.mp4"],
+      alt: "Gun",
+      title: "PRODUCT ANIMATION",
       width: "100%",
       height: "402px",
       objectFit: "cover",
