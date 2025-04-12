@@ -7,13 +7,21 @@ import { Typewriter } from "react-simple-typewriter";
 
 const AboutMe: React.FC = () => {
   const [logoIndex, setLogoIndex] = useState(1);
+  const [photoIndex, setPhotoIndex] = useState(1); // for dev.jpg / dev1.jpg
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    const logoInterval = setInterval(() => {
       setLogoIndex((prev) => (prev >= 3 ? 1 : prev + 1)); // loop DD1-DD3
-    }, 2000); // 2s interval
+    }, 2000);
 
-    return () => clearInterval(interval);
+    const photoInterval = setInterval(() => {
+      setPhotoIndex((prev) => (prev === 1 ? 2 : 1)); // toggle between dev and dev1
+    }, 5000); // 5s interval for photo
+
+    return () => {
+      clearInterval(logoInterval);
+      clearInterval(photoInterval);
+    };
   }, []);
 
   return (
@@ -21,7 +29,7 @@ const AboutMe: React.FC = () => {
       <div className="about-container">
         <div className="about-image-wrapper">
           <Image
-            src="/logo/dev.jpg"
+            src={`/logo/dev${photoIndex === 1 ? "" : "1"}.jpg`}
             alt="My Photo"
             className="about-image"
             width={300}

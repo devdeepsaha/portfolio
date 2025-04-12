@@ -35,7 +35,6 @@
 
 .about-image {
   border-radius: 200px;
-  box-shadow: 0 0 2px #00ffcc, 0 0 4px #00ffcc;
   object-fit: cover;
 }
 
