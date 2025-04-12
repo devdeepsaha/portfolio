@@ -51,7 +51,7 @@ const AboutMe: React.FC = () => {
         <div className="about-content">
           <h2>About Me</h2>
           <p className="about-intro">
-            Hi! I'm Devdeep,
+            Hi! I'm Devdeep,and I'm a 
             <br className="typewriter-break" />
             <span className="typewriter">
               <Typewriter
