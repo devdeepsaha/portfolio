@@ -1,11 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
+import { useMediaQuery } from "react-responsive";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination, Mousewheel, Keyboard } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/pagination";
 import "../css/portfolio.css";
 
 type Work = {
@@ -24,6 +29,12 @@ export default function Portfolio() {
   >({});
   const [selectedWork, setSelectedWork] = useState<Work | null>(null);
   const [fullscreenIndex, setFullscreenIndex] = useState<number>(0);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [itemsPerPage, setItemsPerPage] = useState(12);
+  const swiperRef = useRef<any>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
+
+  const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
   const categories = [
     "all",
@@ -300,6 +311,12 @@ export default function Portfolio() {
 
   const isVideo = (src: string) => src.endsWith(".mp4") || src.includes(".mp4");
 
+  // Create paginated chunks of works
+  const paginatedWorks = [];
+  for (let i = 0; i < filteredWorks.length; i += itemsPerPage) {
+    paginatedWorks.push(filteredWorks.slice(i, i + itemsPerPage));
+  }
+
   const openFullscreen = (work: Work) => {
     const index = activeImageIndex[work.id] || 0;
     setFullscreenIndex(index);
@@ -313,6 +330,39 @@ export default function Portfolio() {
       direction === "next" ? (prev + 1) % total : (prev - 1 + total) % total
     );
   };
+
+  const handleSwiperChange = (swiper: any) => {
+    setCurrentPage(swiper.activeIndex);
+  };
+
+  // Adjust items per page based on screen size
+  useEffect(() => {
+    const updateItemsPerPage = () => {
+      if (window.innerWidth < 768) {
+        // Mobile
+        setItemsPerPage(6); // 2 columns × 4 rows
+      } else if (window.innerWidth < 885) {
+        // Tablet
+        setItemsPerPage(4);
+      } // 2 columns × 2 rows
+      else if (window.innerWidth < 1024) {
+        // Desktop
+        setItemsPerPage(12); // 4 columns × 3 rows
+      }
+    };
+
+    updateItemsPerPage();
+    window.addEventListener("resize", updateItemsPerPage);
+    return () => window.removeEventListener("resize", updateItemsPerPage);
+  }, []);
+
+  // Reset to first page when category changes
+  useEffect(() => {
+    setCurrentPage(0);
+    if (swiperRef.current) {
+      swiperRef.current.slideTo(0);
+    }
+  }, [selectedCategory]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -330,7 +380,7 @@ export default function Portfolio() {
   }, [selectedWork]);
 
   return (
-    <section className="portfolioSection">
+    <section className="portfolioSection" ref={gridRef}>
       <div className="container">
         <div className="buttonGroup">
           {categories.map((category) => (
@@ -347,30 +397,208 @@ export default function Portfolio() {
           ))}
         </div>
 
-        <motion.div layout className="grid">
-          <AnimatePresence>
-            {filteredWorks.map((work) => (
-              <motion.div
-                key={work.id}
-                layout
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                <Card className="card">
-                  <CardContent className="cardContent">
-                    <div
-                      className="cardImageWrapper"
-                      onClick={() => openFullscreen(work)}
-                    >
-                      {work.images ? (
-                        <>
-                          {isVideo(
-                            work.images[activeImageIndex[work.id] || 0]
-                          ) ? (
+        {isMobile ? (
+          <Swiper
+            onSwiper={(swiper) => (swiperRef.current = swiper)}
+            onSlideChange={handleSwiperChange}
+            slidesPerView={1}
+            spaceBetween={20}
+            pagination={{
+              clickable: true,
+            }}
+            mousewheel={true}
+            keyboard={true}
+            modules={[Pagination, Mousewheel, Keyboard]}
+            initialSlide={currentPage}
+            className="portfolio-swiper"
+          >
+            {paginatedWorks.map((pageWorks, pageIndex) => (
+              <SwiperSlide key={pageIndex}>
+                <motion.div layout className="grid">
+                  <AnimatePresence>
+                    {pageWorks.map((work) => (
+                      <motion.div
+                        key={work.id}
+                        layout
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        <Card className="card">
+                          <CardContent className="cardContent">
+                            <div
+                              className="cardImageWrapper"
+                              onClick={() => openFullscreen(work)}
+                            >
+                              {work.images ? (
+                                <>
+                                  {isVideo(
+                                    work.images[activeImageIndex[work.id] || 0]
+                                  ) ? (
+                                    <video
+                                      src={
+                                        work.images[
+                                          activeImageIndex[work.id] || 0
+                                        ]
+                                      }
+                                      className="cardImage"
+                                      autoPlay
+                                      muted
+                                      loop
+                                      playsInline
+                                    />
+                                  ) : (
+                                    <img
+                                      src={
+                                        work.images[
+                                          activeImageIndex[work.id] || 0
+                                        ]
+                                      }
+                                      alt={work.title}
+                                      className="cardImage"
+                                    />
+                                  )}
+                                  <button
+                                    className="arrow left"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setActiveImageIndex((prev) => ({
+                                        ...prev,
+                                        [work.id]:
+                                          (prev[work.id] ?? 0) === 0
+                                            ? work.images!.length - 1
+                                            : (prev[work.id] ?? 0) - 1,
+                                      }));
+                                    }}
+                                  >
+                                    ‹
+                                  </button>
+                                  <button
+                                    className="arrow right"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setActiveImageIndex((prev) => ({
+                                        ...prev,
+                                        [work.id]:
+                                          (prev[work.id] ?? 0) ===
+                                          work.images!.length - 1
+                                            ? 0
+                                            : (prev[work.id] ?? 0) + 1,
+                                      }));
+                                    }}
+                                  >
+                                    ›
+                                  </button>
+                                </>
+                              ) : isVideo(work.image || "") ? (
+                                <video
+                                  src={work.image}
+                                  className="cardImage"
+                                  autoPlay
+                                  muted
+                                  loop
+                                  playsInline
+                                />
+                              ) : (
+                                <img
+                                  src={work.image || "/placeholder.svg"}
+                                  alt={work.title}
+                                  className="cardImage"
+                                />
+                              )}
+                              <div className="overlay">
+                                <h3 className="cardTitle">{work.title}</h3>
+                                <p className="cardYear">{work.year}</p>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </motion.div>
+                    ))}
+                  </AnimatePresence>
+                </motion.div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        ) : (
+          <>
+            <motion.div layout className="grid">
+              <AnimatePresence>
+                {paginatedWorks[currentPage]?.map((work) => (
+                  <motion.div
+                    key={work.id}
+                    layout
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <Card className="card">
+                      <CardContent className="cardContent">
+                        <div
+                          className="cardImageWrapper"
+                          onClick={() => openFullscreen(work)}
+                        >
+                          {work.images ? (
+                            <>
+                              {isVideo(
+                                work.images[activeImageIndex[work.id] || 0]
+                              ) ? (
+                                <video
+                                  src={
+                                    work.images[activeImageIndex[work.id] || 0]
+                                  }
+                                  className="cardImage"
+                                  autoPlay
+                                  muted
+                                  loop
+                                  playsInline
+                                />
+                              ) : (
+                                <img
+                                  src={
+                                    work.images[activeImageIndex[work.id] || 0]
+                                  }
+                                  alt={work.title}
+                                  className="cardImage"
+                                />
+                              )}
+                              <button
+                                className="arrow left"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setActiveImageIndex((prev) => ({
+                                    ...prev,
+                                    [work.id]:
+                                      (prev[work.id] ?? 0) === 0
+                                        ? work.images!.length - 1
+                                        : (prev[work.id] ?? 0) - 1,
+                                  }));
+                                }}
+                              >
+                                ‹
+                              </button>
+                              <button
+                                className="arrow right"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setActiveImageIndex((prev) => ({
+                                    ...prev,
+                                    [work.id]:
+                                      (prev[work.id] ?? 0) ===
+                                      work.images!.length - 1
+                                        ? 0
+                                        : (prev[work.id] ?? 0) + 1,
+                                  }));
+                                }}
+                              >
+                                ›
+                              </button>
+                            </>
+                          ) : isVideo(work.image || "") ? (
                             <video
-                              src={work.images[activeImageIndex[work.id] || 0]}
+                              src={work.image}
                               className="cardImage"
                               autoPlay
                               muted
@@ -379,144 +607,146 @@ export default function Portfolio() {
                             />
                           ) : (
                             <img
-                              src={work.images[activeImageIndex[work.id] || 0]}
+                              src={work.image || "/placeholder.svg"}
                               alt={work.title}
                               className="cardImage"
                             />
                           )}
-                          <button
-                            className="arrow left"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setActiveImageIndex((prev) => ({
-                                ...prev,
-                                [work.id]:
-                                  (prev[work.id] ?? 0) === 0
-                                    ? work.images!.length - 1
-                                    : (prev[work.id] ?? 0) - 1,
-                              }));
-                            }}
-                          >
-                            ‹
-                          </button>
-                          <button
-                            className="arrow right"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setActiveImageIndex((prev) => ({
-                                ...prev,
-                                [work.id]:
-                                  (prev[work.id] ?? 0) ===
-                                  work.images!.length - 1
-                                    ? 0
-                                    : (prev[work.id] ?? 0) + 1,
-                              }));
-                            }}
-                          >
-                            ›
-                          </button>
-                        </>
-                      ) : isVideo(work.image || "") ? (
-                        <video
-                          src={work.image}
-                          className="cardImage"
-                          autoPlay
-                          muted
-                          loop
-                          playsInline
-                        />
-                      ) : (
-                        <img
-                          src={work.image || "/placeholder.svg"}
-                          alt={work.title}
-                          className="cardImage"
-                        />
-                      )}
-                      <div className="overlay">
-                        <h3 className="cardTitle">{work.title}</h3>
-                        <p className="cardYear">{work.year}</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
-      </div>
+                          <div className="overlay">
+                            <h3 className="cardTitle">{work.title}</h3>
+                            <p className="cardYear">{work.year}</p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </motion.div>
 
-      {/* Fullscreen View */}
-      {selectedWork && (
-        <div
-          className="fullscreen-overlay"
-          onClick={() => setSelectedWork(null)}
-        >
-          <div
-            className="fullscreen-content"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              className="close-button"
-              onClick={() => setSelectedWork(null)}
-            >
-              ✕
-            </button>
-            {selectedWork.images ? (
-              <>
-                {isVideo(selectedWork.images[fullscreenIndex]) ? (
-                  <video
-                    src={selectedWork.images[fullscreenIndex]}
-                    className="fullscreen-image"
-                    controls
-                    autoPlay
-                    loop
-                  />
-                ) : (
-                  <Zoom>
-                    <img
-                      src={selectedWork.images[fullscreenIndex]}
-                      alt={selectedWork.title}
-                      className="fullscreen-image"
-                    />
-                  </Zoom>
-                )}
+            {/* Desktop Pagination */}
+            {filteredWorks.length > itemsPerPage && (
+              <div className="pagination-controls">
                 <button
-                  className="arrow left"
-                  onClick={() => changeFullscreenImage("prev")}
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.max(prev - 1, 0))
+                  }
+                  disabled={currentPage === 0}
+                  className="pagination-arrow"
                 >
                   ‹
                 </button>
+
+                <div className="pagination-dots">
+                  {Array.from({ length: paginatedWorks.length }).map(
+                    (_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setCurrentPage(index)}
+                        className={`pagination-dot ${
+                          currentPage === index ? "active" : ""
+                        }`}
+                        aria-label={`Go to page ${index + 1}`}
+                      />
+                    )
+                  )}
+                </div>
+
                 <button
-                  className="arrow right"
-                  onClick={() => changeFullscreenImage("next")}
+                  onClick={() =>
+                    setCurrentPage((prev) =>
+                      Math.min(prev + 1, paginatedWorks.length - 1)
+                    )
+                  }
+                  disabled={currentPage === paginatedWorks.length - 1}
+                  className="pagination-arrow"
                 >
                   ›
                 </button>
-              </>
-            ) : isVideo(selectedWork.image || "") ? (
-              <video
-                src={selectedWork.image}
-                className="fullscreen-image"
-                controls
-                autoPlay
-                loop
-              />
-            ) : (
-              <Zoom>
-                <img
-                  src={selectedWork.image || "/placeholder.svg"}
-                  alt={selectedWork.title}
-                  className="fullscreen-image"
-                />
-              </Zoom>
+              </div>
             )}
-            <div className="fullscreen-caption">
-              <h2>{selectedWork.title}</h2>
-              <p>{selectedWork.year}</p>
+          </>
+        )}
+
+        {/* Fullscreen View */}
+        {selectedWork && (
+          <div
+            className="fullscreen-overlay"
+            onClick={() => setSelectedWork(null)}
+          >
+            <div
+              className="fullscreen-content"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                className="close-button"
+                onClick={() => setSelectedWork(null)}
+              >
+                ✕
+              </button>
+              {selectedWork.images ? (
+                <>
+                  {isVideo(selectedWork.images[fullscreenIndex]) ? (
+                    <video
+                      src={selectedWork.images[fullscreenIndex]}
+                      className="fullscreen-image"
+                      controls
+                      autoPlay
+                      loop
+                    />
+                  ) : (
+                    <Zoom>
+                      <img
+                        src={selectedWork.images[fullscreenIndex]}
+                        alt={selectedWork.title}
+                        className="fullscreen-image"
+                      />
+                    </Zoom>
+                  )}
+                  <button
+                    className="arrow left"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      changeFullscreenImage("prev");
+                    }}
+                  >
+                    ‹
+                  </button>
+                  <button
+                    className="arrow right"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      changeFullscreenImage("next");
+                    }}
+                  >
+                    ›
+                  </button>
+                </>
+              ) : isVideo(selectedWork.image || "") ? (
+                <video
+                  src={selectedWork.image}
+                  className="fullscreen-image"
+                  controls
+                  autoPlay
+                  loop
+                />
+              ) : (
+                <Zoom>
+                  <img
+                    src={selectedWork.image || "/placeholder.svg"}
+                    alt={selectedWork.title}
+                    className="fullscreen-image"
+                  />
+                </Zoom>
+              )}
+              <div className="fullscreen-caption">
+                <h2>{selectedWork.title}</h2>
+                <p>{selectedWork.year}</p>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </section>
   );
 }

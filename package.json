@@ -58,6 +58,7 @@
     "react-hook-form": "latest",
     "react-medium-image-zoom": "^5.2.14",
     "react-resizable-panels": "^2.1.7",
+    "react-responsive": "^10.0.1",
     "react-simple-typewriter": "^5.0.1",
     "recharts": "2.15.0",
     "sonner": "^1.7.1",
