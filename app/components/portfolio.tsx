@@ -12,6 +12,7 @@ import { Pagination, Mousewheel, Keyboard } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "../css/portfolio.css";
+import { set } from "date-fns";
 
 type Work = {
   id: number;
@@ -340,14 +341,14 @@ export default function Portfolio() {
     const updateItemsPerPage = () => {
       if (window.innerWidth < 768) {
         // Mobile
-        setItemsPerPage(6); // 2 columns × 4 rows
+        setItemsPerPage(6); // 2 columns × 3 rows
       } else if (window.innerWidth < 885) {
         // Tablet
         setItemsPerPage(4);
       } // 2 columns × 2 rows
       else if (window.innerWidth < 1024) {
         // Desktop
-        setItemsPerPage(12); // 4 columns × 3 rows
+        setItemsPerPage(4); // 4 columns × 1 rows
       }
     };
 
@@ -523,7 +524,7 @@ export default function Portfolio() {
           </Swiper>
         ) : (
           <>
-            <motion.div layout className="grid">
+            <motion.div layout className="grid" initial={false}>
               <AnimatePresence>
                 {paginatedWorks[currentPage]?.map((work) => (
                   <motion.div
@@ -532,7 +533,7 @@ export default function Portfolio() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    transition={{ duration: 0.5 }}
+                    transition={{ duration: 0, layout: { duration: 0 } }}
                   >
                     <Card className="card">
                       <CardContent className="cardContent">
