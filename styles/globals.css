@@ -75,3 +75,30 @@
   }
 }
 
+/* Fix for react-medium-image-zoom */
+[data-rmiz] {
+  --rmiz-bg: rgb(0, 0, 0);
+  --rmiz-btn-color: #fff;
+}
+
+[data-rmiz-modal-overlay] {
+  background-color: rgba(0, 0, 0, 0.9) !important;
+}
+
+[data-rmiz-modal-overlay="visible"] {
+  background-color: var(--rmiz-bg) !important;
+}
+
+[data-rmiz-modal-img] {
+  background-color: var(--rmiz-bg) !important;
+}
+
+[data-rmiz-btn-unzoom] {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  color: var(--rmiz-btn-color) !important;
+}
+
+[data-rmiz-btn-zoom] {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  color: var(--rmiz-btn-color) !important;
+}
