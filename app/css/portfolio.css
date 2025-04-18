@@ -44,8 +44,6 @@
   gap: 1.5rem;
 }
 
-
-
 .card {
   background-color: transparent;
   border: none;
@@ -92,7 +90,6 @@
   transition: opacity 0.4s ease;
   padding: 1rem;
   text-align: center;
-
 }
 
 .cardImageWrapper:hover .overlay {
@@ -167,7 +164,7 @@
   top: 50%;
   transform: translateY(-50%);
   font-size: 2rem;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 25%);
   color: white;
   border: none;
   padding: 0.2rem 0.6rem;
@@ -219,7 +216,8 @@
 
   .arrow {
     font-size: 1.5rem;
-    padding: 0.2rem 0.4rem;
+    padding: 0.2rem 1rem;
+    border-radius: 25px;
   }
 
   .arrow.left {
@@ -250,17 +248,18 @@
 
 .pagination-arrow {
   background: none;
-  border: none;
-  font-size: 1.5rem;
+  border: 1.3px solid #00ffc3;
+  font-size: 2rem;
   cursor: pointer;
-  color: #333;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
+  color: #00ffc3;
+  padding: 1px 20px;
+  border-radius: 50px;
   transition: all 0.2s ease;
 }
 
 .pagination-arrow:hover:not(:disabled) {
-  background-color: #f0f0f0;
+  box-shadow: 0 0 20px #00ffc3;
+  text-shadow: 0 0 7px #00ffc3;
 }
 
 .pagination-arrow:disabled {
