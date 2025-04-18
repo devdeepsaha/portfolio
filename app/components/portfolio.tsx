@@ -346,7 +346,7 @@ export default function Portfolio() {
         // Tablet
         setItemsPerPage(4);
       } // 2 columns × 2 rows
-      else if (window.innerWidth < 1024) {
+      else if (window.innerWidth < 1440) {
         // Desktop
         setItemsPerPage(4); // 4 columns × 1 rows
       }
