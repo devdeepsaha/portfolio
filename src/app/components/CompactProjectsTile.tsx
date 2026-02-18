@@ -15,9 +15,11 @@ import {
   Pause,
   SkipBack,
   SkipForward,
+  Sparkles, // --- ADDED: Icon for Dev Picks
 } from "lucide-react";
 import { Portal } from "./ui/portal";
-import { myProjects, Category, Project, heroSlides } from "../ts/projects";
+// --- UPDATED IMPORT: Added devChoiceIds ---
+import { myProjects, Category, Project, heroSlides, devChoiceIds } from "../ts/projects";
 
 // --- SWIPER IMPORTS ---
 import { Swiper, SwiperSlide, SwiperRef } from "swiper/react";
@@ -42,11 +44,11 @@ const swiperStyles = `
   .inline-gallery .swiper-button-next, .inline-gallery .swiper-button-prev { display: none !important; }
 `;
 
-const categories: Category[] = ["All", "Web", "3D", "Graphics", "PPT"];
+// --- UPDATED CATEGORIES LIST ---
+const categories: Category[] = ["All", "Dev Picks", "Web", "3D", "Graphics", "PPT"];
+
 const isVideo = (url: string) => url.match(/\.(mp4|webm|ogg)$/i);
 
-// --- OPTIMIZED MEDIA DISPLAY ---
-// Now accepts 'isActive' to play/pause videos intelligently
 const MediaDisplay = ({
   src,
   className,
@@ -62,12 +64,9 @@ const MediaDisplay = ({
     if (!videoRef.current) return;
 
     if (isActive) {
-      // Try to play, catch errors (e.g. user hasn't interacted with document yet)
       const playPromise = videoRef.current.play();
       if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          // Auto-play was prevented, handle silently
-        });
+        playPromise.catch(() => {});
       }
     } else {
       videoRef.current.pause();
@@ -84,7 +83,6 @@ const MediaDisplay = ({
         loop
         playsInline
         controls={false}
-        // Removed 'autoPlay' prop so we rely strictly on the useEffect above
       />
     );
   }
@@ -93,6 +91,8 @@ const MediaDisplay = ({
 
 const getCategoryIcon = (cat: Category) => {
   switch (cat) {
+    case "Dev Picks":
+      return <Sparkles size={14} />; // --- NEW ICON ---
     case "Web":
       return <Monitor size={14} />;
     case "3D":
@@ -116,7 +116,6 @@ export function CompactProjectsTile() {
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(true);
 
-  // --- NEW: Track active slide indices to control video playback ---
   const [inlineIndex, setInlineIndex] = useState(0);
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
@@ -130,9 +129,12 @@ export function CompactProjectsTile() {
     return () => clearInterval(timer);
   }, []);
 
+  // --- UPDATED FILTER LOGIC ---
   const filteredProjects =
     activeCategory === "All"
       ? myProjects
+      : activeCategory === "Dev Picks"
+      ? myProjects.filter((p) => devChoiceIds.includes(p.id)) // Uses the ID list
       : myProjects.filter((p) => p.category === activeCategory);
 
   const togglePlay = (e: React.MouseEvent) => {
@@ -147,10 +149,9 @@ export function CompactProjectsTile() {
     }
   };
 
-  // Helper to open project and reset index
   const openProject = (project: Project) => {
     setSelectedProject(project);
-    setInlineIndex(0); // Reset inline slider to 0
+    setInlineIndex(0);
   };
 
   return (
@@ -299,7 +300,12 @@ export function CompactProjectsTile() {
                       {/* --- INLINE GALLERY --- */}
                       <div className="rounded-[2.5rem] overflow-hidden border border-border aspect-square relative bg-secondary shadow-xl group/gallery">
                         <Swiper
-                          modules={[Pagination, A11y, EffectCreative, Autoplay]}
+                          modules={[
+                            Pagination,
+                            A11y,
+                            EffectCreative,
+                            Autoplay,
+                          ]}
                           spaceBetween={0}
                           slidesPerView={1}
                           loop={true}
@@ -315,7 +321,7 @@ export function CompactProjectsTile() {
                           }}
                           onSlideChange={(swiper) =>
                             setInlineIndex(swiper.realIndex)
-                          } // <--- Track Index
+                          } 
                           className="w-full h-full inline-gallery"
                         >
                           {(selectedProject.gallery
@@ -330,13 +336,13 @@ export function CompactProjectsTile() {
                                 className="w-full h-full cursor-zoom-in"
                                 onClick={() => {
                                   setIsLightboxOpen(true);
-                                  setLightboxIndex(idx); // Sync lightbox start index
+                                  setLightboxIndex(idx); 
                                 }}
                               >
                                 <MediaDisplay
                                   src={src}
                                   className="w-full h-full object-cover"
-                                  isActive={idx === inlineIndex} // <--- Only play if active
+                                  isActive={idx === inlineIndex}
                                 />
                               </div>
                             </SwiperSlide>

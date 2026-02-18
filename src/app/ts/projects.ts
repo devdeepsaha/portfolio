@@ -1,4 +1,4 @@
-export type Category = 'All' | 'Web' | '3D' | 'Graphics' | 'PPT';
+export type Category = 'All' |'Dev Picks'| 'Web' | '3D' | 'Graphics' | 'PPT';
 
 export interface Project {
   id: number;
@@ -231,6 +231,7 @@ export const myProjects: Project[] = [
    This project focused on experimenting with motion, composition, and environmental storytelling while refining technical workflows in Blender.`,
     tech: ['Blender','Cycles','Shader nodes','Compositor'],
   },
+  
 ];
 
 // --- ADD THIS AT THE BOTTOM ---
@@ -240,3 +241,5 @@ export const heroSlides = [
   "https://images.unsplash.com/photo-1576566588028-4147f3842f27?q=80&w=1000",
   
 ];
+
+export const devChoiceIds = [1, 2, 5, 7, 12];
