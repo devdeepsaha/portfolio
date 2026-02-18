@@ -236,7 +236,7 @@ export function NameTile() {
                   <div className="relative pt-12 md:pt-24">
                     <div className="aspect-[4/5] rounded-[2.5rem] overflow-hidden border border-border bg-muted relative shadow-2xl">
                       <img
-                        src="public/pfp/dev1.jpg"
+                        src="./pfp/dev1.jpg"
                         alt="Devdeep Saha"
                         className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                       />

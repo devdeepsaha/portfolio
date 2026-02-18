@@ -79,6 +79,22 @@ export const myProjects: Project[] = [
     link: 'https://portfolio-old-drab.vercel.app/',
     github: 'https://github.com/devdeepsaha/portfolio-old'
   },
+  {
+    id: 4,
+    title: 'Tools By Deep',
+    category: 'Web',
+    image: './projects/web/toolsbydeep/banner.jpg',
+    gallery: [
+      './projects/web/toolsbydeep/banner.jpg',
+      './projects/web/toolsbydeep/1.jpg',
+      
+    ],
+    description: `Built because I couldn’t find one place that collected all the useful tools I personally rely on , like designing resources coolors, colorhunt. 
+    What started as a personal curated toolkit grew into an interactive, AI-assisted directory of interesting corners of the internet. Designed as a lightweight single-file experiment and shared openly for anyone who wants to explore or use it.`,
+    tech: ['HTML5', 'Tailwind CSS', 'JavaScript (Vanilla JS)', 'DOM Manipulation'],
+    link: 'https://toolsbydeep.vercel.app/',
+    github: 'https://github.com/devdeepsaha/toolsbydev'
+  },
 ];
 
 // --- ADD THIS AT THE BOTTOM ---
