@@ -216,6 +216,22 @@ export const myProjects: Project[] = [
     `,
     tech: ['Blender','Cycles','Shader nodes','Compositor'],
   },
+  {
+    id: 12,
+    title: 'Car rigging',
+    category: '3D',
+    image: './projects/3d/car/banner.png',
+    gallery: [
+      './projects/3d/car/1.mp4',
+      
+
+    ],
+    description: `A 3D rigging project focused on creating a functional and visually appealing car model.
+    The project involves modeling a stylized car, setting up a rig for animating the wheels and suspension, and creating a simple animation to demonstrate the rig's functionality. 
+    By experimenting with different rigging techniques and materials, the project aims to showcase the potential of 3D modeling and animation in creating dynamic, engaging scenes.
+    `,
+    tech: ['Blender','Cycles','Shader nodes','Compositor'],
+  },
 ];
 
 // --- ADD THIS AT THE BOTTOM ---
