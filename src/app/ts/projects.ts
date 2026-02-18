@@ -64,27 +64,20 @@ export const myProjects: Project[] = [
     id: 3,
     title: 'Old Portfolio Website',
     category: 'Web',
-    image: './projects/web/bccl/banner.jpg',
+    image: './projects/web/old-portfolio/banner.jpg',
     gallery: [
-      './projects/web/bccl/1.jpg',
-      './projects/web/bccl/2.jpg',
-      './projects/web/bccl/3.jpg',
-      './projects/web/bccl/4.jpg',
-      './projects/web/bccl/5.jpg',
-      './projects/web/bccl/6.jpg',
-      './projects/web/bccl/7.jpg',
-      './projects/web/bccl/8.jpg',
-      './projects/web/bccl/9.jpg',
-      './projects/web/bccl/10.jpg',
-      './projects/web/bccl/11.jpg',
-      './projects/web/bccl/12.jpg',  
+      './projects/web/old-portfolio/banner.jpg',
+      './projects/web/old-portfolio/1.jpg',
+      './projects/web/old-portfolio/2.jpg',
+      './projects/web/old-portfolio/3.jpg',
+        
     ],
-    description: `Currently in active development, with the final production version yet to be released. A live development build is available in the view live button. 
-    
-    Developed a dynamic public website paired with a secure multi-role Content Management System that allows different departments to independently manage and update their own sections. Designed to simplify content workflows for non-technical users while maintaining flexibility and scalability.`,
-    tech: ['Laravel', 'Python', 'MySql', 'React','Google Gemini API','Custom CSS'],
-    link: 'https://pothoprodorshok.onrender.com/',
-    pdf: './projects/web/bccl/report.pdf' 
+    description: `This was my earlier portfolio mainly focused on graphic design and visual experimentation. I explored motion, typography, and interactive elements like a custom particle-based hero section to build a strong visual identity and creative experience.
+
+    As my interests grew beyond design into full-stack development and other creative areas like music and interactive projects, I moved toward a more structured portfolio that better represents my technical work and multidisciplinary skills.`,
+    tech: ['Next.js', 'React', 'TypeScript', 'Framer Motion','HTML5 Canvas','Custom CSS'],
+    link: 'https://portfolio-old-drab.vercel.app/',
+    github: 'https://github.com/devdeepsaha/portfolio-old'
   },
 ];
 
