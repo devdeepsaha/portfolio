@@ -95,6 +95,127 @@ export const myProjects: Project[] = [
     link: 'https://toolsbydeep.vercel.app/',
     github: 'https://github.com/devdeepsaha/toolsbydev'
   },
+  {
+    id: 5,
+    title: 'Donut',
+    category: '3D',
+    image: './projects/3d/donut/1.png',
+    gallery: [
+      './projects/3d/donut/1.png',
+
+    ],
+    description: `A donut and the starting point of my journey into 3D. 
+      This was my first render created in Blender, where I explored procedural workflows with Geometry Nodes, realistic lighting using Cycles, and compositing for final polish. 
+      The project represents experimentation, learning through iteration, and discovering the power of 3D storytelling.`,
+    tech: ['Blender','Cycles','Geometry nodes','Compositor'],
+  },
+  {
+    id: 6,
+    title: 'NCERT',
+    category: '3D',
+    image: './projects/3d/book/3.jpg',
+    gallery: [
+      './projects/3d/book/1.jpg',
+      './projects/3d/book/2.jpg',
+      './projects/3d/book/3.jpg',
+
+    ],
+    description: `A stylized 3D interpretation of an NCERT book created as an exploration of minimal composition and storytelling through everyday objects. 
+    The project emphasizes realistic materials, soft lighting, and balanced framing to evoke familiarity while maintaining a clean, modern aesthetic.
+    `,
+    tech: ['Blender','Cycles','Shader nodes','Compositor'],
+  },
+
+  {
+    id: 7,
+    title: 'World outside the window',
+    category: '3D',
+    image: './projects/3d/window/4.png',
+    gallery: [
+      './projects/3d/window/1.png',
+      './projects/3d/window/2.png',
+      './projects/3d/window/3.png',
+      './projects/3d/window/4.png',
+      './projects/3d/window/5.png',
+      './projects/3d/window/6.png',
+      './projects/3d/window/7.png',
+
+    ],
+    description: `A 3D scene created to capture the feeling of looking out a window and seeing a world beyond. 
+    The project focuses on creating a cozy, intimate interior space contrasted with a vibrant, inviting exterior environment. 
+    Through careful attention to lighting, materials, and composition, the scene aims to evoke a sense of wonder and possibility while maintaining a grounded, relatable atmosphere.
+    `,
+    tech: ['Blender','Cycles','Shader nodes','Compositor'],
+  },
+  {
+    id: 8,
+    title: 'jello dice',
+    category: '3D',
+    image: './projects/3d/dice/2.png',
+    gallery: [
+      './projects/3d/dice/1.mp4',
+      './projects/3d/dice/2.png',
+
+    ],
+    description: `An early exploration into simulation-driven animation that helped shape my interest in procedural workflows. Explored soft-body simulations and stylized materials in Blender. 
+    The dice was fully modeled from scratch, with a focus on understanding collision physics and dynamic motion behavior. 
+    Using shader nodes and Cycles rendering, the project experiments with translucent materials, vibrant color, and exaggerated movement to create a visually engaging result.
+    `,
+    tech: ['Blender','Cycles','Shader nodes','Compositor'],
+  },
+  {
+    id: 9,
+    title: 'indoor scene',
+    category: '3D',
+    image: './projects/3d/indoor/1.jpg',
+    gallery: [
+      './projects/3d/indoor/1.jpg',
+      './projects/3d/indoor/2.jpg',
+      './projects/3d/indoor/3.jpg',
+
+    ],
+    description: `A 3D interior scene created to explore the interplay of light, materials, and composition in a confined space.
+    The project focuses on creating a warm, inviting atmosphere through the use of soft lighting, realistic textures, and carefully arranged elements. 
+    By experimenting with different light sources and material properties, the scene aims to evoke a sense of comfort while showcasing the potential of 3D storytelling in everyday environments.
+    `,
+    tech: ['Blender','Cycles','Shader nodes','Compositor'],
+  },
+  {
+    id: 10,
+    title: 'number animation ',
+    category: '3D',
+    image: './projects/3d/numbers/banner.png',
+    gallery: [
+      './projects/3d/numbers/1.mp4',
+      './projects/3d/numbers/2.mp4',
+      
+
+    ],
+    description: `A 3D animation project that explores the dynamic movement of numbers in a stylized, abstract environment.
+    The project focuses on creating visually engaging motion through the use of procedural animation techniques, dynamic lighting, and vibrant materials. 
+    By experimenting with different animation curves and shader effects, the scene aims to evoke a sense of energy and playfulness while showcasing the creative potential of 3D animation.
+    `,
+    tech: ['Blender','Cycles','Shader nodes','Compositor'],
+  },
+  {
+    id: 11,
+    title: 'cube animation',
+    category: '3D',
+    image: './projects/3d/cube/banner.png',
+    gallery: [
+      './projects/3d/cube/5.mp4',
+      './projects/3d/cube/2.mp4',
+      './projects/3d/cube/3.mp4',
+      './projects/3d/cube/4.mp4',
+      './projects/3d/cube/1.mp4',
+
+    ],
+    description: `A 3D animation project that explores the transformation and movement of a simple cube in a stylized, abstract environment.
+    The project focuses on creating visually engaging motion through the use of procedural animation techniques, dynamic lighting, and vibrant materials. 
+    By experimenting with different animation curves and shader effects, the scene aims to evoke a sense of energy and playfulness while showcasing the creative potential of 3D animation.
+    `,
+    tech: ['Blender','Cycles','Shader nodes','Compositor'],
+  },
 ];
 
 // --- ADD THIS AT THE BOTTOM ---

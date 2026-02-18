@@ -45,23 +45,46 @@ const swiperStyles = `
 const categories: Category[] = ["All", "Web", "3D", "Graphics", "PPT"];
 const isVideo = (url: string) => url.match(/\.(mp4|webm|ogg)$/i);
 
+// --- OPTIMIZED MEDIA DISPLAY ---
+// Now accepts 'isActive' to play/pause videos intelligently
 const MediaDisplay = ({
   src,
   className,
+  isActive,
 }: {
   src: string;
   className?: string;
+  isActive: boolean;
 }) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (!videoRef.current) return;
+
+    if (isActive) {
+      // Try to play, catch errors (e.g. user hasn't interacted with document yet)
+      const playPromise = videoRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          // Auto-play was prevented, handle silently
+        });
+      }
+    } else {
+      videoRef.current.pause();
+    }
+  }, [isActive]);
+
   if (isVideo(src)) {
     return (
       <video
+        ref={videoRef}
         src={src}
         className={className}
-        autoPlay
         muted
         loop
         playsInline
         controls={false}
+        // Removed 'autoPlay' prop so we rely strictly on the useEffect above
       />
     );
   }
@@ -93,12 +116,14 @@ export function CompactProjectsTile() {
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(true);
 
+  // --- NEW: Track active slide indices to control video playback ---
+  const [inlineIndex, setInlineIndex] = useState(0);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
+
   const fullscreenSwiperRef = useRef<SwiperRef>(null);
 
   useEffect(() => {
-    // Safety check: if heroSlides is empty, don't run interval
     if (heroSlides.length === 0) return;
-
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
     }, 4000);
@@ -120,6 +145,12 @@ export function CompactProjectsTile() {
       }
       setIsPlaying(!isPlaying);
     }
+  };
+
+  // Helper to open project and reset index
+  const openProject = (project: Project) => {
+    setSelectedProject(project);
+    setInlineIndex(0); // Reset inline slider to 0
   };
 
   return (
@@ -232,7 +263,7 @@ export function CompactProjectsTile() {
                           <motion.div
                             layout
                             key={project.id}
-                            onClick={() => setSelectedProject(project)}
+                            onClick={() => openProject(project)}
                             className="group cursor-pointer bg-secondary/20 rounded-[2rem] p-3 border border-border hover:border-primary/50 transition-colors"
                           >
                             <div className="aspect-video rounded-[1.5rem] overflow-hidden mb-4 relative">
@@ -268,12 +299,7 @@ export function CompactProjectsTile() {
                       {/* --- INLINE GALLERY --- */}
                       <div className="rounded-[2.5rem] overflow-hidden border border-border aspect-square relative bg-secondary shadow-xl group/gallery">
                         <Swiper
-                          modules={[
-                            Pagination,
-                            A11y,
-                            EffectCreative,
-                            Autoplay,
-                          ]}
+                          modules={[Pagination, A11y, EffectCreative, Autoplay]}
                           spaceBetween={0}
                           slidesPerView={1}
                           loop={true}
@@ -287,6 +313,9 @@ export function CompactProjectsTile() {
                             prev: { shadow: true, translate: [0, 0, -400] },
                             next: { translate: ["100%", 0, 0] },
                           }}
+                          onSlideChange={(swiper) =>
+                            setInlineIndex(swiper.realIndex)
+                          } // <--- Track Index
                           className="w-full h-full inline-gallery"
                         >
                           {(selectedProject.gallery
@@ -299,11 +328,15 @@ export function CompactProjectsTile() {
                             >
                               <div
                                 className="w-full h-full cursor-zoom-in"
-                                onClick={() => setIsLightboxOpen(true)}
+                                onClick={() => {
+                                  setIsLightboxOpen(true);
+                                  setLightboxIndex(idx); // Sync lightbox start index
+                                }}
                               >
                                 <MediaDisplay
                                   src={src}
                                   className="w-full h-full object-cover"
+                                  isActive={idx === inlineIndex} // <--- Only play if active
                                 />
                               </div>
                             </SwiperSlide>
@@ -421,8 +454,11 @@ export function CompactProjectsTile() {
                   spaceBetween={40}
                   slidesPerView={1}
                   loop={true}
+                  // Initialize with the slide the user clicked on
+                  initialSlide={lightboxIndex}
                   autoplay={{ delay: 4000, disableOnInteraction: false }}
                   pagination={{ clickable: true }}
+                  onSlideChange={(swiper) => setLightboxIndex(swiper.realIndex)} // <--- Track Index
                   className="w-full h-full fullscreen-gallery"
                 >
                   {(selectedProject.gallery
@@ -436,6 +472,7 @@ export function CompactProjectsTile() {
                       <MediaDisplay
                         src={src}
                         className="max-w-full max-h-full object-contain shadow-2xl rounded-md mx-auto"
+                        isActive={idx === lightboxIndex} // <--- Only play if active
                       />
                     </SwiperSlide>
                   ))}
@@ -453,8 +490,6 @@ export function CompactProjectsTile() {
                     <SkipBack size={20} fill="currentColor" />
                   </button>
 
-                  {/* --- FIX START --- */}
-                  {/* Changed 'bg-primary' to explicit 'bg-[#d8ffc7]' (Light Green) so it works on the fixed dark background in both modes */}
                   <button
                     onClick={togglePlay}
                     className={`p-4 rounded-full transition-all flex items-center gap-2 font-bold uppercase tracking-widest text-xs
@@ -473,7 +508,6 @@ export function CompactProjectsTile() {
                       {isPlaying ? "Auto" : "Play"}
                     </span>
                   </button>
-                  {/* --- FIX END --- */}
 
                   <button
                     onClick={() =>
