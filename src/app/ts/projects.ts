@@ -226,10 +226,9 @@ export const myProjects: Project[] = [
       
 
     ],
-    description: `A 3D rigging project focused on creating a functional and visually appealing car model.
-    The project involves modeling a stylized car, setting up a rig for animating the wheels and suspension, and creating a simple animation to demonstrate the rig's functionality. 
-    By experimenting with different rigging techniques and materials, the project aims to showcase the potential of 3D modeling and animation in creating dynamic, engaging scenes.
-    `,
+    description: `A cinematic 3D animation exploring vehicle rigging, dynamic camera movement, and procedural environment design. 
+   The scene features a procedurally generated sea and road system, combined with night-time lighting using HDRI to create atmosphere and depth. 
+   This project focused on experimenting with motion, composition, and environmental storytelling while refining technical workflows in Blender.`,
     tech: ['Blender','Cycles','Shader nodes','Compositor'],
   },
 ];
