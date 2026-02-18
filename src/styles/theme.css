@@ -1,0 +1,73 @@
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* LIGHT MODE - "Clean Studio" */
+  --background: #fbf7f6; /* Snow */
+  --foreground: #11151c; /* Ink Black */
+  --card: #ffffff;
+  --card-foreground: #11151c;
+  --primary: #11151c; /* Black buttons in light mode */
+  --primary-foreground: #d8ffc7; /* Green text on black buttons */
+  --accent: #d8ffc7; /* Green is the primary accent */
+  --accent-foreground: #11151c;
+  --border: rgba(17, 21, 28, 0.1);
+  --muted: #f4f1f0;
+  --muted-foreground: #6b7280;
+  --green: #059669;
+}
+
+/* Update only the .dark section in your theme.css */
+
+.dark {
+  --background: #0a0a0a; /* Deepest Black */
+  --foreground: #fbf7f6; /* Snow White */
+
+  /* FIXED: Changed from rgba to a solid, opaque hex */
+  --card: #161617;
+  --card-foreground: #fbf7f6;
+
+  --primary: #d8ffc7; /* Your signature Tea Green */
+  --primary-foreground: #0a0a0a;
+  --accent: #d8ffc7;
+  --accent-foreground: #0a0a0a;
+  --border: #262626; /* Solid border for definition */
+  --muted: #1c1c1e;
+  --muted-foreground: rgba(251, 247, 246, 0.5);
+  --green: #d8ffc7;
+}
+
+@theme inline {
+  --color-green: var(--green);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground transition-colors duration-300;
+  }
+}
