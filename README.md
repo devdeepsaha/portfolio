@@ -34,5 +34,8 @@ Built with a focus on:
 
 ## 🚀 Getting Started
 
-Clone the repository:
+Clone the repository
 
+npm i 
+
+npm run dev
