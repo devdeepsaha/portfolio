@@ -45,7 +45,7 @@ const swiperStyles = `
 `;
 
 // --- UPDATED CATEGORIES LIST ---
-const categories: Category[] = ["All", "Dev Picks", "Web", "3D", "Graphics", "PPT"];
+const categories: Category[] = ["Dev Picks", "All", "Web", "3D", "Graphics", "PPT"];
 
 const isVideo = (url: string) => url.match(/\.(mp4|webm|ogg)$/i);
 

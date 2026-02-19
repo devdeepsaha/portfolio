@@ -1,4 +1,4 @@
-export type Category = 'All' |'Dev Picks'| 'Web' | '3D' | 'Graphics' | 'PPT';
+export type Category = 'Dev Picks'|'All'| 'Web' | '3D' | 'Graphics' | 'PPT';
 
 export interface Project {
   id: number;
@@ -59,6 +59,31 @@ export const myProjects: Project[] = [
     tech: ['Laravel', 'Python', 'MySql', 'React','Google Gemini API','Custom CSS'],
     link: 'https://pothoprodorshok.onrender.com/',
     pdf: './projects/web/bccl/report.pdf' 
+  },
+  {
+    id: 13,
+    title: 'Modular Portfolio System',
+    category: 'Web',
+    image: './projects/web/new-portfolio/banner.jpg',
+    gallery: [
+      './projects/web/new-portfolio/banner.jpg',
+      './projects/web/new-portfolio/1.jpg',
+      
+
+    ],
+    description: `A modular bento-grid portfolio designed to present projects, skills, and personal evolution through a structured yet playful interface. 
+The layout emphasizes clarity, hierarchy, and micro-interactions while maintaining a clean visual rhythm across tiles. 
+Built with performance and responsiveness in mind, the system balances design aesthetics with engineering precision.
+`,
+    tech: [
+  'React',
+  'TypeScript',
+  'Vite',
+  'TailwindCSS',
+  'shadcn/ui',
+  'Framer Motion'
+]
+
   },
   {
     id: 3,
@@ -231,7 +256,252 @@ export const myProjects: Project[] = [
    This project focused on experimenting with motion, composition, and environmental storytelling while refining technical workflows in Blender.`,
     tech: ['Blender','Cycles','Shader nodes','Compositor'],
   },
-  
+  {
+    id: 14,
+    title: 'Winter scene',
+    category: '3D',
+    image: './projects/3d/winter/10.png',
+    gallery: [
+      './projects/3d/winter/1.png',
+      './projects/3d/winter/2.jpg',
+      './projects/3d/winter/3.png',
+      './projects/3d/winter/4.jpg',
+      './projects/3d/winter/5.png',
+      './projects/3d/winter/6.jpg',
+      './projects/3d/winter/7.png',
+      './projects/3d/winter/8.png',
+      './projects/3d/winter/9.jpg',
+      './projects/3d/winter/10.png',
+      
+
+    ],
+    description: `A 3D scene created to capture the serene beauty of a winter landscape.
+    The project focuses on creating a tranquil atmosphere through the use of soft lighting, realistic snow materials, and carefully arranged elements. 
+    By experimenting with different light sources and shader effects, the scene aims to evoke a sense of calm and wonder while showcasing the potential of 3D storytelling in natural environments.
+    `,
+    tech: ['Blender','Cycles','Shader nodes','Compositor'],
+  },
+  {
+    id: 15,
+    title: 'Pokeball modelling',
+    category: '3D',
+    image: './projects/3d/pokeball/1.png',
+    gallery: [
+      './projects/3d/pokeball/1.png',
+      './projects/3d/pokeball/2.png',
+      './projects/3d/pokeball/3.png',
+      
+
+    ],
+    description: `A 3D modeling project focused on creating a stylized pokeball using Blender. 
+    Also explored camera aperture and depth of field to create a visually engaging composition. 
+    The project emphasizes clean geometry, realistic materials, and dynamic lighting to bring the iconic object to life while showcasing fundamental 3D modeling techniques.
+    `,
+    tech: ['Blender','Cycles','Shader nodes','Compositor'],
+  },
+  {
+    id: 16,
+    title: 'Water physics simulation',
+    category: '3D',
+    image: './projects/3d/water/banner.png',
+    gallery: [
+      './projects/3d/water/1.mp4',
+      
+      
+
+    ],
+    description: `One of my earliest experiments with physics simulations in Blender, focused on creating a realistic water simulation using the built-in fluid physics engine. 
+    The project explores the behavior of water as it interacts with different objects and forces, showcasing the potential of physics-based animation to create dynamic, visually engaging scenes. 
+    Through careful tuning of simulation parameters and shader settings, the project aims to capture the fluidity and complexity of water in a stylized yet believable way.
+    `,
+    tech: ['Blender','Cycles','Shader nodes','Compositor'],
+  },
+  {
+    id: 17,
+    title: 'Product animation (Gun)',
+    category: '3D',
+    image: './projects/3d/gun/banner.png',
+    gallery: [
+      './projects/3d/gun/1.mp4',
+      
+
+    ],
+    description: `A 3D product animation focused on showcasing a stylized gun model through dynamic camera movement, dramatic lighting, and detailed materials. 
+The project emphasizes the importance of composition, timing, and visual storytelling in product animation, using Blender's powerful tools to create a visually engaging and technically polished result. 
+Through experimentation with different animation techniques and shader effects, the scene aims to evoke a sense of excitement and intrigue while highlighting the potential of 3D animation for product visualization.
+    `,
+    tech: ['Blender','Cycles','Shader nodes','Compositor'],
+  },
+  {
+    id: 18,
+    title: 'Lamp modeling and lighting',
+    category: '3D',
+    image: './projects/3d/lamp/banner.png',
+    gallery: [
+      './projects/3d/lamp/1.mp4',
+      
+      
+
+    ],
+    description: `A 3D modeling and lighting experiment focused on creating a stylized lamp model and exploring different lighting setups using Blender's compositor. 
+The project emphasizes the importance of lighting in 3D scenes, using a simple object to experiment with various light sources, intensities, and colors to create different moods and atmospheres. 
+Through careful tuning of shader settings and compositing techniques, the project aims to showcase the transformative power of lighting in 3D visualization while honing fundamental modeling and rendering skills.
+    `,
+    tech: ['Blender','Cycles','Shader nodes','Compositor'],
+  },
+  {
+    id: 19,
+    title: 'animation using powerpoint (notemation)',
+    category: 'Graphics',
+    image: './projects/graphics/animation/banner.png',
+    gallery: [
+      './projects/graphics/animation/1.mp4',
+      
+    ],
+    description: `A logo animation created entirely using PowerPoint, showcasing the potential of presentation software for creative expression beyond traditional slides.
+The project emphasizes the use of shape layers, keyframe animation, and easing techniques to create a dynamic and visually engaging logo reveal. 
+Through experimentation with PowerPoint's animation features and creative use of its tools, the project aims to demonstrate that compelling motion graphics can be achieved even with unconventional software, highlighting the importance of creativity and resourcefulness in design.
+    `,
+    tech: ['Microsoft PowerPoint','Shape layers','Keyframe animation','Easing techniques'],
+  },
+  {
+    id: 20,
+    title: 'Poster series (APL)',
+    category: 'Graphics',
+    image: './projects/graphics/Digital/banner.jpg',
+    gallery: [
+      
+      './projects/graphics/Digital/1.jpg',
+      './projects/graphics/Digital/2.png',
+      './projects/graphics/Digital/4.jpg',
+      './projects/graphics/Digital/banner.jpg',
+      
+      
+    ],
+    description: `A series of simple posters created for the Abacus Premier League, a college cricket tournament, using Microsoft PowerPoint. 
+The project focuses on leveraging PowerPoint's design tools to create visually appealing and informative posters that capture the spirit of the tournament. 
+Through creative use of shapes, text, and images, the posters aim to generate excitement and engagement among participants and spectators while demonstrating that effective graphic design can be achieved with accessible software.
+    `,
+    tech: ['Microsoft PowerPoint','Shape layers','Typography','Image manipulation'],
+  },
+  {
+    id: 21,
+    title: 'Magazine cover (Machinage)',
+    category: 'Graphics',
+    image: './projects/graphics/Books/magazine/banner.jpg',
+    gallery: [
+      './projects/graphics/Books/magazine/1.png',
+      './projects/graphics/Books/magazine/2.png',
+      
+    ],
+    description: `The official magazine of our college, Machinage 2025, was entirely designed and edited using Microsoft PowerPoint. 
+The project involved leveraging PowerPoint's layout and design capabilities to create a polished, professional-looking magazine that includes articles, images, and advertisements. 
+Through creative use of PowerPoint's features, the magazine aims to engage readers and showcase the talents of our college community while demonstrating that powerful design can be achieved with accessible tools.
+The full magazine is attached below for reference, highlighting the versatility and potential of PowerPoint as a design platform.
+    `,
+    tech: ['Microsoft PowerPoint','Layout design','Typography','Image manipulation'],
+    pdf: './projects/graphics/Books/magazine/magazine.pdf'
+  },
+  {
+    id: 22,
+    title: 'Book cover (The hostel door) ',
+    category: 'Graphics',
+    image: './projects/graphics/Books/book/banner.jpg',
+    gallery: [
+      './projects/graphics/Books/book/1.jpg',
+      
+      
+    ],
+    description: `A book cover designed for my novel "The Hostel Door," created using PicsArt, with prompt engineering to generate creative elements. 
+The project involved using Picsart's layout and design tools such as text effects, image manipulation, and composition techniques to create a visually striking cover that captures the essence of the story.
+Through creative use of typography, imagery, and composition, the book cover aims to intrigue potential readers and convey the mood of the novel, demonstrating that effective design can be achieved with a combination of accessible software and creative thinking.
+
+The full book is available in the playground section of my portfolio, showcasing the multidisciplinary nature of my creative work and the potential for storytelling across different mediums.
+    `,
+    tech: ['PicsArt','Typography','Image manipulation','Prompt engineering'],
+  },
+  {
+    id: 23,
+    title: 'Profile picture design',
+    category: 'Graphics',
+    image: './projects/graphics/pfp/1.jpg',
+    gallery: [
+      './projects/graphics/pfp/5.jpg',
+      './projects/graphics/pfp/1.jpg',
+      './projects/graphics/pfp/2.jpg',
+      './projects/graphics/pfp/3.jpg',
+
+    ],
+    description: `A profile picture designed for my previous portfolio, created using PicsArt with a combination of shape layers, text effects, and image manipulation techniques. 
+The project involved experimenting with different design elements to create a visually engaging and unique profile picture that represents my personal brand and creative style. 
+Through creative use of PicsArt's features, the profile picture aims to capture attention and convey a sense of personality and creativity, demonstrating that effective design can be achieved with accessible tools and a willingness to experiment.
+    `,
+    tech: ['PicsArt','Shape layers','Text effects','Image manipulation'],
+  },
+  {
+    id: 24,
+    title: 'Logo collection',
+    category: 'Graphics',
+    image: './projects/graphics/Logos/2.jpg',
+    gallery: [
+      './projects/graphics/Logos/1.jpg',
+      './projects/graphics/Logos/2.jpg',
+      './projects/graphics/Logos/3.jpg',
+      './projects/graphics/Logos/4.jpg',
+      './projects/graphics/Logos/5.jpg',
+      './projects/graphics/Logos/6.jpg',
+      './projects/graphics/Logos/7.jpg',
+      './projects/graphics/Logos/8.jpg',
+      
+      
+    ],
+    description: `A collection of logos designed for various college events ( fest, farewell, tournament) and personal use, created using a combination of Microsoft PowerPoint, PicsArt and Canva. 
+The project involved leveraging the design tools of both software to create a diverse range of logos that capture the essence of different events and personal branding needs. 
+Through creative use of shape layers, typography, and image manipulation techniques, the logos aim to generate excitement and engagement while demonstrating that effective graphic design can be achieved with accessible tools and a willingness to experiment.
+    `,
+    tech: ['Microsoft PowerPoint','Canva','PicsArt','Shape layers','Typography','Image manipulation'],
+  },
+  {
+    id: 25,
+    title: 'Poster collection ',
+    category: 'Graphics',
+    image: './projects/graphics/posters/4.jpg',
+    gallery: [
+      './projects/graphics/posters/2.jpg',
+      './projects/graphics/posters/1.jpg',
+      './projects/graphics/posters/3.jpg',
+      './projects/graphics/posters/4.jpg',
+      './projects/graphics/posters/5.jpg',
+
+    ],
+    description: `A collection of posters designed for various college events such as tech fest, cultural fest, and Holi celebrations, created entirely using Microsoft PowerPoint. 
+The project involved leveraging PowerPoint's design tools to create visually appealing and informative posters that capture the spirit of each event. 
+Through creative use of shapes, text, and images, the posters aim to generate excitement and engagement among participants and spectators while demonstrating that effective graphic design can be achieved with accessible software and a willingness to experiment.
+    `,
+    tech: ['Microsoft PowerPoint','Shape layers','Typography','Image manipulation'],
+  },
+  {
+    id: 26,
+    title: 'Tee-shirt design',
+    category: 'Graphics',
+    image: './projects/graphics/Tshirts/4.jpg',
+    gallery: [
+      './projects/graphics/Tshirts/1.jpg',
+      './projects/graphics/Tshirts/2.jpg',
+      './projects/graphics/Tshirts/3.jpg',
+      './projects/graphics/Tshirts/4.jpg',
+      './projects/graphics/Tshirts/5.jpg',
+      './projects/graphics/Tshirts/6.jpg',
+      
+      
+    ],
+    description: `A collection of tee-shirt designs created for various college events and personal use, designed using a combination of Microsoft PowerPoint and PicsArt.
+The project involved leveraging the design tools of both software to create a diverse range of tee-shirt designs that capture the essence of different events and personal branding needs. 
+Through creative use of shape layers, typography, and image manipulation techniques, the tee-shirt designs aim to generate excitement and engagement while demonstrating that effective graphic design can be achieved with accessible tools and a willingness to experiment. 
+
+    `,
+    tech: ['Microsoft PowerPoint','PicsArt','Shape layers','Typography','Image manipulation'],
+  },
 ];
 
 // --- ADD THIS AT THE BOTTOM ---
@@ -242,4 +512,4 @@ export const heroSlides = [
   
 ];
 
-export const devChoiceIds = [1, 2, 5, 7, 12];
+export const devChoiceIds = [1,2];
