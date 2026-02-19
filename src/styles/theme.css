@@ -20,6 +20,9 @@
   --o: #f8c421ff;
   --y: #fb6640ff;
   --c: #f82553ff;
+  --white: #ffffff;
+
+
 }
 
 /* Update only the .dark section in your theme.css */
@@ -44,6 +47,7 @@
 }
 
 @theme inline {
+  --color-white: var(--white);
   --color-green: var(--green);
   --color-b: var(--b);
   --color-v: var(--v);

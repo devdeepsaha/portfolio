@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { X, ArrowUpRight, Sparkles, Box } from "lucide-react"; // Added 'Box' icon for the Bento section
+import { X, ArrowUpRight, Sparkles, Box } from "lucide-react";
 import { Portal } from "./ui/portal";
 
 declare global {
@@ -16,6 +16,7 @@ export function NameTile() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number | null>(null);
 
+  // --- LeonSans Animation Effect (Unchanged) ---
   useEffect(() => {
     const container = containerRef.current;
     const canvas = canvasRef.current;
@@ -163,13 +164,12 @@ export function NameTile() {
               onClick={() => setIsOpen(false)}
             >
               <motion.div
-                className="bg-card border border-border text-card-foreground rounded-[3rem] p-10 md:p-16 max-w-5xl w-full relative max-h-[90vh] overflow-y-auto no-scrollbar shadow-2xl"
+                className="bg-card border border-border text-card-foreground rounded-[2.5rem] sm:rounded-[3rem] p-8 md:p-16 max-w-5xl w-full relative max-h-[90vh] overflow-y-auto no-scrollbar shadow-2xl"
                 initial={{ scale: 0.95, opacity: 0, y: 20 }}
                 animate={{ scale: 1, opacity: 1, y: 0 }}
                 exit={{ scale: 0.95, opacity: 0, y: 20 }}
                 onClick={(e) => e.stopPropagation()}
               >
-                {/* Close Button (No Rotation) */}
                 <button
                   onClick={() => setIsOpen(false)}
                   className="absolute top-6 right-6 md:top-12 md:right-12 p-4 bg-secondary hover:bg-secondary/80 rounded-full text-foreground transition-all z-[100] shadow-xl hover:scale-105 active:scale-95"
@@ -177,9 +177,28 @@ export function NameTile() {
                   <X size={28} />
                 </button>
 
-                <div className="grid md:grid-cols-2 gap-16 items-start">
-                  {/* --- LEFT COLUMN: TEXT --- */}
-                  <div className="space-y-10">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-y-12 gap-x-16 items-start">
+                  {/* --- 1. PROFILE IMAGE BLOCK --- */}
+                  <div className="order-1 md:order-2 relative md:pt-16 w-full">
+                    {/* CHANGED: Now strictly aspect-square across all devices */}
+                    <div className="aspect-square rounded-[2.5rem] overflow-hidden border border-border bg-muted relative shadow-2xl group">
+                      <img
+                        src="./pfp/dev1.jpg"
+                        alt="Devdeep Saha"
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                      
+                      <div className="absolute bottom-8 left-8 flex items-center gap-3 bg-border/20 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
+                        <Sparkles className="text-accent" size={18} />
+                        <span className="text-sm text-white font-bold uppercase tracking-widest">
+                          Kolkata, IN
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* --- 2. INTRO TEXT BLOCK --- */}
+                  <div className="order-2 md:order-1 space-y-10 md:row-start-1">
                     <div className="space-y-4">
                       <p className="text-primary font-bold uppercase tracking-[0.3em] text-xs">
                         Introduction
@@ -207,45 +226,46 @@ export function NameTile() {
                         But I am a rubber ball. The harder I fall, the harder I
                         bounce.
                       </p>
-
-                      {/* --- NEW: ABOUT THIS WEBSITE (BENTO) --- */}
-                      <div className="mt-8 pt-8 border-t border-border/50">
-                        <div className="flex items-center gap-2 mb-4">
-                          <Box className="text-primary" size={20} />
-                          <h3 className="text-foreground font-bold uppercase tracking-widest text-xs">
-                            About This Website
-                          </h3>
-                        </div>
-                        <p className="text-lg leading-relaxed">
-                          This portfolio is inspired by the Japanese{" "}
-                          <span className="text-foreground font-bold">
-                            "Bento Box"
-                          </span>{" "}
-                          philosophy (弁当). Just as a bento creates harmony by
-                          compartmentalizing different flavors into a single
-                          cohesive meal, this grid layout organizes the diverse
-                          aspects of my work—code, design, and creativity—into a
-                          unified digital experience.
-                        </p>
-                      </div>
                     </div>
                   </div>
 
-                  {/* --- RIGHT COLUMN: IMAGE --- */}
-                  {/* Added 'md:pt-24' to push the image down significantly */}
-                  <div className="relative pt-12 md:pt-24">
-                    <div className="aspect-[4/5] rounded-[2.5rem] overflow-hidden border border-border bg-muted relative shadow-2xl">
-                      <img
-                        src="./pfp/dev1.jpg"
-                        alt="Devdeep Saha"
-                        className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-background/40 via-transparent to-transparent pointer-events-none" />
-                      <div className="absolute bottom-8 left-8 flex items-center gap-3 bg-background/20 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
-                        <Sparkles className="text-primary" size={18} />
-                        <span className="text-sm font-bold uppercase tracking-widest">
-                          Kolkata, IN
+                  {/* --- 3. BENTO TEXT BLOCK --- */}
+                  <div className="order-3 md:order-3 md:col-start-1 pt-8 border-t border-border/50">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Box className="text-primary" size={20} />
+                      <h3 className="text-foreground font-bold uppercase tracking-widest text-xs">
+                        About This Website
+                      </h3>
+                    </div>
+                    <div className="space-y-4 text-lg leading-relaxed text-muted-foreground font-medium">
+                      <p>
+                        This portfolio uses a{" "}
+                        <span className="text-foreground font-bold">
+                          bento-style grid
                         </span>
+                        , inspired by Japanese bento boxes, where different
+                        foods are neatly packed into one compact meal.
+                      </p>
+                      <p>
+                        I like exploring across code, design, video, and
+                        experiments, so instead of separating everything, I
+                        organized it the way I work: many small pieces forming
+                        one bigger picture.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* --- 4. BENTO IMAGE BLOCK --- */}
+                  <div className="order-4 md:order-4 md:col-start-2 w-full">
+                    <div className="aspect-video md:aspect-[4/3] rounded-[2rem] overflow-hidden border border-border shadow-lg relative group">
+                      <img
+                        src="./pfp/bento.jpg"
+                        alt="Japanese Bento Meal Box"
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent pointer-events-none" />
+                      <div className="absolute bottom-4 left-4 bg-black/50 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 text-white text-[10px] font-bold uppercase tracking-widest">
+                        Inspiration
                       </div>
                     </div>
                   </div>
