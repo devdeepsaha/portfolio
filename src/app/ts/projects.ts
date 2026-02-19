@@ -1,4 +1,4 @@
-export type Category = 'Dev Picks'|'All'| 'Web' | '3D' | 'Graphics' | 'PPT';
+export type Category = 'Dev Picks'|'All'| 'Web' | '3D' | 'Graphics' ;
 
 export interface Project {
   id: number;
@@ -512,4 +512,4 @@ export const heroSlides = [
   
 ];
 
-export const devChoiceIds = [1,2];
+export const devChoiceIds = [13,2,5,12,21,19,23];

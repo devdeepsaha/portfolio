@@ -15,10 +15,9 @@ import {
   Pause,
   SkipBack,
   SkipForward,
-  Sparkles, // --- ADDED: Icon for Dev Picks
+  Sparkles, 
 } from "lucide-react";
 import { Portal } from "./ui/portal";
-// --- UPDATED IMPORT: Added devChoiceIds ---
 import { myProjects, Category, Project, heroSlides, devChoiceIds } from "../ts/projects";
 
 // --- SWIPER IMPORTS ---
@@ -44,8 +43,7 @@ const swiperStyles = `
   .inline-gallery .swiper-button-next, .inline-gallery .swiper-button-prev { display: none !important; }
 `;
 
-// --- UPDATED CATEGORIES LIST ---
-const categories: Category[] = ["Dev Picks", "All", "Web", "3D", "Graphics", "PPT"];
+const categories: Category[] = ["Dev Picks", "All", "Web", "3D", "Graphics"];
 
 const isVideo = (url: string) => url.match(/\.(mp4|webm|ogg)$/i);
 
@@ -92,15 +90,13 @@ const MediaDisplay = ({
 const getCategoryIcon = (cat: Category) => {
   switch (cat) {
     case "Dev Picks":
-      return <Sparkles size={14} />; // --- NEW ICON ---
+      return <Sparkles size={14} />;
     case "Web":
       return <Monitor size={14} />;
     case "3D":
       return <Box size={14} />;
     case "Graphics":
       return <ImageIcon size={14} />;
-    case "PPT":
-      return <FileText size={14} />;
     default:
       return <Layers size={14} />;
   }
@@ -109,7 +105,7 @@ const getCategoryIcon = (cat: Category) => {
 export function CompactProjectsTile() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [activeCategory, setActiveCategory] = useState<Category>("All");
+  const [activeCategory, setActiveCategory] = useState<Category>("Dev Picks"); // Changed default to Dev Picks
 
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -129,12 +125,11 @@ export function CompactProjectsTile() {
     return () => clearInterval(timer);
   }, []);
 
-  // --- UPDATED FILTER LOGIC ---
   const filteredProjects =
     activeCategory === "All"
       ? myProjects
       : activeCategory === "Dev Picks"
-      ? myProjects.filter((p) => devChoiceIds.includes(p.id)) // Uses the ID list
+      ? myProjects.filter((p) => devChoiceIds.includes(p.id))
       : myProjects.filter((p) => p.category === activeCategory);
 
   const togglePlay = (e: React.MouseEvent) => {
@@ -237,15 +232,16 @@ export function CompactProjectsTile() {
                   /* --- GRID VIEW --- */
                   <div className="flex flex-col h-full">
                     <div className="mb-8 shrink-0">
-                      <h2 className="text-4xl sm:text-6xl font-black text-foreground tracking-tighter uppercase mb-6">
+                      <h2 className="text-4xl sm:text-6xl font-black text-foreground tracking-tighter uppercase mb-6 pr-12">
                         Work <span className="text-green">Gallery</span>
                       </h2>
-                      <div className="flex flex-wrap gap-2">
+                      {/* --- FIXED: Category Navigation for Mobile --- */}
+                      <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2">
                         {categories.map((cat) => (
                           <button
                             key={cat}
                             onClick={() => setActiveCategory(cat)}
-                            className={`px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest border transition-all flex items-center gap-2
+                            className={`px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest border transition-all flex items-center gap-2 shrink-0
                                     ${
                                       activeCategory === cat
                                         ? "bg-primary text-primary-foreground border-primary"
@@ -321,7 +317,7 @@ export function CompactProjectsTile() {
                           }}
                           onSlideChange={(swiper) =>
                             setInlineIndex(swiper.realIndex)
-                          } 
+                          }
                           className="w-full h-full inline-gallery"
                         >
                           {(selectedProject.gallery
@@ -336,7 +332,7 @@ export function CompactProjectsTile() {
                                 className="w-full h-full cursor-zoom-in"
                                 onClick={() => {
                                   setIsLightboxOpen(true);
-                                  setLightboxIndex(idx); 
+                                  setLightboxIndex(idx);
                                 }}
                               >
                                 <MediaDisplay
@@ -460,11 +456,10 @@ export function CompactProjectsTile() {
                   spaceBetween={40}
                   slidesPerView={1}
                   loop={true}
-                  // Initialize with the slide the user clicked on
                   initialSlide={lightboxIndex}
                   autoplay={{ delay: 4000, disableOnInteraction: false }}
                   pagination={{ clickable: true }}
-                  onSlideChange={(swiper) => setLightboxIndex(swiper.realIndex)} // <--- Track Index
+                  onSlideChange={(swiper) => setLightboxIndex(swiper.realIndex)}
                   className="w-full h-full fullscreen-gallery"
                 >
                   {(selectedProject.gallery
@@ -478,7 +473,7 @@ export function CompactProjectsTile() {
                       <MediaDisplay
                         src={src}
                         className="max-w-full max-h-full object-contain shadow-2xl rounded-md mx-auto"
-                        isActive={idx === lightboxIndex} // <--- Only play if active
+                        isActive={idx === lightboxIndex}
                       />
                     </SwiperSlide>
                   ))}
