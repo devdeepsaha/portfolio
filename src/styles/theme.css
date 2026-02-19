@@ -14,6 +14,12 @@
   --muted: #f4f1f0;
   --muted-foreground: #6b7280;
   --green: #059669;
+  --b: #6434e9ff;
+  --v: #2c7ce5ff;
+  --r: #49cc5cff;
+  --o: #f8c421ff;
+  --y: #fb6640ff;
+  --c: #f82553ff;
 }
 
 /* Update only the .dark section in your theme.css */
@@ -34,10 +40,17 @@
   --muted: #1c1c1e;
   --muted-foreground: rgba(251, 247, 246, 0.5);
   --green: #d8ffc7;
+  --b: rgb(148, 117, 231);
 }
 
 @theme inline {
   --color-green: var(--green);
+  --color-b: var(--b);
+  --color-v: var(--v);
+  --color-r: var(--r);
+  --color-o: var(--o);
+  --color-y: var(--y);
+  --color-c: var(--c);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);

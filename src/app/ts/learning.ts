@@ -1,10 +1,12 @@
-import { Box, Brain, Cpu, Layers, Globe, Database } from 'lucide-react';
+// src/ts/learning.ts
+
+export type LearningCategory = "3D" | "AI" | "Backend" | "Frontend" | "Design" | "Video";
 
 export interface LearningItem {
   id: number;
   title: string;
   subtitle: string;
-  category: '3D' | 'AI' | 'Backend' | 'Frontend'; // Helps pick colors/icons
+  category: LearningCategory;
   description: string;
   tags: string[];
 }
@@ -12,26 +14,26 @@ export interface LearningItem {
 export const myLearning: LearningItem[] = [
   {
     id: 1,
-    title: 'Three.js',
-    subtitle: 'WebGL & Shaders',
-    category: '3D',
-    description: 'Diving deep into 3D graphics for the web, custom shaders (GLSL), and React Three Fiber to build immersive portfolio experiences.',
-    tags: ['GLSL', 'R3F', 'Blender']
+    title: "Advanced UI/UX",
+    subtitle: "Functional & Minimal Design",
+    category: "Frontend",
+    description: "Building this new portfolio by applying advanced design concepts. Focusing on bento-box layouts, typography, and ensuring the design is not just aesthetic but highly functional.",
+    tags: ["Figma", "Tailwind", "Motion Design"],
   },
   {
     id: 2,
-    title: 'AI Engineering',
-    subtitle: 'LLMs & Agents',
-    category: 'AI',
-    description: 'Exploring Large Language Models (LLMs), building agentic workflows, and integrating OpenAI APIs into production applications.',
-    tags: ['OpenAI', 'Python', 'LangChain']
+    title: "After Effects",
+    subtitle: "Motion Graphics & VFX",
+    category: "Video",
+    description: "Diving deep into Adobe After Effects to create complex motion graphics, seamless transitions, and visual effects to elevate my digital storytelling.",
+    tags: ["Keyframing", "Compositing", "Adobe Suite"],
   },
   {
     id: 3,
-    title: 'System Design',
-    subtitle: 'Scalability',
-    category: 'Backend',
-    description: 'Learning how to architect scalable systems, handle high traffic, and design efficient databases.',
-    tags: ['Microservices', 'Redis', 'Docker']
-  }
-];
+    title: "Sound Design",
+    subtitle: "Audio Layering for Video",
+    category: "Design",
+    description: "Learning the art of sound layering in videography. Understanding how to use foley, ambient noise, and music to create immersive auditory experiences that match visual pacing.",
+    tags: [ "Audio Mixing", "Sound Libraries"],
+  },
+]

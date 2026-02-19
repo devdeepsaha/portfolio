@@ -3,25 +3,28 @@ import { motion, AnimatePresence } from "motion/react";
 import { X, Code2, ArrowUpRight } from "lucide-react";
 import { Portal } from "./ui/portal";
 
+// Import the icon component from the library
+import StackIcon from "tech-stack-icons";
+
 const techStack = [
-  { name: "React", color: "#61DAFB" },
-  { name: "Next.js", color: "#FFFFFF" },
-  { name: "Laravel", color: "#FF2D20" },
-  { name: "Flask", color: "#000000" },
-  { name: "Tailwind", color: "#38B2AC" },
-  { name: "TypeScript", color: "#3178C6" },
-  { name: "MySQL", color: "#4479A1" },
-  { name: "Android Studio", color: "#F24E1E" },
-  { name: "Flutter", color: "#8E75FF" },
-  { name: "HTML", color: "#b9b246" },
-  { name: "CSS", color: "#264de4" },
-  { name: "JavaScript", color: "#6cf04f" },
+  { name: "React", iconName: "react", color: "#61DAFB" },
+  { name: "Next.js", iconName: "nextjs2", color: "#FFFFFF" }, 
+  { name: "Laravel", iconName: "laravel", color: "#FF2D20" },
+  { name: "Flask", iconName: "flask", color: "#000000", invertDark: true },
+  { name: "Tailwind", iconName: "tailwindcss", color: "#38B2AC" },
+  { name: "TypeScript", iconName: "typescript", color: "#3178C6" },
+  { name: "MySQL", iconName: "mysql", color: "#4479A1" },
+  { name: "Android Studio", iconName: "android", color: "#3DDC84" }, 
+  { name: "Flutter", iconName: "flutter", color: "#02569B" },
+  { name: "HTML", iconName: "html5", color: "#E34F26" },
+  { name: "CSS", iconName: "css3", color: "#1572B6" },
+  { name: "JavaScript", iconName: "js", color: "#F7DF1E" },
 ];
 
 export function TechStackTile() {
   const [isOpen, setIsOpen] = useState(false);
 
-  // Duplicate the list for a seamless infinite loop
+  // Duplicate the list for a seamless infinite loop in the background marquee
   const duplicatedStack = [...techStack, ...techStack];
 
   return (
@@ -32,7 +35,6 @@ export function TechStackTile() {
         onClick={() => setIsOpen(true)}
       >
         <div className="flex justify-between items-start z-10">
-          {/* FIXED: Icon color logic - removed text-black, added text-inherit */}
           <div className="bg-black/10 p-2.5 rounded-full text-inherit transition-all group-hover:bg-foreground group-hover:text-background">
             <Code2 size={24} />
           </div>
@@ -92,34 +94,43 @@ export function TechStackTile() {
               >
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="absolute top-8 right-8 p-3 bg-secondary hover:bg-secondary/80 rounded-full text-foreground transition-colors shadow-sm"
+                  className="absolute top-8 right-8 p-3 bg-secondary hover:bg-secondary/80 rounded-full text-foreground transition-colors shadow-sm z-50"
                 >
                   <X size={24} />
                 </button>
 
-                <h2 className="text-4xl sm:text-6xl font-black text-foreground mb-4 tracking-tighter leading-none uppercase">
+                <h2 className="text-4xl sm:text-6xl font-black text-foreground mb-4 tracking-tighter leading-none uppercase pr-12">
                   Tech
                   <br />
-                  <span className="text-green">Stack</span>
+                  <span className="text-[#22c55e]">Stack</span>
                 </h2>
 
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-8">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-8">
                   {techStack.map((tech, index) => (
                     <motion.div
                       key={tech.name}
-                      className="bg-secondary rounded-2xl p-4 flex items-center gap-3 border border-border group hover:border-primary/50 transition-colors"
+                      className="bg-secondary/50 rounded-2xl p-4 flex items-center gap-3 border border-border group hover:border-primary/50 transition-colors"
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.05 }}
                     >
-                      <div
-                        className="w-2.5 h-2.5 rounded-full"
-                        style={{
-                          backgroundColor: tech.color,
-                          boxShadow: `0 0 10px ${tech.color}40`,
-                        }}
-                      />
-                      <span className="text-foreground font-black text-xs uppercase tracking-widest group-hover:text-primary transition-colors">
+                      {/* FIXED: Conditionally applying dark:invert based on our new flag */}
+                      <div className={`w-8 h-8 flex items-center justify-center shrink-0 transition-all duration-300 ${tech.invertDark ? "dark:invert" : ""}`}>
+                        {tech.iconName ? (
+                          // @ts-ignore
+                          <StackIcon name={tech.iconName} className="w-full h-full object-contain" />
+                        ) : (
+                          <div
+                            className="w-3 h-3 rounded-full"
+                            style={{
+                              backgroundColor: tech.color,
+                              boxShadow: `0 0 10px ${tech.color}40`,
+                            }}
+                          />
+                        )}
+                      </div>
+                      
+                      <span className="text-foreground font-black text-xs sm:text-sm uppercase tracking-widest group-hover:text-primary transition-colors leading-tight break-words">
                         {tech.name}
                       </span>
                     </motion.div>

@@ -5,44 +5,58 @@ import {
   Box,
   Brain,
   ArrowUpRight,
-  Cpu,
   Layers,
-  Database,
-  Globe,
   Server,
+  PenTool,
+  Video,
+  MonitorPlay,
 } from "lucide-react";
 import { Portal } from "./ui/portal";
-import { myLearning, LearningItem } from "../ts/learning";
+import { myLearning } from "../ts/learning";
 
 const getCategoryStyles = (category: string) => {
   switch (category) {
     case "3D":
       return {
         icon: <Box size={16} />,
-        bg: "bg-purple-500/10",
-        text: "text-purple-500",
-        border: "border-purple-500/20",
+        bg: "bg-b/10", 
+        text: "text-b",
+        border: "border-b",
       };
     case "AI":
       return {
         icon: <Brain size={16} />,
-        bg: "bg-emerald-500/10",
-        text: "text-emerald-500",
-        border: "border-emerald-500/20",
+        bg: "bg-v/10", 
+        text: "text-v",
+        border: "border-v",
       };
     case "Backend":
       return {
         icon: <Server size={16} />,
-        bg: "bg-blue-500/10",
-        text: "text-blue-500",
-        border: "border-blue-500/20",
+        bg: "bg-r/10", 
+        text: "text-r",
+        border: "border-r",
+      };
+    case "Design":
+      return {
+        icon: <PenTool size={16} />,
+        bg: "bg-o/10", 
+        text: "text-o",
+        border: "border-o",
+      };
+    case "Video":
+      return {
+        icon: <Video size={16} />,
+        bg: "bg-y/10", 
+        text: "text-y",
+        border: "border-y",
       };
     default:
       return {
-        icon: <Layers size={16} />,
-        bg: "bg-orange-500/10",
-        text: "text-orange-500",
-        border: "border-orange-500/20",
+        icon: <MonitorPlay size={16} />,
+        bg: "bg-c/10", 
+        text: "text-c",
+        border: "border-c",
       };
   }
 };
@@ -63,8 +77,8 @@ export function CurrentlyLearningTile() {
         <div className="flex justify-between items-start">
           <div className="flex items-center gap-2">
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-green"></span>
             </span>
             <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
               In Progress
@@ -76,7 +90,7 @@ export function CurrentlyLearningTile() {
           />
         </div>
 
-        {/* 2. MAIN TITLE (Added Back) */}
+        {/* 2. MAIN TITLE */}
         <div className="mt-2 mb-4">
           <h3 className="text-2xl sm:text-3xl font-black uppercase tracking-tighter leading-[0.9] text-foreground">
             Currently
@@ -111,7 +125,7 @@ export function CurrentlyLearningTile() {
         </div>
       </motion.div>
 
-      {/* --- MODAL (Same as before) --- */}
+      {/* --- MODAL --- */}
       <Portal>
         <AnimatePresence>
           {isOpen && (
@@ -139,7 +153,7 @@ export function CurrentlyLearningTile() {
                 <h2 className="text-4xl sm:text-5xl font-black text-foreground mb-2 tracking-tighter leading-none">
                   CURRENTLY
                   <br />
-                  <span className="text-green">LEARNING</span>
+                  <span className="text-[#22c55e]">LEARNING</span>
                 </h2>
                 <p className="text-muted-foreground text-xs mb-8 font-mono tracking-widest uppercase">
                   Last updated: Feb 2026
@@ -161,7 +175,7 @@ export function CurrentlyLearningTile() {
                             {item.title}
                           </h3>
                         </div>
-                        <p className="text-muted-foreground leading-relaxed text-sm mb-4">
+                        <p className="text-muted-foreground leading-relaxed text-sm mb-4 whitespace-pre-line">
                           {item.description}
                         </p>
                         <div className="flex gap-2 flex-wrap">
