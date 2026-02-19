@@ -174,7 +174,7 @@ export function StoryTile() {
 
                         {/* Year Marker */}
                         <div className="flex items-center gap-4 mb-6">
-                          <span className="text-4xl md:text-5xl font-black text-emerald-600/30 dark:text-accent/30 tracking-tighter">
+                          <span className="text-4xl md:text-5xl font-black text-emerald-600/90 dark:text-accent/90 tracking-tighter">
                             {item.year}
                           </span>
                         </div>
