@@ -26,7 +26,7 @@ I used to "eat" the settings, breaking things just to figure out how to reverse 
   },
   {
     id: 2,
-    year: "2020",
+    year: "2020 - 2022",
     title: "Lockdown & Experiments",
     icon: Video,
     color: "text-purple-500",
@@ -38,7 +38,7 @@ I also hijacked my dad's laptop, created Discord servers, programmed bots, and l
   },
   {
     id: 3,
-    year: "2023",
+    year: "2022-2023",
     title: "Talking to Machines Until They Talked Back",
     icon: Brain,
     color: "text-blue-500",
