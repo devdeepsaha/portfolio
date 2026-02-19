@@ -138,7 +138,7 @@ export function StoryTile() {
                   <div className="flex gap-3">
                     <button
                       onClick={() => setIsNewestFirst(!isNewestFirst)}
-                      className="flex items-center gap-2 px-5 py-3 rounded-full border border-border bg-secondary/50 hover:bg-secondary text-xs font-bold uppercase tracking-wider transition-colors"
+                      className="flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-3 rounded-full border border-border bg-secondary/50 hover:bg-secondary text-[10px] sm:text-xs font-bold uppercase tracking-wider transition-colors"
                     >
                       <ArrowDownUp size={14} />
                       {isNewestFirst ? "Newest First" : "Oldest First"}
@@ -146,7 +146,7 @@ export function StoryTile() {
 
                     <button
                       onClick={() => setIsOpen(false)}
-                      className="p-3 bg-secondary hover:bg-secondary/80 rounded-full transition-colors text-foreground"
+                      className="p-3 bg-secondary hover:bg-secondary/80 rounded-full transition-colors text-foreground shrink-0"
                     >
                       <X size={20} />
                     </button>
@@ -154,7 +154,8 @@ export function StoryTile() {
                 </div>
 
                 {/* THE TIMELINE */}
-                <div className="relative border-l-2 border-border/50 ml-4 md:ml-6 space-y-16 pb-12">
+                {/* FIXED: Reduced ml-4 to ml-2 for mobile, adjusted border position */}
+                <div className="relative border-l-2 border-border/50 ml-2 md:ml-6 space-y-16 pb-12">
                   {sortedJourney.map((item, index) => {
                     const Icon = item.icon;
                     return (
@@ -164,10 +165,12 @@ export function StoryTile() {
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: index * 0.1 }}
-                        className="relative pl-8 md:pl-16 group"
+                        // FIXED: Reduced pl-8 to pl-6 on mobile to give text more room
+                        className="relative pl-6 md:pl-16 group"
                       >
                         {/* Timeline Dot */}
-                        <div className="absolute -left-[11px] top-1.5 w-5 h-5 rounded-full bg-emerald-500 dark:bg-accent ring-4 ring-card transition-transform group-hover:scale-125" />
+                        {/* FIXED: Adjusted left position slightly to align with the new border-l position */}
+                        <div className="absolute -left-[9px] top-1.5 w-4 h-4 md:w-5 md:h-5 rounded-full bg-emerald-500 dark:bg-accent ring-4 ring-card transition-transform group-hover:scale-125" />
 
                         {/* Year Marker */}
                         <div className="flex items-center gap-4 mb-6">
@@ -177,20 +180,22 @@ export function StoryTile() {
                         </div>
 
                         {/* Content Card */}
-                        <div className="bg-secondary/20 border border-border rounded-3xl p-6 md:p-8 hover:border-emerald-500/30 dark:hover:border-accent/30 transition-colors shadow-sm">
-                          <div className="flex items-center gap-4 mb-6">
-                            <div className={`p-3 rounded-xl ${item.bg} ${item.color}`}>
-                              <Icon size={24} />
+                        <div className="bg-secondary/20 border border-border rounded-3xl p-5 md:p-8 hover:border-emerald-500/30 dark:hover:border-accent/30 transition-colors shadow-sm">
+                          <div className="flex items-center gap-3 md:gap-4 mb-4 md:mb-6">
+                            <div className={`p-2.5 md:p-3 rounded-xl ${item.bg} ${item.color}`}>
+                              <Icon size={20} className="md:w-6 md:h-6" />
                             </div>
-                            <h3 className="text-2xl md:text-3xl font-black uppercase text-foreground leading-none tracking-tight">
+                            {/* FIXED: Added break-words so long titles don't overflow */}
+                            <h3 className="text-xl md:text-3xl font-black uppercase text-foreground leading-none tracking-tight break-words">
                               {item.title}
                             </h3>
                           </div>
 
-                          <div className="flex flex-col md:flex-row gap-8 items-start">
+                          <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-start">
                             {/* Text Container */}
-                            <div className="flex-1">
-                              <p className="text-muted-foreground text-base md:text-lg leading-relaxed whitespace-pre-line font-medium">
+                            <div className="flex-1 w-full">
+                              {/* FIXED: Slightly reduced text size on mobile to prevent cramping */}
+                              <p className="text-muted-foreground text-sm md:text-lg leading-relaxed whitespace-pre-line font-medium break-words">
                                 {item.description}
                               </p>
                             </div>
