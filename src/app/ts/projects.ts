@@ -506,9 +506,11 @@ Through creative use of shape layers, typography, and image manipulation techniq
 
 // --- ADD THIS AT THE BOTTOM ---
 export const heroSlides = [
-  
-  "https://images.unsplash.com/photo-1614728263952-84ea256f9679?q=80&w=1000",
-  "https://images.unsplash.com/photo-1576566588028-4147f3842f27?q=80&w=1000",
+  "./projects/3d/window/4.png",
+  "./projects/3d/car/banner.png",
+  "./projects/web/toolsbydeep/banner.jpg",
+  "./projects/graphics/Books/magazine/1.png",
+  "./projects/3d/indoor/3.jpg",
   
 ];
 
