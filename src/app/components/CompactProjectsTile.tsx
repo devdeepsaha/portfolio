@@ -25,7 +25,8 @@ import {
   heroSlides,
   devChoiceIds,
 } from "../ts/projects";
-import { useBackButton } from "../hooks/useBackButton";
+// FIXED: Import the new powerful hook
+import { useHashRouter } from "../hooks/useHashRouter";
 
 // --- SWIPER IMPORTS ---
 import { Swiper, SwiperSlide, SwiperRef } from "swiper/react";
@@ -114,24 +115,29 @@ export function CompactProjectsTile() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
-  // FIXED: Bulletproof Deep History Logic
-  const handleSmartBack = useCallback(() => {
-    if (isLightboxOpen) {
-      setIsLightboxOpen(false);
-      // The browser just consumed our history step to trigger this action.
-      // We push a new step right back into the history so the NEXT back press is caught too!
-      window.history.pushState({ modalOpen: true }, "", "#open");
-    } else if (selectedProject) {
-      setSelectedProject(null);
-      // Same here! Push a buffer step so we don't accidentally close the website on the next press.
-      window.history.pushState({ modalOpen: true }, "", "#open");
-    } else {
-      // If we are at the top layer, just let it close normally.
-      setIsOpen(false);
-    }
-  }, [isLightboxOpen, selectedProject]);
+  // --- FIXED: DEEP LINKING LOGIC ---
+  
+  // LAYER 1: The Main Grid Modal (URL: /#projects)
+  const closeMain = useHashRouter(
+    isOpen, 
+    "projects", 
+    useCallback(() => setIsOpen(false), [])
+  );
 
-  useBackButton(isOpen, handleSmartBack);
+  // LAYER 2: The Project Detail View (URL: /#projects/[id])
+  const closeProject = useHashRouter(
+    !!selectedProject, 
+    `projects/${selectedProject?.id}`, 
+    useCallback(() => setSelectedProject(null), [])
+  );
+
+  // LAYER 3: The Fullscreen Lightbox (URL: /#projects/[id]/lightbox)
+  const closeLightbox = useHashRouter(
+    isLightboxOpen, 
+    `projects/${selectedProject?.id}/lightbox`, 
+    useCallback(() => setIsLightboxOpen(false), [])
+  );
+  // ----------------------------------
 
   const [activeCategory, setActiveCategory] = useState<Category>("Dev Picks");
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -230,10 +236,8 @@ export function CompactProjectsTile() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => {
-                setIsOpen(false);
-                setSelectedProject(null);
-              }}
+              // FIXED: Use the programmatic close to keep history clean
+              onClick={closeMain}
             >
               <motion.div
                 className="bg-card border-none md:border border-border text-card-foreground rounded-none md:rounded-[2.5rem] p-6 sm:p-10 max-w-7xl w-full h-[100dvh] md:h-[90vh] flex flex-col md:shadow-2xl overflow-hidden relative"
@@ -243,10 +247,7 @@ export function CompactProjectsTile() {
                 onClick={(e) => e.stopPropagation()}
               >
                 <button
-                  onClick={() => {
-                    setIsOpen(false);
-                    setSelectedProject(null);
-                  }}
+                  onClick={closeMain}
                   className="absolute top-4 right-4 md:top-6 md:right-6 p-3 bg-secondary hover:bg-secondary/80 rounded-full text-foreground transition-colors z-50 shadow-md"
                 >
                   <X size={20} className="md:w-6 md:h-6" />
@@ -309,7 +310,8 @@ export function CompactProjectsTile() {
                     className="flex flex-col h-full overflow-y-auto no-scrollbar pt-12 md:pt-8"
                   >
                     <button
-                      onClick={() => setSelectedProject(null)}
+                      // FIXED: Close specific layer
+                      onClick={closeProject}
                       className="mb-8 text-muted-foreground hover:text-foreground flex items-center gap-2 text-xs font-bold uppercase tracking-widest transition-colors shrink-0"
                     >
                       ← Back to Gallery
@@ -319,7 +321,12 @@ export function CompactProjectsTile() {
                       {/* --- INLINE GALLERY --- */}
                       <div className="rounded-[2.5rem] overflow-hidden border border-border aspect-square relative bg-secondary shadow-xl group/gallery">
                         <Swiper
-                          modules={[Pagination, A11y, EffectCreative, Autoplay]}
+                          modules={[
+                            Pagination,
+                            A11y,
+                            EffectCreative,
+                            Autoplay,
+                          ]}
                           spaceBetween={0}
                           slidesPerView={1}
                           loop={true}
@@ -460,7 +467,8 @@ export function CompactProjectsTile() {
                   </p>
                 </div>
                 <button
-                  onClick={() => setIsLightboxOpen(false)}
+                  // FIXED: Use the programmatic close
+                  onClick={closeLightbox}
                   className="pointer-events-auto p-3 bg-white/10 hover:bg-white/20 text-white rounded-full transition-colors backdrop-blur-md shadow-md"
                 >
                   <X size={24} />
