@@ -114,14 +114,19 @@ export function CompactProjectsTile() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
-  // FIXED: Smart Back Button Logic.
-  // It checks how deep the user is and only goes back one layer at a time!
+  // FIXED: Bulletproof Deep History Logic
   const handleSmartBack = useCallback(() => {
     if (isLightboxOpen) {
       setIsLightboxOpen(false);
+      // The browser just consumed our history step to trigger this action.
+      // We push a new step right back into the history so the NEXT back press is caught too!
+      window.history.pushState({ modalOpen: true }, "", "#open");
     } else if (selectedProject) {
       setSelectedProject(null);
+      // Same here! Push a buffer step so we don't accidentally close the website on the next press.
+      window.history.pushState({ modalOpen: true }, "", "#open");
     } else {
+      // If we are at the top layer, just let it close normally.
       setIsOpen(false);
     }
   }, [isLightboxOpen, selectedProject]);
@@ -237,7 +242,6 @@ export function CompactProjectsTile() {
                 exit={{ scale: 0.95, opacity: 0 }}
                 onClick={(e) => e.stopPropagation()}
               >
-                {/* FIXED: The 'X' Button - Now with correct padding, z-index, and shadow so the circle shows */}
                 <button
                   onClick={() => {
                     setIsOpen(false);

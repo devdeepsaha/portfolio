@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import {
   X,
@@ -10,7 +10,7 @@ import {
   ExternalLink,
   Barcode,
   Cpu,
-  Palette, // Added for Extracurriculars
+  Palette,
 } from "lucide-react";
 import { Portal } from "./ui/portal";
 import { resumeData } from "../ts/resume-data";
@@ -36,8 +36,11 @@ const cautionStyles = `
 
 export function ResumeTile() {
   const [isOpen, setIsOpen] = useState(false);
-  useBackButton(isOpen, () => setIsOpen(false));
-  // Destructure the new data structure
+  
+  // FIXED: Added useCallback to prevent the hook from misfiring
+  const handleCloseModal = useCallback(() => setIsOpen(false), []);
+  useBackButton(isOpen, handleCloseModal);
+
   const { header, education, experience, certifications } = resumeData;
 
   return (
@@ -92,29 +95,32 @@ export function ResumeTile() {
         <AnimatePresence>
           {isOpen && (
             <motion.div
-              className="fixed inset-0 bg-background/80 backdrop-blur-md z-[9999] flex items-center justify-center p-4"
+              // FIXED: p-0 on mobile, md:p-4 on desktop
+              className="fixed inset-0 bg-background/80 backdrop-blur-md z-[9999] flex items-center justify-center p-0 md:p-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsOpen(false)}
             >
               <motion.div
-                className="bg-card border border-border text-card-foreground rounded-[2rem] p-6 sm:p-12 max-w-5xl w-full relative max-h-[90vh] overflow-y-auto no-scrollbar shadow-2xl"
+                // FIXED: Full screen on mobile (100dvh, no border, no radius). Floating on md+.
+                className="bg-card border-none md:border border-border text-card-foreground rounded-none md:rounded-[2.5rem] p-6 pt-20 sm:p-12 max-w-5xl w-full relative h-[100dvh] md:h-auto md:max-h-[90vh] overflow-y-auto no-scrollbar md:shadow-2xl"
                 initial={{ scale: 0.95, opacity: 0, y: 20 }}
                 animate={{ scale: 1, opacity: 1, y: 0 }}
                 exit={{ scale: 0.95, opacity: 0, y: 20 }}
                 onClick={(e) => e.stopPropagation()}
               >
+                {/* FIXED: Added shadow-md, increased padding, adjusted mobile positioning */}
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="absolute top-6 right-6 p-3 bg-secondary hover:bg-secondary/80 rounded-full transition-colors text-foreground z-50 border border-border"
+                  className="absolute top-4 right-4 md:top-8 md:right-8 p-3 bg-secondary hover:bg-secondary/80 rounded-full transition-colors text-foreground z-50 border border-border shadow-md"
                 >
-                  <X size={24} />
+                  <X size={20} className="md:w-6 md:h-6" />
                 </button>
 
-                <div className="grid lg:grid-cols-[1fr_auto] gap-8 items-end mb-16 border-b border-border pb-8">
+                <div className="grid lg:grid-cols-[1fr_auto] gap-8 items-end mb-12 md:mb-16 border-b border-border pb-8">
                   <div>
-                    <div className="flex items-center gap-3 mb-4">
+                    <div className="flex flex-wrap items-center gap-2 md:gap-3 mb-4">
                       <span className="px-3 py-1 rounded bg-[#FFD700] text-black text-[10px] font-black uppercase tracking-widest">
                         Verified Profile
                       </span>
@@ -132,7 +138,7 @@ export function ResumeTile() {
                   <a
                     href={header.resumeLink}
                     download
-                    className="group flex items-center gap-3 px-8 py-4 bg-[#FFD700] text-black rounded-xl font-black text-sm uppercase tracking-widest hover:bg-[#ffe033] hover:scale-105 transition-all shadow-lg"
+                    className="group flex items-center justify-center md:justify-start gap-3 px-8 py-4 bg-[#FFD700] text-black rounded-xl font-black text-sm uppercase tracking-widest hover:bg-[#ffe033] hover:scale-105 transition-all shadow-lg w-full md:w-auto"
                   >
                     <Download
                       size={18}
@@ -154,20 +160,20 @@ export function ResumeTile() {
                           Education
                         </h3>
                       </div>
-                      <div className="relative border-l-2 border-border ml-6 space-y-12 pb-4">
+                      <div className="relative border-l-2 border-border ml-4 md:ml-6 space-y-12 pb-4">
                         {education.map((item, index) => (
-                          <div key={index} className="relative pl-10">
+                          <div key={index} className="relative pl-6 md:pl-10">
                             <div
                               className={`absolute -left-[9px] top-2 h-4 w-4 rounded-full ring-4 ring-card ${
                                 item.isCurrent ? "bg-[#FFD700]" : "bg-primary"
                               }`}
                             />
-                            <div className="flex flex-col sm:flex-row sm:items-baseline gap-3 mb-2">
+                            <div className="flex flex-col sm:flex-row sm:items-baseline gap-2 md:gap-3 mb-2">
                               <h4 className="text-xl font-bold text-foreground uppercase">
                                 {item.degree}
                               </h4>
                               <span
-                                className={`text-sm font-bold uppercase tracking-widest px-3 py-1 rounded whitespace-nowrap ${
+                                className={`text-xs md:text-sm font-bold uppercase tracking-widest px-3 py-1 rounded w-fit ${
                                   item.isCurrent
                                     ? "bg-[#FFD700] text-black"
                                     : "border border-border text-foreground"
@@ -176,7 +182,7 @@ export function ResumeTile() {
                                 {item.year}
                               </span>
                             </div>
-                            <p className="text-lg text-muted-foreground font-semibold mb-3">
+                            <p className="text-base md:text-lg text-muted-foreground font-semibold mb-3">
                               {item.institution}
                             </p>
                             <div className="inline-block px-3 py-1 bg-secondary rounded-lg border border-border">
@@ -199,29 +205,29 @@ export function ResumeTile() {
                           Experience
                         </h3>
                       </div>
-                      <div className="relative border-l-2 border-border ml-6 space-y-12">
+                      <div className="relative border-l-2 border-border ml-4 md:ml-6 space-y-12 pb-8 md:pb-0">
                         {experience.map((job, index) => (
-                          <div key={index} className="relative pl-10">
+                          <div key={index} className="relative pl-6 md:pl-10">
                             <div className="absolute -left-[9px] top-2 h-4 w-4 rounded-full bg-[#FFD700] ring-4 ring-card" />
-                            <div className="flex flex-col sm:flex-row sm:items-baseline gap-3 mb-2">
+                            <div className="flex flex-col sm:flex-row sm:items-baseline gap-2 md:gap-3 mb-2">
                               <h4 className="text-xl font-bold text-foreground uppercase">
                                 {job.role}
                               </h4>
-                              <span className="text-black text-sm font-bold uppercase tracking-widest bg-[#FFD700] px-3 py-1 rounded whitespace-nowrap">
+                              <span className="text-black text-xs md:text-sm font-bold uppercase tracking-widest bg-[#FFD700] px-3 py-1 rounded w-fit">
                                 {job.year}
                               </span>
                             </div>
-                            <p className="text-lg text-foreground font-semibold mb-2">
+                            <p className="text-base md:text-lg text-foreground font-semibold mb-2">
                               {job.company}
                             </p>
-                            <p className="text-base text-muted-foreground leading-relaxed max-w-lg mb-4">
+                            <p className="text-sm md:text-base text-muted-foreground leading-relaxed max-w-lg mb-4">
                               {job.description}
                             </p>
                             <div className="flex flex-wrap gap-2">
                               {job.tags.map((tag, i) => (
                                 <span
                                   key={i}
-                                  className="px-3 py-1 bg-secondary border border-border rounded text-sm text-muted-foreground font-bold"
+                                  className="px-2 py-1 md:px-3 md:py-1 bg-secondary border border-border rounded text-xs md:text-sm text-muted-foreground font-bold"
                                 >
                                   {tag}
                                 </span>
@@ -234,7 +240,7 @@ export function ResumeTile() {
                   </div>
 
                   {/* --- RIGHT COLUMN (Split into 2 Sections) --- */}
-                  <div className="space-y-6">
+                  <div className="space-y-6 pb-8 md:pb-0">
                     
                     {/* 1. PROFESSIONAL CERTIFICATIONS */}
                     <div className="bg-secondary/30 p-6 rounded-3xl border border-border h-fit">
@@ -264,10 +270,10 @@ export function ResumeTile() {
                                 className="text-muted-foreground group-hover:text-black transition-colors"
                               />
                             </div>
-                            <div className="font-bold text-lg text-foreground group-hover:text-black transition-colors">
+                            <div className="font-bold text-base md:text-lg text-foreground group-hover:text-black transition-colors">
                               {cert.name}
                             </div>
-                            <div className="text-sm text-muted-foreground group-hover:text-black/70 uppercase tracking-wider mt-1">
+                            <div className="text-xs md:text-sm text-muted-foreground group-hover:text-black/70 uppercase tracking-wider mt-1">
                               {cert.issuer} • {cert.year}
                             </div>
                           </a>
@@ -303,10 +309,10 @@ export function ResumeTile() {
                                 className="text-muted-foreground group-hover:text-black transition-colors"
                               />
                             </div>
-                            <div className="font-bold text-lg text-foreground group-hover:text-black transition-colors">
+                            <div className="font-bold text-base md:text-lg text-foreground group-hover:text-black transition-colors">
                               {cert.name}
                             </div>
-                            <div className="text-sm text-muted-foreground group-hover:text-black/70 uppercase tracking-wider mt-1">
+                            <div className="text-xs md:text-sm text-muted-foreground group-hover:text-black/70 uppercase tracking-wider mt-1">
                               {cert.issuer} • {cert.year}
                             </div>
                           </a>
