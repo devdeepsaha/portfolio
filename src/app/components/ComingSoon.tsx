@@ -145,7 +145,7 @@ export function ComingSoon() {
                   </div>
 
                   <p className="text-muted-foreground text-base md:text-lg font-medium max-w-sm mx-auto leading-relaxed border-l-2 border-border pl-4 text-left">
-                    I'm currently crafting something special in the Playground tile. Interactive prototypes, 3D experiments, and code snippets arriving soon.
+                   All my side projects, experiments, and fun ideas that don’t fit into the main categories will go here. It’s a space for me to share the random stuff I’m tinkering with — whether it’s a weird music track, a 3D render, or just some code snippets. Stay tuned for the chaos!
                   </p>
 
                   <div className="pt-6">
