@@ -5,6 +5,7 @@ import { Portal } from "./ui/portal";
 
 // Import the icon component from the library
 import StackIcon from "tech-stack-icons";
+import { useBackButton } from "../hooks/useBackButton";
 
 const techStack = [
   { name: "React", iconName: "react", color: "#61DAFB" },
@@ -23,6 +24,7 @@ const techStack = [
 
 export function TechStackTile() {
   const [isOpen, setIsOpen] = useState(false);
+  useBackButton(isOpen, () => setIsOpen(false));
 
   // Duplicate the list for a seamless infinite loop in the background marquee
   const duplicatedStack = [...techStack, ...techStack];

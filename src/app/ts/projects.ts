@@ -426,10 +426,15 @@ The full book is available in the playground section of my portfolio, showcasing
     category: 'Graphics',
     image: './projects/graphics/pfp/1.jpg',
     gallery: [
-      './projects/graphics/pfp/5.jpg',
+      './projects/graphics/pfp/6.png',
       './projects/graphics/pfp/1.jpg',
       './projects/graphics/pfp/2.jpg',
       './projects/graphics/pfp/3.jpg',
+      './projects/graphics/pfp/5.jpg',
+      './projects/graphics/pfp/7.png',
+      './projects/graphics/pfp/8.png',
+      './projects/graphics/pfp/9.png',
+      './projects/graphics/pfp/10.png',
 
     ],
     description: `A profile picture designed for my previous portfolio, created using PicsArt with a combination of shape layers, text effects, and image manipulation techniques. 

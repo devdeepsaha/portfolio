@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { Portal } from "./ui/portal";
 import { myHobbies, HobbyItem, MediaType } from "../ts/hobbies";
+import { useBackButton } from "../hooks/useBackButton";
 
 // --- CSS for Waveforms ---
 const waveStyles = `
@@ -43,6 +44,7 @@ const waveStyles = `
 
 export function PlaygroundTile() {
   const [isOpen, setIsOpen] = useState(false);
+  useBackButton(isOpen, () => setIsOpen(false));
   const [activeTab, setActiveTab] = useState(myHobbies[0].id);
 
   const [selectedItem, setSelectedItem] = useState<HobbyItem | null>(null);
@@ -150,7 +152,8 @@ export function PlaygroundTile() {
               onClick={() => setIsOpen(false)}
             >
               <motion.div
-                className="bg-card border border-border text-card-foreground rounded-[2.5rem] w-full max-w-6xl h-[85vh] shadow-2xl overflow-hidden flex flex-col md:flex-row relative"
+                // FIXED: Changed md:flex-row to lg:flex-row so tablet uses stacked layout
+                className="bg-card border border-border text-card-foreground rounded-[2.5rem] w-full max-w-6xl h-[85vh] shadow-2xl overflow-hidden flex flex-col lg:flex-row relative"
                 initial={{ scale: 0.95, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.95, opacity: 0 }}
@@ -158,19 +161,20 @@ export function PlaygroundTile() {
               >
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="absolute top-4 right-4 md:top-6 md:right-6 z-50 p-2 md:p-3 bg-secondary hover:bg-secondary/80 rounded-full text-foreground transition-colors"
+                  className="absolute top-4 right-4 md:top-6 md:right-6 z-50 p-2 md:p-3 bg-secondary hover:bg-secondary/80 rounded-full text-foreground transition-colors shadow-md"
                 >
                   <X size={20} className="md:w-6 md:h-6" />
                 </button>
 
-                {/* --- NAVIGATION SIDEBAR (Vertical on Desktop, Horizontal Scroll on Mobile) --- */}
-                <div className="w-full md:w-80 bg-secondary/20 border-b md:border-b-0 md:border-r border-border flex flex-col p-6 md:p-8 flex-shrink-0">
-                  <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tighter mb-4 md:mb-8">
+                {/* --- NAVIGATION SIDEBAR (Vertical on Laptop+, Horizontal on Mobile/Tablet) --- */}
+                {/* FIXED: Changed md: to lg: for width and borders */}
+                <div className="w-full lg:w-72 xl:w-80 bg-secondary/20 border-b lg:border-b-0 lg:border-r border-border flex flex-col p-6 lg:p-8 flex-shrink-0">
+                  <h2 className="text-2xl md:text-3xl lg:text-4xl font-black uppercase tracking-tighter mb-4 lg:mb-8">
                     Play<span className="text-blue-500">Ground</span>
                   </h2>
 
-                  {/* The Nav Container: Flex Row on Mobile, Flex Col on Desktop */}
-                  <div className="flex flex-row md:flex-col gap-3 overflow-x-auto no-scrollbar md:overflow-visible pb-2 md:pb-0">
+                  {/* FIXED: Changed md: to lg: for flex direction */}
+                  <div className="flex flex-row lg:flex-col gap-3 overflow-x-auto no-scrollbar lg:overflow-visible pb-2 lg:pb-0">
                     {myHobbies.map((hobby) => {
                       const Icon = hobby.icon;
                       const isActive = activeTab === hobby.id;
@@ -182,13 +186,13 @@ export function PlaygroundTile() {
                             setFilterType("all");
                           }}
                           className={`
-                                        flex-shrink-0 flex items-center gap-3 p-3 md:p-4 rounded-xl transition-all duration-300
-                                        ${isActive ? "bg-blue-600 text-white shadow-md" : "hover:bg-secondary/50 text-muted-foreground hover:text-foreground"}
-                                        md:w-full text-left
-                                    `}
+                            flex-shrink-0 flex items-center gap-3 p-3 lg:p-4 rounded-xl transition-all duration-300
+                            ${isActive ? "bg-blue-600 text-white shadow-md" : "hover:bg-secondary/50 text-muted-foreground hover:text-foreground"}
+                            lg:w-full text-left
+                          `}
                         >
-                          <Icon className="w-5 h-5 md:w-6 md:h-6" />
-                          <span className="font-black uppercase text-xs md:text-base tracking-wide whitespace-nowrap">
+                          <Icon className="w-5 h-5 lg:w-6 lg:h-6" />
+                          <span className="font-black uppercase text-xs lg:text-base tracking-wide whitespace-nowrap">
                             {hobby.title}
                           </span>
                         </button>
@@ -198,8 +202,8 @@ export function PlaygroundTile() {
                 </div>
 
                 {/* --- RIGHT: Content Grid --- */}
-                <div className="flex-1 p-6 md:p-12 overflow-y-auto bg-card">
-                  <div className="mb-8 md:mb-10 flex flex-col xl:flex-row xl:items-end justify-between gap-6">
+                <div className="flex-1 p-6 md:p-8 lg:p-12 overflow-y-auto bg-card">
+                  <div className="mb-8 flex flex-col xl:flex-row xl:items-end justify-between gap-6">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 text-blue-500 mb-2">
                         <Sparkles size={18} />
@@ -207,16 +211,16 @@ export function PlaygroundTile() {
                           {activeHobby.subtitle}
                         </span>
                       </div>
-                      <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tight leading-none mb-3 md:mb-4">
+                      <h2 className="text-4xl lg:text-5xl xl:text-6xl font-black uppercase tracking-tight leading-none mb-3 lg:mb-4">
                         {activeHobby.title}
                       </h2>
-                      <p className="text-muted-foreground text-lg md:text-xl max-w-2xl leading-relaxed">
+                      <p className="text-muted-foreground text-base lg:text-lg xl:text-xl max-w-2xl leading-relaxed">
                         {activeHobby.description}
                       </p>
                     </div>
 
-                    {/* Filter Buttons */}
-                    <div className="flex-shrink-0 flex items-center gap-1 bg-secondary p-1.5 rounded-full border border-border flex-wrap">
+                    {/* FIXED: Filter Buttons - Removed flex-wrap, added overflow-x-auto, max-w-full */}
+                    <div className="flex-shrink-0 flex items-center gap-1 bg-secondary p-1.5 rounded-full border border-border overflow-x-auto no-scrollbar max-w-full">
                       {[
                         { id: "all", icon: Filter, label: "All" },
                         { id: "audio", icon: Mic, label: "Audio" },
@@ -226,7 +230,7 @@ export function PlaygroundTile() {
                         <button
                           key={type.id}
                           onClick={() => setFilterType(type.id as any)}
-                          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-all whitespace-nowrap ${
+                          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-all whitespace-nowrap shrink-0 ${
                             filterType === type.id
                               ? "bg-card text-foreground shadow-sm"
                               : "text-muted-foreground hover:text-foreground"
@@ -242,7 +246,7 @@ export function PlaygroundTile() {
                   </div>
 
                   {/* GRID */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
                     <AnimatePresence mode="popLayout">
                       {filteredGallery.map((item) => (
                         <motion.div
@@ -325,9 +329,9 @@ export function PlaygroundTile() {
                   {selectedItem.content.length > 1 && (
                     <button
                       onClick={prevSlide}
-                      className="absolute left-6 p-4 bg-white/10 hover:bg-white/20 rounded-full text-white backdrop-blur-md opacity-0 group-hover/carousel:opacity-100 transition-opacity z-20"
+                      className="absolute left-4 md:left-6 p-3 md:p-4 bg-white/10 hover:bg-white/20 rounded-full text-white backdrop-blur-md opacity-100 md:opacity-0 md:group-hover/carousel:opacity-100 transition-opacity z-20"
                     >
-                      <ChevronLeft size={32} />
+                      <ChevronLeft size={24} className="md:w-8 md:h-8" />
                     </button>
                   )}
 
@@ -350,8 +354,8 @@ export function PlaygroundTile() {
                       ) : selectedItem.content[currentSlide].type ===
                         "audio" ? (
                         <div className="text-center w-full">
-                          <div className="w-40 h-40 mx-auto bg-blue-500/20 rounded-full flex items-center justify-center mb-8 animate-pulse">
-                            <Music size={80} className="text-blue-500" />
+                          <div className="w-32 h-32 md:w-40 md:h-40 mx-auto bg-blue-500/20 rounded-full flex items-center justify-center mb-8 animate-pulse">
+                            <Music size={60} className="text-blue-500 md:w-20 md:h-20" />
                           </div>
                           <audio
                             src={selectedItem.content[currentSlide].src}
@@ -373,19 +377,19 @@ export function PlaygroundTile() {
                   {selectedItem.content.length > 1 && (
                     <button
                       onClick={nextSlide}
-                      className="absolute right-6 p-4 bg-white/10 hover:bg-white/20 rounded-full text-white backdrop-blur-md opacity-0 group-hover/carousel:opacity-100 transition-opacity z-20"
+                      className="absolute right-4 md:right-6 p-3 md:p-4 bg-white/10 hover:bg-white/20 rounded-full text-white backdrop-blur-md opacity-100 md:opacity-0 md:group-hover/carousel:opacity-100 transition-opacity z-20"
                     >
-                      <ChevronRight size={32} />
+                      <ChevronRight size={24} className="md:w-8 md:h-8" />
                     </button>
                   )}
 
                   {/* Dots */}
                   {selectedItem.content.length > 1 && (
-                    <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-20">
+                    <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 md:gap-3 z-20">
                       {selectedItem.content.map((_, idx) => (
                         <div
                           key={idx}
-                          className={`w-2 h-2 rounded-full transition-all ${idx === currentSlide ? "bg-blue-500 w-4" : "bg-white/50"}`}
+                          className={`h-2 rounded-full transition-all ${idx === currentSlide ? "bg-blue-500 w-4 md:w-6" : "bg-white/50 w-2"}`}
                         />
                       ))}
                     </div>
@@ -393,26 +397,26 @@ export function PlaygroundTile() {
                 </div>
 
                 {/* Footer */}
-                <div className="p-6 md:p-8 bg-card border-t border-border z-10">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-3">
-                      <span className="px-3 py-1 rounded text-xs font-bold uppercase bg-blue-600 text-white">
+                <div className="p-4 md:p-8 bg-card border-t border-border z-10">
+                  <div className="flex items-center justify-between mb-2 md:mb-3">
+                    <div className="flex items-center gap-2 md:gap-3">
+                      <span className="px-2 py-1 md:px-3 rounded text-[10px] md:text-xs font-bold uppercase bg-blue-600 text-white">
                         {selectedItem.content[currentSlide].type}
                       </span>
-                      <span className="text-sm font-bold text-muted-foreground uppercase tracking-wider">
+                      <span className="text-xs md:text-sm font-bold text-muted-foreground uppercase tracking-wider">
                         {selectedItem.content[currentSlide].caption}
                       </span>
                     </div>
                     {selectedItem.content.length > 1 && (
-                      <span className="text-xs font-mono text-muted-foreground">
+                      <span className="text-[10px] md:text-xs font-mono text-muted-foreground">
                         {currentSlide + 1} / {selectedItem.content.length}
                       </span>
                     )}
                   </div>
-                  <h2 className="text-3xl md:text-4xl font-black uppercase text-card-foreground mb-2">
+                  <h2 className="text-2xl md:text-4xl font-black uppercase text-card-foreground mb-1 md:mb-2">
                     {selectedItem.title}
                   </h2>
-                  <p className="text-muted-foreground text-lg md:text-xl">
+                  <p className="text-muted-foreground text-sm md:text-xl line-clamp-2 md:line-clamp-none">
                     {selectedItem.description}
                   </p>
                 </div>

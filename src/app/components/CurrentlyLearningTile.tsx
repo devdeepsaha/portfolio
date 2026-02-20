@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { Portal } from "./ui/portal";
 import { myLearning } from "../ts/learning";
+import { useBackButton } from "../hooks/useBackButton";
 
 const getCategoryStyles = (category: string) => {
   switch (category) {
@@ -63,6 +64,7 @@ const getCategoryStyles = (category: string) => {
 
 export function CurrentlyLearningTile() {
   const [isOpen, setIsOpen] = useState(false);
+  useBackButton(isOpen, () => setIsOpen(false));
   const featuredLearning = myLearning.slice(0, 2);
 
   return (

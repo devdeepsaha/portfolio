@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { X, ArrowUpRight, Sparkles, Box } from "lucide-react";
 import { Portal } from "./ui/portal";
+import { useBackButton } from "../hooks/useBackButton";
 
 declare global {
   interface Window {
@@ -11,6 +12,7 @@ declare global {
 
 export function NameTile() {
   const [isOpen, setIsOpen] = useState(false);
+  useBackButton(isOpen, () => setIsOpen(false));
 
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -183,11 +185,11 @@ export function NameTile() {
                     {/* CHANGED: Now strictly aspect-square across all devices */}
                     <div className="aspect-square rounded-[2.5rem] overflow-hidden border border-border bg-muted relative shadow-2xl group">
                       <img
-                        src="./pfp/dev1.jpg"
+                        src="./pfp/dev1.png"
                         alt="Devdeep Saha"
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                       />
-                      
+
                       <div className="absolute bottom-8 left-8 flex items-center gap-3 bg-border/20 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
                         <Sparkles className="text-accent" size={18} />
                         <span className="text-sm text-white font-bold uppercase tracking-widest">

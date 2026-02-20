@@ -9,9 +9,11 @@ import {
 } from "lucide-react";
 import { Portal } from "./ui/portal";
 import { myJourney } from "../ts/story";
+import { useBackButton } from "../hooks/useBackButton";
 
 export function StoryTile() {
   const [isOpen, setIsOpen] = useState(false);
+  useBackButton(isOpen, () => setIsOpen(false));
   const [isNewestFirst, setIsNewestFirst] = useState(false); // Defaulting to chronological (oldest first) makes more sense for a story
 
   // Sort Logic for Modal

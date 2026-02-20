@@ -10,6 +10,7 @@ import {
   Send,
 } from "lucide-react";
 import { Portal } from "./ui/portal";
+import { useBackButton } from "../hooks/useBackButton";
 
 const contacts = [
   {
@@ -34,6 +35,7 @@ const contacts = [
 
 export function ContactTile() {
   const [isOpen, setIsOpen] = useState(false);
+  useBackButton(isOpen, () => setIsOpen(false));
 
   const handleEmail = (e: React.MouseEvent) => {
     e.stopPropagation();

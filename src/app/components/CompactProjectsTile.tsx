@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { Portal } from "./ui/portal";
 import { myProjects, Category, Project, heroSlides, devChoiceIds } from "../ts/projects";
+import { useBackButton } from "../hooks/useBackButton";
 
 // --- SWIPER IMPORTS ---
 import { Swiper, SwiperSlide, SwiperRef } from "swiper/react";
@@ -104,6 +105,7 @@ const getCategoryIcon = (cat: Category) => {
 
 export function CompactProjectsTile() {
   const [isOpen, setIsOpen] = useState(false);
+  useBackButton(isOpen, () => setIsOpen(false));
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [activeCategory, setActiveCategory] = useState<Category>("Dev Picks"); // Changed default to Dev Picks
 

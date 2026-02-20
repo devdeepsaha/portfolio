@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { Portal } from "./ui/portal";
 import { resumeData } from "../ts/resume-data";
+import { useBackButton } from "../hooks/useBackButton";
 
 const cautionStyles = `
   @keyframes slide-stripes {
@@ -35,6 +36,7 @@ const cautionStyles = `
 
 export function ResumeTile() {
   const [isOpen, setIsOpen] = useState(false);
+  useBackButton(isOpen, () => setIsOpen(false));
   // Destructure the new data structure
   const { header, education, experience, certifications } = resumeData;
 
