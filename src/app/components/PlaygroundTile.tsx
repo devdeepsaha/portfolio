@@ -1,4 +1,4 @@
-import { useState, useRef, useMemo, useCallback } from "react"; // FIXED: Imported useCallback
+import { useState, useRef, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import {
   X,
@@ -46,7 +46,6 @@ const waveStyles = `
 export function PlaygroundTile() {
   const [isOpen, setIsOpen] = useState(false);
 
-  // FIXED: Wrapped the close function in useCallback so it doesn't trigger the hook on every click!
   const handleCloseModal = useCallback(() => setIsOpen(false), []);
   useBackButton(isOpen, handleCloseModal);
 
@@ -150,14 +149,16 @@ export function PlaygroundTile() {
         <AnimatePresence>
           {isOpen && (
             <motion.div
-              className="fixed inset-0 bg-background/80 backdrop-blur-md z-[9999] flex items-center justify-center p-4"
+              // FIXED: p-0 on mobile, md:p-4 on desktop
+              className="fixed inset-0 bg-background/80 backdrop-blur-md z-[9999] flex items-center justify-center p-0 md:p-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsOpen(false)}
             >
               <motion.div
-                className="bg-card border border-border text-card-foreground rounded-[2.5rem] w-full max-w-6xl h-[85vh] shadow-2xl overflow-hidden flex flex-col lg:flex-row relative"
+                // FIXED: Full screen on mobile (100dvh, no border, no radius). Floating on md+.
+                className="bg-card border-none md:border border-border text-card-foreground rounded-none md:rounded-[2.5rem] w-full max-w-6xl h-[100dvh] md:h-[85vh] md:shadow-2xl overflow-hidden flex flex-col lg:flex-row relative"
                 initial={{ scale: 0.95, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.95, opacity: 0 }}
@@ -171,7 +172,7 @@ export function PlaygroundTile() {
                 </button>
 
                 {/* --- NAVIGATION SIDEBAR --- */}
-                <div className="w-full lg:w-72 xl:w-80 bg-secondary/20 border-b lg:border-b-0 lg:border-r border-border flex flex-col p-6 lg:p-8 flex-shrink-0">
+                <div className="w-full lg:w-72 xl:w-80 bg-secondary/20 border-b lg:border-b-0 lg:border-r border-border flex flex-col p-6 pt-16 md:pt-8 lg:p-8 flex-shrink-0">
                   <h2 className="text-2xl md:text-3xl lg:text-4xl font-black uppercase tracking-tighter mb-4 lg:mb-8">
                     Play<span className="text-blue-500">Ground</span>
                   </h2>
@@ -310,7 +311,8 @@ export function PlaygroundTile() {
         <AnimatePresence>
           {selectedItem && (
             <motion.div
-              className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-black/90 backdrop-blur-xl"
+              // FIXED: p-0 on mobile, md:p-4 on desktop
+              className="fixed inset-0 z-[10000] flex items-center justify-center p-0 md:p-4 bg-black/90 backdrop-blur-xl"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -318,7 +320,8 @@ export function PlaygroundTile() {
             >
               <motion.div
                 layoutId={selectedItem.id}
-                className="w-full max-w-6xl bg-card rounded-[2rem] overflow-hidden border border-border shadow-2xl relative flex flex-col h-[90vh]"
+                // FIXED: Full screen on mobile (100dvh, no border, no radius). Floating on md+.
+                className="w-full max-w-6xl bg-card rounded-none md:rounded-[2.5rem] overflow-hidden border-none md:border border-border md:shadow-2xl relative flex flex-col h-[100dvh] md:h-[90vh]"
                 onClick={(e) => e.stopPropagation()}
               >
                 <button
@@ -346,7 +349,7 @@ export function PlaygroundTile() {
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: -20 }}
                       transition={{ duration: 0.2 }}
-                      className="w-full h-full flex items-center justify-center p-4"
+                      className="w-full h-full flex items-center justify-center p-0 md:p-4"
                     >
                       {selectedItem.content[currentSlide].type === "video" ? (
                         <video
@@ -373,7 +376,7 @@ export function PlaygroundTile() {
                       ) : selectedItem.content[currentSlide].type === "pdf" ? (
                         <iframe
                           src={selectedItem.content[currentSlide].src}
-                          className="w-full h-full rounded-xl bg-white"
+                          className="w-full h-full rounded-none md:rounded-xl bg-white"
                           title={selectedItem.content[currentSlide].caption}
                         />
                       ) : (
@@ -410,7 +413,7 @@ export function PlaygroundTile() {
                 </div>
 
                 {/* Footer */}
-                <div className="p-4 md:p-8 bg-card border-t border-border z-10">
+                <div className="p-4 md:p-8 bg-card border-t border-border z-10 pb-8 md:pb-8">
                   <div className="flex items-center justify-between mb-2 md:mb-3">
                     <div className="flex items-center gap-2 md:gap-3">
                       <span className="px-2 py-1 md:px-3 rounded text-[10px] md:text-xs font-bold uppercase bg-blue-600 text-white">

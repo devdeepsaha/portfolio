@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react"; // FIXED: Imported useCallback
 import { motion, AnimatePresence } from "motion/react";
 import {
   X,
@@ -13,8 +13,12 @@ import { useBackButton } from "../hooks/useBackButton";
 
 export function StoryTile() {
   const [isOpen, setIsOpen] = useState(false);
-  useBackButton(isOpen, () => setIsOpen(false));
-  const [isNewestFirst, setIsNewestFirst] = useState(false); // Defaulting to chronological (oldest first) makes more sense for a story
+  
+  // FIXED: Wrapped the close function in useCallback so the hook doesn't glitch on state changes
+  const handleCloseModal = useCallback(() => setIsOpen(false), []);
+  useBackButton(isOpen, handleCloseModal);
+  
+  const [isNewestFirst, setIsNewestFirst] = useState(false);
 
   // Sort Logic for Modal
   const sortedJourney = [...myJourney].sort((a, b) => {
@@ -112,21 +116,31 @@ export function StoryTile() {
         <AnimatePresence>
           {isOpen && (
             <motion.div
-              className="fixed inset-0 bg-background/90 backdrop-blur-md z-[9999] flex items-center justify-center p-4"
+              // FIXED: p-0 on mobile, md:p-4 on desktop
+              className="fixed inset-0 bg-background/90 backdrop-blur-md z-[9999] flex items-center justify-center p-0 md:p-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsOpen(false)}
             >
               <motion.div
-                className="bg-card border border-border text-card-foreground rounded-[2rem] p-6 sm:p-12 max-w-5xl w-full relative max-h-[90vh] overflow-y-auto no-scrollbar shadow-2xl"
+                // FIXED: Full screen on mobile (100dvh, no border, no radius). Floating on md+.
+                className="bg-card border-none md:border border-border text-card-foreground rounded-none md:rounded-[2.5rem] p-6 pt-20 sm:p-12 max-w-5xl w-full relative h-[100dvh] md:h-[90vh] overflow-y-auto no-scrollbar md:shadow-2xl"
                 initial={{ scale: 0.95, opacity: 0, y: 20 }}
                 animate={{ scale: 1, opacity: 1, y: 0 }}
                 exit={{ scale: 0.95, opacity: 0, y: 20 }}
                 onClick={(e) => e.stopPropagation()}
               >
+                {/* FIXED: Close Button is now absolutely positioned at top right so it never misaligns */}
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="absolute top-4 right-4 md:top-8 md:right-8 p-3 bg-secondary hover:bg-secondary/80 rounded-full transition-colors text-foreground shrink-0 z-50 shadow-md"
+                >
+                  <X size={20} className="md:w-6 md:h-6" />
+                </button>
+
                 {/* Modal Header */}
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-16 gap-6 border-b border-border pb-8">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-12 md:mb-16 gap-6 border-b border-border pb-8">
                   <div>
                     <h2 className="text-5xl sm:text-7xl font-black text-foreground tracking-tighter uppercase leading-[0.9]">
                       The
@@ -145,18 +159,10 @@ export function StoryTile() {
                       <ArrowDownUp size={14} />
                       {isNewestFirst ? "Newest First" : "Oldest First"}
                     </button>
-
-                    <button
-                      onClick={() => setIsOpen(false)}
-                      className="p-3 bg-secondary hover:bg-secondary/80 rounded-full transition-colors text-foreground shrink-0"
-                    >
-                      <X size={20} />
-                    </button>
                   </div>
                 </div>
 
                 {/* THE TIMELINE */}
-                {/* FIXED: Reduced ml-4 to ml-2 for mobile, adjusted border position */}
                 <div className="relative border-l-2 border-border/50 ml-2 md:ml-6 space-y-16 pb-12">
                   {sortedJourney.map((item, index) => {
                     const Icon = item.icon;
@@ -167,11 +173,9 @@ export function StoryTile() {
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: index * 0.1 }}
-                        // FIXED: Reduced pl-8 to pl-6 on mobile to give text more room
                         className="relative pl-6 md:pl-16 group"
                       >
                         {/* Timeline Dot */}
-                        {/* FIXED: Adjusted left position slightly to align with the new border-l position */}
                         <div className="absolute -left-[9px] top-1.5 w-4 h-4 md:w-5 md:h-5 rounded-full bg-emerald-500 dark:bg-accent ring-4 ring-card transition-transform group-hover:scale-125" />
 
                         {/* Year Marker */}
@@ -187,7 +191,6 @@ export function StoryTile() {
                             <div className={`p-2.5 md:p-3 rounded-xl ${item.bg} ${item.color}`}>
                               <Icon size={20} className="md:w-6 md:h-6" />
                             </div>
-                            {/* FIXED: Added break-words so long titles don't overflow */}
                             <h3 className="text-xl md:text-3xl font-black uppercase text-foreground leading-none tracking-tight break-words">
                               {item.title}
                             </h3>
@@ -196,7 +199,6 @@ export function StoryTile() {
                           <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-start">
                             {/* Text Container */}
                             <div className="flex-1 w-full">
-                              {/* FIXED: Slightly reduced text size on mobile to prevent cramping */}
                               <p className="text-muted-foreground text-sm md:text-lg leading-relaxed whitespace-pre-line font-medium break-words">
                                 {item.description}
                               </p>

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react"; // FIXED: Imported useCallback
+import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import {
   X,
@@ -106,7 +106,6 @@ const getCategoryIcon = (cat: Category) => {
 export function CompactProjectsTile() {
   const [isOpen, setIsOpen] = useState(false);
   
-  // FIXED: Wrapped the close function in useCallback so it doesn't trigger the hook on every click!
   const handleCloseModal = useCallback(() => setIsOpen(false), []);
   useBackButton(isOpen, handleCloseModal);
 
@@ -208,7 +207,8 @@ export function CompactProjectsTile() {
         <AnimatePresence>
           {isOpen && (
             <motion.div
-              className="fixed inset-0 bg-background/90 backdrop-blur-xl z-[9999] flex items-center justify-center p-4"
+              // FIXED: p-0 on mobile, md:p-4 for desktop backdrop
+              className="fixed inset-0 bg-background/90 backdrop-blur-xl z-[9999] flex items-center justify-center p-0 md:p-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -218,7 +218,8 @@ export function CompactProjectsTile() {
               }}
             >
               <motion.div
-                className="bg-card border border-border text-card-foreground rounded-[2.5rem] p-6 sm:p-10 max-w-7xl w-full h-[90vh] flex flex-col shadow-2xl overflow-hidden relative"
+                // FIXED: h-[100dvh] rounded-none border-none on mobile. Rounded, bordered, & shorter on md screens.
+                className="bg-card border-none md:border border-border text-card-foreground rounded-none md:rounded-[2.5rem] p-6 sm:p-10 max-w-7xl w-full h-[100dvh] md:h-[90vh] flex flex-col md:shadow-2xl overflow-hidden relative"
                 initial={{ scale: 0.95, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.95, opacity: 0 }}
@@ -229,14 +230,14 @@ export function CompactProjectsTile() {
                     setIsOpen(false);
                     setSelectedProject(null);
                   }}
-                  className="absolute top-6 right-6 p-3 bg-secondary hover:bg-secondary/80 rounded-full text-foreground transition-colors z-50"
+                  className="absolute top-4 right-4 md:top-6 md:right-6 p-3 bg-secondary hover:bg-secondary/80 rounded-full text-foreground transition-colors z-50"
                 >
                   <X size={24} />
                 </button>
 
                 {!selectedProject ? (
                   /* --- GRID VIEW --- */
-                  <div className="flex flex-col h-full">
+                  <div className="flex flex-col h-full pt-4 md:pt-0">
                     <div className="mb-8 shrink-0">
                       <h2 className="text-4xl sm:text-6xl font-black text-foreground tracking-tighter uppercase mb-6 pr-12">
                         Work <span className="text-green">Gallery</span>
@@ -288,7 +289,7 @@ export function CompactProjectsTile() {
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="flex flex-col h-full overflow-y-auto no-scrollbar pt-8"
+                    className="flex flex-col h-full overflow-y-auto no-scrollbar pt-12 md:pt-8"
                   >
                     <button
                       onClick={() => setSelectedProject(null)}
