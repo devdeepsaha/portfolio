@@ -2,7 +2,7 @@ import { NameTile } from "./components/NameTile";
 import { ResumeTile } from "./components/ResumeTile";
 import { TechStackTile } from "./components/TechStackTile";
 import { CompactProjectsTile } from "./components/CompactProjectsTile";
-// import { PlaygroundTile } from "./components/PlaygroundTile"; // Commented out for now
+import { PlaygroundTile } from "./components/PlaygroundTile"; // Commented out for now
 import { ComingSoon } from "./components/ComingSoon"; // Acting as our Playground Tile replacement
 import { ContactTile } from "./components/ContactTile";
 import { StoryTile } from "./components/StoryTile";

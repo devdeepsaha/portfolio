@@ -142,12 +142,12 @@ export function ComingSoon() {
                     <h1 className="text-5xl md:text-7xl font-black tracking-tighter leading-[0.85] uppercase text-foreground">
                         Work
                         <br />
-                        <span className="gradient-text">In Progress</span>
+                        <span className="text-green">In Progress</span>
                     </h1>
                   </div>
 
                   <p className="text-muted-foreground text-base md:text-lg font-medium max-w-sm mx-auto leading-relaxed border-l-2 border-border pl-4 text-left">
-                    I'm currently crafting something special in the Playground tile. Interactive prototypes, 3D experiments, and code snippets arriving soon.
+                    This section is currently under construction. I'm actively working on it and plan to have it ready soon. Thanks for your patience!
                   </p>
 
                   <div className="pt-6">
