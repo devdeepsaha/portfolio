@@ -510,10 +510,36 @@ Through creative use of shape layers, typography, and image manipulation techniq
     `,
     tech: ['Microsoft PowerPoint','PicsArt','Shape layers','Typography','Image manipulation'],
   },
+  {
+    id: 27,
+    title: 'Netflix poster remakes',
+    category: 'Graphics',
+    image: './projects/graphics/netflix/banner.jpg',
+    gallery: [
+      './projects/graphics/netflix/1.jpg',
+      './projects/graphics/netflix/2.jpg',
+      './projects/graphics/netflix/3.jpg',
+      './projects/graphics/netflix/4.jpg',
+      './projects/graphics/netflix/5.jpg',
+      './projects/graphics/netflix/6.jpg',
+      './projects/graphics/netflix/7.jpg',
+      './projects/graphics/netflix/8.jpg',
+      './projects/graphics/netflix/9.jpg',
+      
+      
+    ],
+    description: `A series of Netflix poster remakes created using a combination of Microsoft PowerPoint and PicsArt, showcasing the potential of accessible software for creative expression.
+The project involved leveraging the design tools of both software to recreate iconic Netflix posters with a unique twist, using shape layers, typography, and image manipulation techniques to capture the essence of each show while adding a personal touch. 
+Through creative use of these tools, the poster remakes aim to generate excitement and engagement among fans while demonstrating that effective graphic design can be achieved with accessible software and a willingness to experiment.
+
+    `,
+    tech: ['Microsoft PowerPoint','PicsArt','Shape layers','Typography','Image manipulation'],
+  },
 ];
 
 // --- ADD THIS AT THE BOTTOM ---
 export const heroSlides = [
+  './projects/graphics/netflix/banner2.jpg',
   "./projects/3d/window/4.png",
   "./projects/3d/car/banner.png",
   "./projects/web/toolsbydeep/banner.jpg",
@@ -522,4 +548,4 @@ export const heroSlides = [
   
 ];
 
-export const devChoiceIds = [13,2,5,12,21,19,23];
+export const devChoiceIds = [13,2,5,12,21,19,23,27];
