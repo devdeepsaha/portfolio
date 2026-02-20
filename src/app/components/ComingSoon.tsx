@@ -1,13 +1,6 @@
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import {
-  Sparkles,
-  ArrowLeft,
-  X,
-  ArrowUpRight,
-  Music,
-  Wrench,
-} from "lucide-react";
+import { ArrowLeft, X, ArrowUpRight, Music, Wrench, Sparkles } from "lucide-react";
 import { Portal } from "./ui/portal";
 import { useBackButton } from "../hooks/useBackButton";
 
@@ -26,6 +19,14 @@ const waveStyles = `
   }
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  
+  /* Clean gradient text class */
+  .gradient-text {
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    background-image: linear-gradient(to right bottom, rgb(var(--b)), rgb(var(--v)));
+  }
 `;
 
 export function ComingSoon() {
@@ -39,10 +40,11 @@ export function ComingSoon() {
     <>
       <style>{waveStyles}</style>
 
-      {/* --- TILE FACE --- */}
+      {/* --- TILE FACE (Untouched) --- */}
       <motion.div
         className="bg-card border border-border relative rounded-[2rem] overflow-hidden cursor-pointer group h-full min-h-[140px] flex flex-col justify-between shadow-sm transition-all hover:shadow-md hover:border-blue-500/30"
         whileHover={{ scale: 1.01 }}
+        whileTap={{ scale: 0.98 }}
         onClick={() => setIsOpen(true)}
       >
         <div className="flex justify-between items-start p-6 pb-0 relative z-10">
@@ -56,11 +58,7 @@ export function ComingSoon() {
         <div className="absolute inset-0 flex items-center justify-center opacity-20 group-hover:opacity-40 transition-opacity pointer-events-none text-foreground">
           <div className="flex items-center gap-1.5 h-16">
             {[0.1, 0.5, 0.2, 0.7, 0.3, 0.6].map((delay, i) => (
-              <div
-                key={i}
-                className="wave-bar"
-                style={{ animationDelay: `${delay}s` }}
-              />
+              <div key={i} className="wave-bar" style={{ animationDelay: `${delay}s` }} />
             ))}
           </div>
         </div>
@@ -79,7 +77,7 @@ export function ComingSoon() {
         <AnimatePresence>
           {isOpen && (
             <motion.div
-              // Matches CurrentlyLearningTile backdrop exactly
+              // Backdrop - matches CurrentlyLearningTile
               className="fixed inset-0 bg-background/80 backdrop-blur-md z-[9999] flex items-center justify-center p-0 md:p-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -87,8 +85,8 @@ export function ComingSoon() {
               onClick={handleClose}
             >
               <motion.div
-                // Matches CurrentlyLearningTile constraints exactly: max-h, 100dvh, w-full, overflow-y-auto
-                className="bg-card border-none md:border border-border text-card-foreground rounded-none md:rounded-[2.5rem] p-6 pt-20 sm:p-12 max-w-3xl w-full relative h-[100dvh] md:h-auto md:max-h-[85vh] md:shadow-2xl overflow-y-auto no-scrollbar flex flex-col items-center justify-center"
+                // Container structure - matches CurrentlyLearningTile for smooth performance
+                className="bg-card border-none md:border border-border text-card-foreground rounded-none md:rounded-[3rem] p-6 pt-20 sm:p-12 max-w-2xl w-full relative h-[100dvh] md:h-auto md:max-h-[85vh] md:shadow-2xl overflow-hidden flex flex-col items-center justify-center"
                 initial={{ scale: 0.95, opacity: 0, y: 20 }}
                 animate={{ scale: 1, opacity: 1, y: 0 }}
                 exit={{ scale: 0.95, opacity: 0, y: 20 }}
@@ -97,58 +95,55 @@ export function ComingSoon() {
                 {/* Close Button */}
                 <button
                   onClick={handleClose}
-                  className="absolute top-4 right-4 md:top-8 md:right-8 z-50 p-3 bg-secondary hover:bg-secondary/80 rounded-full shadow-md text-foreground transition-colors border border-border/50"
+                  className="absolute top-4 right-4 md:top-8 md:right-8 p-3 bg-secondary hover:bg-secondary/80 rounded-full text-foreground transition-colors z-50 shadow-sm border border-border/50"
                 >
                   <X size={20} className="md:w-6 md:h-6" />
                 </button>
 
-                {/* Background Ambient Glows */}
-                <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-b/10 blur-[10px]  rounded-full pointer-events-none" />
-                <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-v/10 blur-[10px] rounded-full pointer-events-none" />
-
+                {/* --- DESIGNED CONTENT (No heavy blurs) --- */}
                 <div className="relative z-10 text-center space-y-8 w-full flex flex-col items-center justify-center">
-                  {/* Status Badge */}
-                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary border border-border">
-                    <span className="relative flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-b opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-b"></span>
-                    </span>
-                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">
-                      Under Active Development
-                    </span>
+                  
+                  {/* Icon Feature */}
+                  <div className="relative">
+                    <div className="p-5 bg-gradient-to-br from-b/20 to-v/20 text-foreground rounded-[2rem] mb-2 border border-b/20 shadow-sm relative z-10">
+                       <Wrench size={40} strokeWidth={1.5} className="text-b" />
+                    </div>
+                    {/* Subtle non-blurred glow behind icon */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-b/10 to-v/10 rounded-[2rem] scale-110 -z-10" />
                   </div>
 
-                  {/* Main Heading */}
-                  <h1 className="text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.8] uppercase text-foreground">
-                    Work
-                    <br />
-                    <span className="text-b">In</span>
-                    <br />
-                    <span className="text-v">Progress</span>
-                  </h1>
+                  {/* Main Heading with Gradient Text */}
+                  <div>
+                    <div className="flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-widest text-muted-foreground mb-4">
+                        <Sparkles size={14} className="text-b" /> Laboratory
+                    </div>
+                    <h1 className="text-5xl md:text-7xl font-black tracking-tighter leading-[0.85] uppercase text-foreground drop-shadow-sm">
+                        Work
+                        <br />
+                        <span className="gradient-text">In Progress</span>
+                    </h1>
+                  </div>
 
-                  <p className="text-muted-foreground text-lg md:text-xl font-medium max-w-md mx-auto leading-relaxed">
-                    I'm currently crafting something special in the Playground
-                    tile. Can't wait to share it with you all soon!
+                  <p className="text-muted-foreground text-base md:text-lg font-medium max-w-sm mx-auto leading-relaxed">
+                      I'm currently crafting something special in the Playground tile. Can't wait to share it with you all soon!
                   </p>
 
-                  {/* Call to Action */}
-                  <div className="flex flex-col items-center justify-center gap-6 pt-4 w-full">
+                  <div className="pt-4">
                     <button
                       onClick={handleClose}
-                      className="flex items-center justify-center gap-2 px-8 py-4 w-full sm:w-auto bg-foreground text-background rounded-full font-black text-sm uppercase tracking-widest hover:scale-105 transition-transform shadow-xl active:scale-95"
+                      className="flex items-center justify-center gap-2 px-8 py-4 bg-foreground text-background rounded-full font-black text-xs uppercase tracking-widest hover:scale-105 transition-transform shadow-xl active:scale-95"
                     >
-                      <ArrowLeft size={18} /> Back to Grid
+                      <ArrowLeft size={16} /> Back to Grid
                     </button>
-
-                    <div className="flex items-center gap-2 text-muted-foreground font-bold uppercase text-[10px] tracking-widest bg-secondary/30 px-3 py-1.5 rounded-md">
-                      <Wrench size={14} className="text-o" /> Compiling Assets
-                    </div>
                   </div>
                 </div>
 
-                {/* Decorative Grain Overlay */}
-                <div className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+                 {/* Subtle Grain Texture (Lightweight) */}
+                <div className="absolute inset-0 opacity-[0.04] pointer-events-none mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+                 {/* Subtle corner gradients (Lightweight) */}
+                <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-b/5 to-transparent pointer-events-none" />
+                <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-v/5 to-transparent pointer-events-none" />
+
               </motion.div>
             </motion.div>
           )}
