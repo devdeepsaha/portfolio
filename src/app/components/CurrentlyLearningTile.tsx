@@ -5,7 +5,6 @@ import {
   Box,
   Brain,
   ArrowUpRight,
-  Layers,
   Server,
   PenTool,
   Video,
@@ -13,49 +12,50 @@ import {
 } from "lucide-react";
 import { Portal } from "./ui/portal";
 import { myLearning } from "../ts/learning";
-import { useBackButton } from "../hooks/useBackButton";
+// FIXED: Using the powerful deep-link hook
+import { useHashRouter } from "../hooks/useHashRouter";
 
 const getCategoryStyles = (category: string) => {
   switch (category) {
     case "3D":
       return {
         icon: <Box size={16} />,
-        bg: "bg-b/10", 
+        bg: "bg-b/10",
         text: "text-b",
         border: "border-b",
       };
     case "AI":
       return {
         icon: <Brain size={16} />,
-        bg: "bg-v/10", 
+        bg: "bg-v/10",
         text: "text-v",
         border: "border-v",
       };
     case "Backend":
       return {
         icon: <Server size={16} />,
-        bg: "bg-r/10", 
+        bg: "bg-r/10",
         text: "text-r",
         border: "border-r",
       };
     case "Design":
       return {
         icon: <PenTool size={16} />,
-        bg: "bg-o/10", 
+        bg: "bg-o/10",
         text: "text-o",
         border: "border-o",
       };
     case "Video":
       return {
         icon: <Video size={16} />,
-        bg: "bg-y/10", 
+        bg: "bg-y/10",
         text: "text-y",
         border: "border-y",
       };
     default:
       return {
         icon: <MonitorPlay size={16} />,
-        bg: "bg-c/10", 
+        bg: "bg-c/10",
         text: "text-c",
         border: "border-c",
       };
@@ -64,11 +64,14 @@ const getCategoryStyles = (category: string) => {
 
 export function CurrentlyLearningTile() {
   const [isOpen, setIsOpen] = useState(false);
-  
-  // Wrapped the close function in useCallback so it doesn't trigger the hook on every click!
-  const handleCloseModal = useCallback(() => setIsOpen(false), []);
-  useBackButton(isOpen, handleCloseModal);
-  
+
+  // FIXED: Deep linking URL hash: /#learning
+  const closeLearning = useHashRouter(
+    isOpen,
+    "learning",
+    useCallback(() => setIsOpen(false), []),
+  );
+
   const featuredLearning = myLearning.slice(0, 2);
 
   return (
@@ -79,7 +82,6 @@ export function CurrentlyLearningTile() {
         whileHover={{ scale: 1.01 }}
         onClick={() => setIsOpen(true)}
       >
-        {/* 1. Header Row (Status + Arrow) */}
         <div className="flex justify-between items-start">
           <div className="flex items-center gap-2">
             <span className="relative flex h-2 w-2">
@@ -96,7 +98,6 @@ export function CurrentlyLearningTile() {
           />
         </div>
 
-        {/* 2. MAIN TITLE */}
         <div className="mt-2 mb-4">
           <h3 className="text-2xl sm:text-3xl font-black uppercase tracking-tighter leading-[0.9] text-foreground">
             Currently
@@ -105,7 +106,6 @@ export function CurrentlyLearningTile() {
           </h3>
         </div>
 
-        {/* 3. The List (Preview) */}
         <div className="space-y-2 mt-auto">
           {featuredLearning.map((item) => {
             const style = getCategoryStyles(item.category);
@@ -136,25 +136,25 @@ export function CurrentlyLearningTile() {
         <AnimatePresence>
           {isOpen && (
             <motion.div
-              // FIXED: p-0 on mobile, md:p-4 on desktop for edge-to-edge mobile view
+              // FIXED: Full-screen mobile setup
               className="fixed inset-0 bg-background/80 backdrop-blur-md z-[9999] flex items-center justify-center p-0 md:p-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => setIsOpen(false)}
+              onClick={closeLearning}
             >
               <motion.div
-                // FIXED: Full screen on mobile (100dvh, no border, no radius). Floating on md+.
+                // FIXED: Full screen height on mobile (100dvh)
                 className="bg-card border-none md:border border-border text-card-foreground rounded-none md:rounded-[2.5rem] p-6 pt-20 sm:p-10 max-w-2xl w-full relative h-[100dvh] md:h-auto md:max-h-[85vh] md:shadow-2xl overflow-y-auto no-scrollbar"
                 initial={{ scale: 0.95, opacity: 0, y: 20 }}
                 animate={{ scale: 1, opacity: 1, y: 0 }}
                 exit={{ scale: 0.95, opacity: 0, y: 20 }}
                 onClick={(e) => e.stopPropagation()}
               >
-                {/* FIXED: Adjusted positioning, increased padding to p-3, added shadow and z-50 to ensure the circle background renders properly over content */}
+                {/* FIXED: The 'X' Button - Now with shadow and background circle visible */}
                 <button
-                  onClick={() => setIsOpen(false)}
-                  className="absolute top-4 right-4 md:top-8 md:right-8 p-3 bg-secondary hover:bg-secondary/80 rounded-full text-foreground transition-colors z-50 shadow-md"
+                  onClick={closeLearning}
+                  className="absolute top-4 right-4 md:top-8 md:right-8 p-3 bg-secondary hover:bg-secondary/80 rounded-full text-foreground transition-colors z-50 shadow-md border border-border/50"
                 >
                   <X size={20} className="md:w-6 md:h-6" />
                 </button>

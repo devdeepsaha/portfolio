@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { X, ArrowUpRight, Sparkles, Box } from "lucide-react";
 import { Portal } from "./ui/portal";
@@ -12,7 +12,10 @@ declare global {
 
 export function NameTile() {
   const [isOpen, setIsOpen] = useState(false);
-  useBackButton(isOpen, () => setIsOpen(false));
+  
+  // FIXED: Added useCallback to prevent the hook from misfiring
+  const handleCloseModal = useCallback(() => setIsOpen(false), []);
+  useBackButton(isOpen, handleCloseModal);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -159,30 +162,32 @@ export function NameTile() {
         <AnimatePresence>
           {isOpen && (
             <motion.div
-              className="fixed inset-0 bg-background/80 backdrop-blur-md z-[9999] flex items-center justify-center p-4"
+              // FIXED: p-0 on mobile, md:p-4 on desktop
+              className="fixed inset-0 bg-background/80 backdrop-blur-md z-[9999] flex items-center justify-center p-0 md:p-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsOpen(false)}
             >
               <motion.div
-                className="bg-card border border-border text-card-foreground rounded-[2.5rem] sm:rounded-[3rem] p-8 md:p-16 max-w-5xl w-full relative max-h-[90vh] overflow-y-auto no-scrollbar shadow-2xl"
+                // FIXED: Full screen on mobile (100dvh, no border, no radius). Floating on md+.
+                className="bg-card border-none md:border border-border text-card-foreground rounded-none md:rounded-[2.5rem] sm:rounded-[3rem] p-6 pt-20 sm:p-16 max-w-5xl w-full relative h-[100dvh] md:h-auto md:max-h-[90vh] overflow-y-auto no-scrollbar md:shadow-2xl"
                 initial={{ scale: 0.95, opacity: 0, y: 20 }}
                 animate={{ scale: 1, opacity: 1, y: 0 }}
                 exit={{ scale: 0.95, opacity: 0, y: 20 }}
                 onClick={(e) => e.stopPropagation()}
               >
+                {/* FIXED: Adjusted positioning, increased padding to p-3, added shadow and z-50 to ensure the circle background renders properly */}
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="absolute top-6 right-6 md:top-12 md:right-12 p-4 bg-secondary hover:bg-secondary/80 rounded-full text-foreground transition-all z-[100] shadow-xl hover:scale-105 active:scale-95"
+                  className="absolute top-4 right-4 md:top-8 md:right-8 p-3 bg-secondary hover:bg-secondary/80 rounded-full text-foreground transition-all z-50 shadow-md hover:scale-105 active:scale-95"
                 >
-                  <X size={28} />
+                  <X size={20} className="md:w-6 md:h-6" />
                 </button>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-y-12 gap-x-16 items-start">
                   {/* --- 1. PROFILE IMAGE BLOCK --- */}
                   <div className="order-1 md:order-2 relative md:pt-16 w-full">
-                    {/* CHANGED: Now strictly aspect-square across all devices */}
                     <div className="aspect-square rounded-[2.5rem] overflow-hidden border border-border bg-muted relative shadow-2xl group">
                       <img
                         src="./pfp/dev1.png"
@@ -258,7 +263,7 @@ export function NameTile() {
                   </div>
 
                   {/* --- 4. BENTO IMAGE BLOCK --- */}
-                  <div className="order-4 md:order-4 md:col-start-2 w-full">
+                  <div className="order-4 md:order-4 md:col-start-2 w-full pb-8 md:pb-0">
                     <div className="aspect-video md:aspect-[4/3] rounded-[2rem] overflow-hidden border border-border shadow-lg relative group">
                       <img
                         src="./pfp/bento.jpg"

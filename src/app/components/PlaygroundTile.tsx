@@ -1,4 +1,4 @@
-import { useState, useRef, useMemo, useCallback } from "react";
+import { useState, useRef, useMemo, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import {
   X,
@@ -18,7 +18,8 @@ import {
 } from "lucide-react";
 import { Portal } from "./ui/portal";
 import { myHobbies, HobbyItem, MediaType } from "../ts/hobbies";
-import { useBackButton } from "../hooks/useBackButton";
+// FIXED: Swapped useBackButton for the new useHashRouter
+import { useHashRouter } from "../hooks/useHashRouter";
 
 // --- CSS for Waveforms ---
 const waveStyles = `
@@ -45,13 +46,26 @@ const waveStyles = `
 
 export function PlaygroundTile() {
   const [isOpen, setIsOpen] = useState(false);
-
-  const handleCloseModal = useCallback(() => setIsOpen(false), []);
-  useBackButton(isOpen, handleCloseModal);
-
   const [activeTab, setActiveTab] = useState(myHobbies[0].id);
-
   const [selectedItem, setSelectedItem] = useState<HobbyItem | null>(null);
+
+  // --- FIXED: DEEP LINKING LOGIC ---
+  
+  // LAYER 1: The Main Grid Modal (URL: /#playground)
+  const closeMain = useHashRouter(
+    isOpen, 
+    "playground", 
+    useCallback(() => setIsOpen(false), [])
+  );
+
+  // LAYER 2: The Fullscreen Lightbox (URL: /#playground/[category]/[id])
+  const closeLightbox = useHashRouter(
+    !!selectedItem, 
+    `playground/${activeTab}/${selectedItem?.id}`, 
+    useCallback(() => setSelectedItem(null), [])
+  );
+  // ----------------------------------
+
   const [currentSlide, setCurrentSlide] = useState(0);
   const [filterType, setFilterType] = useState<"all" | MediaType>("all");
 
@@ -149,15 +163,14 @@ export function PlaygroundTile() {
         <AnimatePresence>
           {isOpen && (
             <motion.div
-              // FIXED: p-0 on mobile, md:p-4 on desktop
               className="fixed inset-0 bg-background/80 backdrop-blur-md z-[9999] flex items-center justify-center p-0 md:p-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => setIsOpen(false)}
+              // FIXED: Use programmatic close for proper history handling
+              onClick={closeMain}
             >
               <motion.div
-                // FIXED: Full screen on mobile (100dvh, no border, no radius). Floating on md+.
                 className="bg-card border-none md:border border-border text-card-foreground rounded-none md:rounded-[2.5rem] w-full max-w-6xl h-[100dvh] md:h-[85vh] md:shadow-2xl overflow-hidden flex flex-col lg:flex-row relative"
                 initial={{ scale: 0.95, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
@@ -165,7 +178,8 @@ export function PlaygroundTile() {
                 onClick={(e) => e.stopPropagation()}
               >
                 <button
-                  onClick={() => setIsOpen(false)}
+                  // FIXED: Use programmatic close
+                  onClick={closeMain}
                   className="absolute top-4 right-4 md:top-6 md:right-6 z-50 p-2 md:p-3 bg-secondary hover:bg-secondary/80 rounded-full text-foreground transition-colors shadow-md"
                 >
                   <X size={20} className="md:w-6 md:h-6" />
@@ -311,21 +325,21 @@ export function PlaygroundTile() {
         <AnimatePresence>
           {selectedItem && (
             <motion.div
-              // FIXED: p-0 on mobile, md:p-4 on desktop
               className="fixed inset-0 z-[10000] flex items-center justify-center p-0 md:p-4 bg-black/90 backdrop-blur-xl"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => setSelectedItem(null)}
+              // FIXED: Programmatic close
+              onClick={closeLightbox}
             >
               <motion.div
                 layoutId={selectedItem.id}
-                // FIXED: Full screen on mobile (100dvh, no border, no radius). Floating on md+.
                 className="w-full max-w-6xl bg-card rounded-none md:rounded-[2.5rem] overflow-hidden border-none md:border border-border md:shadow-2xl relative flex flex-col h-[100dvh] md:h-[90vh]"
                 onClick={(e) => e.stopPropagation()}
               >
                 <button
-                  onClick={() => setSelectedItem(null)}
+                  // FIXED: Programmatic close
+                  onClick={closeLightbox}
                   className="absolute top-4 right-4 z-50 p-3 bg-black/50 hover:bg-black/70 rounded-full text-white backdrop-blur-md transition-colors"
                 >
                   <X size={24} />
@@ -358,14 +372,10 @@ export function PlaygroundTile() {
                           autoPlay
                           className="w-full h-full object-contain max-h-full"
                         />
-                      ) : selectedItem.content[currentSlide].type ===
-                        "audio" ? (
+                      ) : selectedItem.content[currentSlide].type === "audio" ? (
                         <div className="text-center w-full">
                           <div className="w-32 h-32 md:w-40 md:h-40 mx-auto bg-blue-500/20 rounded-full flex items-center justify-center mb-8 animate-pulse">
-                            <Music
-                              size={60}
-                              className="text-blue-500 md:w-20 md:h-20"
-                            />
+                            <Music size={60} className="text-blue-500 md:w-20 md:h-20" />
                           </div>
                           <audio
                             src={selectedItem.content[currentSlide].src}
@@ -374,10 +384,10 @@ export function PlaygroundTile() {
                           />
                         </div>
                       ) : selectedItem.content[currentSlide].type === "pdf" ? (
-                        <iframe
-                          src={selectedItem.content[currentSlide].src}
-                          className="w-full h-full rounded-none md:rounded-xl bg-white"
-                          title={selectedItem.content[currentSlide].caption}
+                        <iframe 
+                           src={selectedItem.content[currentSlide].src} 
+                           className="w-full h-full rounded-none md:rounded-xl bg-white"
+                           title={selectedItem.content[currentSlide].caption}
                         />
                       ) : (
                         <img

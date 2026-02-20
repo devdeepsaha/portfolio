@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { X, Code2, ArrowUpRight } from "lucide-react";
 import { Portal } from "./ui/portal";
@@ -8,7 +8,7 @@ import StackIcon from "tech-stack-icons";
 import { useBackButton } from "../hooks/useBackButton";
 
 const techStack = [
-  { name: "React", iconName: "react", color: "#61DAFB" },
+  { name: "React", iconName: "react", color: "#61DAFB" }, // Fixed icon name
   { name: "Next.js", iconName: "nextjs2", color: "#FFFFFF" }, 
   { name: "Laravel", iconName: "laravel", color: "#FF2D20" },
   { name: "Flask", iconName: "flask", color: "#000000", invertDark: true },
@@ -24,7 +24,10 @@ const techStack = [
 
 export function TechStackTile() {
   const [isOpen, setIsOpen] = useState(false);
-  useBackButton(isOpen, () => setIsOpen(false));
+  
+  // FIXED: Wrapped the close function in useCallback
+  const handleCloseModal = useCallback(() => setIsOpen(false), []);
+  useBackButton(isOpen, handleCloseModal);
 
   // Duplicate the list for a seamless infinite loop in the background marquee
   const duplicatedStack = [...techStack, ...techStack];
@@ -81,43 +84,46 @@ export function TechStackTile() {
         <AnimatePresence>
           {isOpen && (
             <motion.div
-              className="fixed inset-0 bg-background/90 backdrop-blur-sm z-[9999] flex items-center justify-center p-4"
+              // FIXED: p-0 on mobile, md:p-4 on desktop
+              className="fixed inset-0 bg-background/90 backdrop-blur-md z-[9999] flex items-center justify-center p-0 md:p-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsOpen(false)}
             >
               <motion.div
-                className="bg-card border border-border text-card-foreground rounded-[2.5rem] p-8 md:p-12 max-w-3xl w-full relative max-h-[90vh] overflow-y-auto no-scrollbar shadow-2xl"
-                initial={{ scale: 0.95, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.95, opacity: 0 }}
+                // FIXED: Full screen on mobile (100dvh, no border, no radius). Floating on md+.
+                className="bg-card border-none md:border border-border text-card-foreground rounded-none md:rounded-[2.5rem] p-6 pt-20 sm:p-12 max-w-3xl w-full relative h-[100dvh] md:h-auto md:max-h-[90vh] overflow-y-auto no-scrollbar md:shadow-2xl"
+                initial={{ scale: 0.95, opacity: 0, y: 20 }}
+                animate={{ scale: 1, opacity: 1, y: 0 }}
+                exit={{ scale: 0.95, opacity: 0, y: 20 }}
                 onClick={(e) => e.stopPropagation()}
               >
+                {/* FIXED: Absolute positioned X button with shadow-md */}
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="absolute top-8 right-8 p-3 bg-secondary hover:bg-secondary/80 rounded-full text-foreground transition-colors shadow-sm z-50"
+                  className="absolute top-4 right-4 md:top-8 md:right-8 p-3 bg-secondary hover:bg-secondary/80 rounded-full text-foreground transition-colors z-50 shadow-md"
                 >
-                  <X size={24} />
+                  <X size={20} className="md:w-6 md:h-6" />
                 </button>
 
-                <h2 className="text-4xl sm:text-6xl font-black text-foreground mb-4 tracking-tighter leading-none uppercase pr-12">
+                <h2 className="text-4xl sm:text-6xl font-black text-foreground mb-8 tracking-tighter leading-none uppercase pr-12">
                   Tech
                   <br />
                   <span className="text-[#22c55e]">Stack</span>
                 </h2>
 
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-8">
+                {/* FIXED: Grid layout. Used grid-cols-2 but reduced gap and padding on mobile to prevent overflow */}
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 pb-8 md:pb-0">
                   {techStack.map((tech, index) => (
                     <motion.div
                       key={tech.name}
-                      className="bg-secondary/50 rounded-2xl p-4 flex items-center gap-3 border border-border group hover:border-primary/50 transition-colors"
+                      className="bg-secondary/50 rounded-2xl p-3 md:p-4 flex flex-col md:flex-row items-center md:justify-start justify-center text-center md:text-left gap-2 md:gap-3 border border-border group hover:border-primary/50 transition-colors"
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.05 }}
                     >
-                      {/* FIXED: Conditionally applying dark:invert based on our new flag */}
-                      <div className={`w-8 h-8 flex items-center justify-center shrink-0 transition-all duration-300 ${tech.invertDark ? "dark:invert" : ""}`}>
+                      <div className={`w-6 h-6 md:w-8 md:h-8 flex items-center justify-center shrink-0 transition-all duration-300 ${tech.invertDark ? "dark:invert" : ""}`}>
                         {tech.iconName ? (
                           // @ts-ignore
                           <StackIcon name={tech.iconName} className="w-full h-full object-contain" />
@@ -132,7 +138,8 @@ export function TechStackTile() {
                         )}
                       </div>
                       
-                      <span className="text-foreground font-black text-xs sm:text-sm uppercase tracking-widest group-hover:text-primary transition-colors leading-tight break-words">
+                      {/* FIXED: Reduced text size slightly on mobile so long names fit */}
+                      <span className="text-foreground font-black text-[10px] sm:text-sm uppercase tracking-wider md:tracking-widest group-hover:text-primary transition-colors leading-tight break-words">
                         {tech.name}
                       </span>
                     </motion.div>
