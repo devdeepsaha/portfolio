@@ -1,22 +1,26 @@
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { ArrowLeft, X, ArrowUpRight, Music, Wrench, Sparkles } from "lucide-react";
+import { ArrowLeft, X, ArrowUpRight, Music, Wrench } from "lucide-react";
 import { Portal } from "./ui/portal";
 import { useBackButton } from "../hooks/useBackButton";
 
-// --- CSS for Waveforms & Gradients ---
+// --- Highly Optimized CSS ---
 const styles = `
+  /* GPU-Accelerated Equalizer Animation */
   @keyframes equalizer {
-    0% { height: 20%; }
-    50% { height: 100%; }
-    100% { height: 20%; }
+    0%, 100% { transform: scaleY(0.3); }
+    50% { transform: scaleY(1); }
   }
   .wave-bar {
     width: 6px;
+    height: 100%; /* Base height, scaled by transform */
     background-color: currentColor;
     border-radius: 99px;
-    animation: equalizer 1s ease-in-out infinite;
+    transform-origin: bottom; /* Anchors the scale to the bottom */
+    animation: equalizer 1.2s ease-in-out infinite;
+    will-change: transform; /* Tells browser to optimize this */
   }
+  
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   
@@ -54,11 +58,15 @@ export function ComingSoon() {
           <ArrowUpRight className="text-muted-foreground group-hover:text-foreground transition-colors" />
         </div>
 
-        {/* The Animated Waveform */}
+        {/* The Animated Waveform (GPU Optimized) */}
         <div className="absolute inset-0 flex items-center justify-center opacity-20 group-hover:opacity-40 transition-opacity pointer-events-none text-foreground">
-          <div className="flex items-center gap-1.5 h-16">
+          <div className="flex items-end gap-1.5 h-16 pb-2">
             {[0.1, 0.5, 0.2, 0.7, 0.3, 0.6].map((delay, i) => (
-              <div key={i} className="wave-bar" style={{ animationDelay: `${delay}s` }} />
+              <div 
+                key={i} 
+                className="wave-bar" 
+                style={{ animationDelay: `${delay}s` }} 
+              />
             ))}
           </div>
         </div>
@@ -77,7 +85,7 @@ export function ComingSoon() {
         <AnimatePresence>
           {isOpen && (
             <motion.div
-              // Base backdrop (Using standard bg-color, no heavy backdrop-blur to ensure max performance)
+              // Base backdrop
               className="fixed inset-0 bg-background/95 z-[9999] flex items-center justify-center p-0 md:p-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -85,11 +93,12 @@ export function ComingSoon() {
               onClick={handleClose}
             >
               <motion.div
-                // Container structure - exactly matches your request
+                // GPU-accelerated entrance transform
                 className="bg-card border-none md:border border-border text-card-foreground rounded-none md:rounded-[3rem] p-6 pt-20 sm:p-12 max-w-2xl w-full relative h-[100dvh] md:h-auto md:max-h-[85vh] md:shadow-2xl overflow-y-auto no-scrollbar flex flex-col items-center justify-center"
                 initial={{ scale: 0.95, opacity: 0, y: 20 }}
                 animate={{ scale: 1, opacity: 1, y: 0 }}
                 exit={{ scale: 0.95, opacity: 0, y: 20 }}
+                transition={{ type: "spring", damping: 25, stiffness: 300 }}
                 onClick={(e) => e.stopPropagation()}
               >
                 {/* --- DESIGN: LIGHTWEIGHT BACKGROUND GRAPHICS --- */}
@@ -114,14 +123,9 @@ export function ComingSoon() {
                 {/* --- CONTENT --- */}
                 <div className="relative z-10 text-center space-y-8 w-full flex flex-col items-center justify-center mt-[-40px] md:mt-0">
                   
-                  {/* Icon Feature with Spinning Tech Ring */}
+                  {/* Static Icon Feature (No animations here) */}
                   <div className="relative flex items-center justify-center mb-4">
-                    {/* Rotating Dashed Ring (Super lightweight CSS animation) */}
-                    <motion.div 
-                      animate={{ rotate: 360 }} 
-                      transition={{ repeat: Infinity, duration: 10, ease: "linear" }}
-                      className="absolute inset-[-16px] border border-dashed border-b/40 rounded-full"
-                    />
+                    <div className="absolute inset-[-16px] border border-dashed border-b/40 rounded-full" />
                     <div className="p-5 bg-card border border-border text-b rounded-full relative z-10 shadow-sm">
                        <Wrench size={32} strokeWidth={1.5} />
                     </div>
@@ -130,22 +134,20 @@ export function ComingSoon() {
                   {/* Badges & Headers */}
                   <div className="space-y-4">
                     <div className="inline-flex items-center justify-center gap-2 px-3 py-1.5 bg-secondary/50 border border-border rounded-full text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                        <span className="relative flex h-2 w-2">
-                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-v opacity-75"></span>
-                          <span className="relative inline-flex rounded-full h-2 w-2 bg-v"></span>
-                        </span>
+                        {/* Static Status Dot */}
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-v shadow-[0_0_8px_rgb(var(--v))]"></span>
                         Status: Compiling
                     </div>
 
                     <h1 className="text-5xl md:text-7xl font-black tracking-tighter leading-[0.85] uppercase text-foreground">
                         Work
                         <br />
-                        <span className="text-green">In Progress</span>
+                        <span className="gradient-text">In Progress</span>
                     </h1>
                   </div>
 
                   <p className="text-muted-foreground text-base md:text-lg font-medium max-w-sm mx-auto leading-relaxed border-l-2 border-border pl-4 text-left">
-                   All my side projects, experiments, and fun ideas that don’t fit into the main categories will go here. It’s a space for me to share the random stuff I’m tinkering with — whether it’s a weird music track, a 3D render, or just some code snippets. Stay tuned for the chaos!
+                    I'm currently crafting something special in the Playground tile. Interactive prototypes, 3D experiments, and code snippets arriving soon.
                   </p>
 
                   <div className="pt-6">
