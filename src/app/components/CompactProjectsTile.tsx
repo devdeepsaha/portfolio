@@ -15,10 +15,16 @@ import {
   Pause,
   SkipBack,
   SkipForward,
-  Sparkles, 
+  Sparkles,
 } from "lucide-react";
 import { Portal } from "./ui/portal";
-import { myProjects, Category, Project, heroSlides, devChoiceIds } from "../ts/projects";
+import {
+  myProjects,
+  Category,
+  Project,
+  heroSlides,
+  devChoiceIds,
+} from "../ts/projects";
 import { useBackButton } from "../hooks/useBackButton";
 
 // --- SWIPER IMPORTS ---
@@ -105,18 +111,26 @@ const getCategoryIcon = (cat: Category) => {
 
 export function CompactProjectsTile() {
   const [isOpen, setIsOpen] = useState(false);
-  
-  const handleCloseModal = useCallback(() => setIsOpen(false), []);
-  useBackButton(isOpen, handleCloseModal);
-
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [activeCategory, setActiveCategory] = useState<Category>("Dev Picks"); 
-
-  const [currentSlide, setCurrentSlide] = useState(0);
-
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(true);
 
+  // FIXED: Smart Back Button Logic.
+  // It checks how deep the user is and only goes back one layer at a time!
+  const handleSmartBack = useCallback(() => {
+    if (isLightboxOpen) {
+      setIsLightboxOpen(false);
+    } else if (selectedProject) {
+      setSelectedProject(null);
+    } else {
+      setIsOpen(false);
+    }
+  }, [isLightboxOpen, selectedProject]);
+
+  useBackButton(isOpen, handleSmartBack);
+
+  const [activeCategory, setActiveCategory] = useState<Category>("Dev Picks");
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(true);
   const [inlineIndex, setInlineIndex] = useState(0);
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
@@ -134,8 +148,8 @@ export function CompactProjectsTile() {
     activeCategory === "All"
       ? myProjects
       : activeCategory === "Dev Picks"
-      ? myProjects.filter((p) => devChoiceIds.includes(p.id))
-      : myProjects.filter((p) => p.category === activeCategory);
+        ? myProjects.filter((p) => devChoiceIds.includes(p.id))
+        : myProjects.filter((p) => p.category === activeCategory);
 
   const togglePlay = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -207,7 +221,6 @@ export function CompactProjectsTile() {
         <AnimatePresence>
           {isOpen && (
             <motion.div
-              // FIXED: p-0 on mobile, md:p-4 for desktop backdrop
               className="fixed inset-0 bg-background/90 backdrop-blur-xl z-[9999] flex items-center justify-center p-0 md:p-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -218,28 +231,28 @@ export function CompactProjectsTile() {
               }}
             >
               <motion.div
-                // FIXED: h-[100dvh] rounded-none border-none on mobile. Rounded, bordered, & shorter on md screens.
                 className="bg-card border-none md:border border-border text-card-foreground rounded-none md:rounded-[2.5rem] p-6 sm:p-10 max-w-7xl w-full h-[100dvh] md:h-[90vh] flex flex-col md:shadow-2xl overflow-hidden relative"
                 initial={{ scale: 0.95, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.95, opacity: 0 }}
                 onClick={(e) => e.stopPropagation()}
               >
+                {/* FIXED: The 'X' Button - Now with correct padding, z-index, and shadow so the circle shows */}
                 <button
                   onClick={() => {
                     setIsOpen(false);
                     setSelectedProject(null);
                   }}
-                  className="absolute top-4 right-4 md:top-6 md:right-6 p-3 bg-secondary hover:bg-secondary/80 rounded-full text-foreground transition-colors z-50"
+                  className="absolute top-4 right-4 md:top-6 md:right-6 p-3 bg-secondary hover:bg-secondary/80 rounded-full text-foreground transition-colors z-50 shadow-md"
                 >
-                  <X size={24} />
+                  <X size={20} className="md:w-6 md:h-6" />
                 </button>
 
                 {!selectedProject ? (
                   /* --- GRID VIEW --- */
                   <div className="flex flex-col h-full pt-4 md:pt-0">
                     <div className="mb-8 shrink-0">
-                      <h2 className="text-4xl sm:text-6xl font-black text-foreground tracking-tighter uppercase mb-6 pr-12">
+                      <h2 className="text-4xl sm:text-6xl font-black text-foreground tracking-tighter uppercase mb-6 pr-16 md:pr-0">
                         Work <span className="text-green">Gallery</span>
                       </h2>
                       <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2">
@@ -302,12 +315,7 @@ export function CompactProjectsTile() {
                       {/* --- INLINE GALLERY --- */}
                       <div className="rounded-[2.5rem] overflow-hidden border border-border aspect-square relative bg-secondary shadow-xl group/gallery">
                         <Swiper
-                          modules={[
-                            Pagination,
-                            A11y,
-                            EffectCreative,
-                            Autoplay,
-                          ]}
+                          modules={[Pagination, A11y, EffectCreative, Autoplay]}
                           spaceBetween={0}
                           slidesPerView={1}
                           loop={true}
@@ -449,7 +457,7 @@ export function CompactProjectsTile() {
                 </div>
                 <button
                   onClick={() => setIsLightboxOpen(false)}
-                  className="pointer-events-auto p-3 bg-white/10 hover:bg-white/20 text-white rounded-full transition-colors backdrop-blur-md"
+                  className="pointer-events-auto p-3 bg-white/10 hover:bg-white/20 text-white rounded-full transition-colors backdrop-blur-md shadow-md"
                 >
                   <X size={24} />
                 </button>

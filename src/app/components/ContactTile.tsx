@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import {
   Github,
@@ -35,21 +35,20 @@ const contacts = [
 
 export function ContactTile() {
   const [isOpen, setIsOpen] = useState(false);
-  useBackButton(isOpen, () => setIsOpen(false));
+  
+  const handleCloseModal = useCallback(() => setIsOpen(false), []);
+  useBackButton(isOpen, handleCloseModal);
 
   const handleEmail = (e: React.MouseEvent) => {
     e.stopPropagation();
 
-    // PRE-FILLED DATA
     const email = "devdeep120205@gmail.com";
     const subject = encodeURIComponent("Project Inquiry");
     const body = encodeURIComponent(
       "Hi Devdeep,\n\nI came across your portfolio and I'd like to discuss a project with you.\n\nBest,\n[Your Name]",
     );
 
-    // Direct Gmail Link
-    const gmailLink = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${subject}&body=${body}`;
-    window.open(gmailLink, "_blank");
+    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
   };
 
   return (
@@ -60,7 +59,6 @@ export function ContactTile() {
         whileHover={{ scale: 1.01 }}
         onClick={() => setIsOpen(true)}
       >
-        {/* Header Icon */}
         <div className="flex justify-between items-start z-10">
           <div className="bg-primary/10 p-2.5 rounded-full text-primary border border-primary/20 group-hover:scale-110 transition-transform duration-300">
             <Mail size={24} />
@@ -70,7 +68,6 @@ export function ContactTile() {
           </div>
         </div>
 
-        {/* Typography */}
         <div className="relative z-10 mt-auto pt-4">
           <h3 className="text-3xl sm:text-4xl font-black uppercase tracking-tighter leading-[0.9] text-muted-foreground transition-colors duration-300 group-hover:text-foreground">
             Get In
@@ -86,25 +83,25 @@ export function ContactTile() {
         <AnimatePresence>
           {isOpen && (
             <motion.div
-              className="fixed inset-0 bg-background/80 backdrop-blur-md z-[9999] flex items-center justify-center p-4"
+              className="fixed inset-0 bg-background/80 backdrop-blur-md z-[9999] flex items-center justify-center p-0 md:p-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsOpen(false)}
             >
               <motion.div
-                className="bg-card border border-border text-card-foreground rounded-[2.5rem] p-6 sm:p-10 max-w-3xl w-full relative shadow-2xl overflow-hidden"
+                // FIXED: Changed justify-center to justify-start on mobile to prevent top-cutoff
+                className="bg-card border-none md:border border-border text-card-foreground rounded-none md:rounded-[2.5rem] p-6 pt-20 sm:p-10 max-w-3xl w-full relative h-[100dvh] md:h-auto overflow-y-auto no-scrollbar md:shadow-2xl flex flex-col justify-start md:justify-center"
                 initial={{ scale: 0.95, opacity: 0, y: 20 }}
                 animate={{ scale: 1, opacity: 1, y: 0 }}
                 exit={{ scale: 0.95, opacity: 0, y: 20 }}
                 onClick={(e) => e.stopPropagation()}
               >
-                {/* Close Button */}
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="absolute top-6 right-6 p-2 bg-secondary hover:bg-secondary/80 rounded-full text-foreground transition-colors z-20"
+                  className="absolute top-4 right-4 md:top-6 md:right-6 p-3 bg-secondary hover:bg-secondary/80 rounded-full text-foreground transition-colors z-20 shadow-md"
                 >
-                  <X size={24} />
+                  <X size={20} className="md:w-6 md:h-6" />
                 </button>
 
                 {/* Header */}
@@ -120,42 +117,41 @@ export function ContactTile() {
                 </div>
 
                 {/* --- MAIN EMAIL CARD (Minimal) --- */}
-                <div className="mb-6 group">
+                <div className="mb-6 group shrink-0">
                   <div
                     onClick={handleEmail}
                     className="relative bg-secondary/20 border border-border hover:border-primary/50 hover:bg-secondary/30 rounded-[2rem] p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 transition-all cursor-pointer"
                   >
-                    <div className="flex items-center gap-5">
-                      <div className="p-4 bg-background rounded-2xl text-primary shadow-sm group-hover:scale-110 transition-transform">
-                        <Mail size={32} />
+                    <div className="flex items-center gap-4 sm:gap-5 w-full">
+                      <div className="p-3 sm:p-4 bg-background rounded-2xl text-primary shadow-sm group-hover:scale-110 transition-transform shrink-0">
+                        <Mail size={28} className="sm:w-8 sm:h-8" />
                       </div>
-                      <div>
-                        <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1">
+                      <div className="min-w-0 flex-1">
+                        <h3 className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1">
                           Send me a message
                         </h3>
-                        <p className="text-lg sm:text-2xl font-black text-foreground group-hover:text-primary transition-colors break-all sm:break-normal">
+                        <p className="text-[15px] sm:text-xl md:text-2xl font-black text-foreground group-hover:text-primary transition-colors tracking-tight truncate">
                           devdeep120205@gmail.com
                         </p>
                       </div>
                     </div>
 
-                    {/* Send Button */}
-                    <div className="flex-shrink-0 flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-xl font-bold uppercase text-sm tracking-wide hover:opacity-90 active:scale-95 transition-all">
-                      <Send size={18} />
-                      <span>Open Gmail</span>
+                    <div className="flex-shrink-0 flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-xl font-bold uppercase text-xs sm:text-sm tracking-wide hover:opacity-90 active:scale-95 transition-all w-full sm:w-auto justify-center mt-2 sm:mt-0">
+                      <Send size={16} />
+                      <span>Send Email</span>
                     </div>
                   </div>
                 </div>
 
-                {/* --- SOCIAL GRID (Minimal Monochrome) --- */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {/* --- SOCIAL GRID --- */}
+                {/* FIXED: Added mt-auto on mobile to push grid down if there's extra space */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-auto md:mt-0 shrink-0 pb-8 md:pb-0">
                   {contacts.map((contact, index) => (
                     <motion.a
                       key={contact.name}
                       href={contact.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      // Minimalist: Gray border default -> Primary border on hover
                       className="flex flex-col items-center justify-center gap-3 bg-secondary/10 p-6 rounded-[2rem] border border-border transition-all group hover:border-primary/50 hover:bg-secondary/20"
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}

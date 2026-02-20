@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import {
   X,
@@ -64,7 +64,11 @@ const getCategoryStyles = (category: string) => {
 
 export function CurrentlyLearningTile() {
   const [isOpen, setIsOpen] = useState(false);
-  useBackButton(isOpen, () => setIsOpen(false));
+  
+  // Wrapped the close function in useCallback so it doesn't trigger the hook on every click!
+  const handleCloseModal = useCallback(() => setIsOpen(false), []);
+  useBackButton(isOpen, handleCloseModal);
+  
   const featuredLearning = myLearning.slice(0, 2);
 
   return (
@@ -132,24 +136,27 @@ export function CurrentlyLearningTile() {
         <AnimatePresence>
           {isOpen && (
             <motion.div
-              className="fixed inset-0 bg-background/80 backdrop-blur-md z-[9999] flex items-center justify-center p-4"
+              // FIXED: p-0 on mobile, md:p-4 on desktop for edge-to-edge mobile view
+              className="fixed inset-0 bg-background/80 backdrop-blur-md z-[9999] flex items-center justify-center p-0 md:p-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsOpen(false)}
             >
               <motion.div
-                className="bg-card border border-border text-card-foreground rounded-[2.5rem] p-6 sm:p-10 max-w-2xl w-full relative shadow-2xl max-h-[85vh] overflow-y-auto no-scrollbar"
-                initial={{ scale: 0.95, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.95, opacity: 0 }}
+                // FIXED: Full screen on mobile (100dvh, no border, no radius). Floating on md+.
+                className="bg-card border-none md:border border-border text-card-foreground rounded-none md:rounded-[2.5rem] p-6 pt-20 sm:p-10 max-w-2xl w-full relative h-[100dvh] md:h-auto md:max-h-[85vh] md:shadow-2xl overflow-y-auto no-scrollbar"
+                initial={{ scale: 0.95, opacity: 0, y: 20 }}
+                animate={{ scale: 1, opacity: 1, y: 0 }}
+                exit={{ scale: 0.95, opacity: 0, y: 20 }}
                 onClick={(e) => e.stopPropagation()}
               >
+                {/* FIXED: Adjusted positioning, increased padding to p-3, added shadow and z-50 to ensure the circle background renders properly over content */}
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="absolute top-8 right-8 p-2 bg-secondary rounded-full text-foreground transition-colors"
+                  className="absolute top-4 right-4 md:top-8 md:right-8 p-3 bg-secondary hover:bg-secondary/80 rounded-full text-foreground transition-colors z-50 shadow-md"
                 >
-                  <X size={24} />
+                  <X size={20} className="md:w-6 md:h-6" />
                 </button>
 
                 <h2 className="text-4xl sm:text-5xl font-black text-foreground mb-2 tracking-tighter leading-none">
@@ -161,7 +168,7 @@ export function CurrentlyLearningTile() {
                   Last updated: Feb 2026
                 </p>
 
-                <div className="space-y-4">
+                <div className="space-y-4 pb-8 md:pb-0">
                   {myLearning.map((item) => {
                     const style = getCategoryStyles(item.category);
                     return (
