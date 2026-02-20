@@ -82,7 +82,10 @@ Built with performance and responsiveness in mind, the system balances design ae
   'TailwindCSS',
   'shadcn/ui',
   'Framer Motion'
-]
+],
+
+link: 'https://devdeepsahaportfolio.vercel.app/',
+github: 'https://github.com/devdeepsaha/portfolio/tree/main'
 
   },
   {
