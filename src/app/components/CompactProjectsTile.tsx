@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react"; // FIXED: Imported useCallback
 import { motion, AnimatePresence } from "motion/react";
 import {
   X,
@@ -105,9 +105,13 @@ const getCategoryIcon = (cat: Category) => {
 
 export function CompactProjectsTile() {
   const [isOpen, setIsOpen] = useState(false);
-  useBackButton(isOpen, () => setIsOpen(false));
+  
+  // FIXED: Wrapped the close function in useCallback so it doesn't trigger the hook on every click!
+  const handleCloseModal = useCallback(() => setIsOpen(false), []);
+  useBackButton(isOpen, handleCloseModal);
+
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [activeCategory, setActiveCategory] = useState<Category>("Dev Picks"); // Changed default to Dev Picks
+  const [activeCategory, setActiveCategory] = useState<Category>("Dev Picks"); 
 
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -237,7 +241,6 @@ export function CompactProjectsTile() {
                       <h2 className="text-4xl sm:text-6xl font-black text-foreground tracking-tighter uppercase mb-6 pr-12">
                         Work <span className="text-green">Gallery</span>
                       </h2>
-                      {/* --- FIXED: Category Navigation for Mobile --- */}
                       <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2">
                         {categories.map((cat) => (
                           <button

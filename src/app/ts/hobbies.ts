@@ -1,8 +1,8 @@
-import { Music, BookOpen, Box, Clapperboard } from 'lucide-react';
+import { Music, BookOpen, Box, Clapperboard, FileText } from 'lucide-react'; // Added FileText
 
-export type MediaType = 'image' | 'video' | 'audio';
+// FIXED: Added 'pdf' to the valid MediaTypes
+export type MediaType = 'image' | 'video' | 'audio' | 'pdf'; 
 
-// 1. FIXED: Added 'type' here so every slide knows what it is
 export interface MediaContent {
   type: MediaType; 
   src: string;
@@ -132,6 +132,17 @@ export const myHobbies: Hobby[] = [
               { type: "image", src: "https://images.unsplash.com/photo-1519681393798-2f92f8a39c05?w=800&q=80", caption: "Map Draft" }
           ]
       },
+      // FIXED: Added a new item to test the PDF viewer
+      {
+          id: "w2",
+          title: "Short Stories",
+          description: "A collection of original fiction.",
+          type: "pdf", // Set type to pdf
+          cover: "https://images.unsplash.com/photo-1474932430478-367dbb6832c1?w=500&q=80", // Needs an image cover for the grid
+          content: [
+              { type: "pdf", src: "/documents/sample.pdf", caption: "The Midnight Library" } // Path to your PDF in the public folder
+          ]
+      }
     ]
   }
    

@@ -1,4 +1,4 @@
-import { useState, useRef, useMemo } from "react";
+import { useState, useRef, useMemo, useCallback } from "react"; // FIXED: Imported useCallback
 import { motion, AnimatePresence } from "motion/react";
 import {
   X,
@@ -14,6 +14,7 @@ import {
   Layers,
   ChevronLeft,
   ChevronRight,
+  FileText,
 } from "lucide-react";
 import { Portal } from "./ui/portal";
 import { myHobbies, HobbyItem, MediaType } from "../ts/hobbies";
@@ -44,7 +45,11 @@ const waveStyles = `
 
 export function PlaygroundTile() {
   const [isOpen, setIsOpen] = useState(false);
-  useBackButton(isOpen, () => setIsOpen(false));
+
+  // FIXED: Wrapped the close function in useCallback so it doesn't trigger the hook on every click!
+  const handleCloseModal = useCallback(() => setIsOpen(false), []);
+  useBackButton(isOpen, handleCloseModal);
+
   const [activeTab, setActiveTab] = useState(myHobbies[0].id);
 
   const [selectedItem, setSelectedItem] = useState<HobbyItem | null>(null);
@@ -152,7 +157,6 @@ export function PlaygroundTile() {
               onClick={() => setIsOpen(false)}
             >
               <motion.div
-                // FIXED: Changed md:flex-row to lg:flex-row so tablet uses stacked layout
                 className="bg-card border border-border text-card-foreground rounded-[2.5rem] w-full max-w-6xl h-[85vh] shadow-2xl overflow-hidden flex flex-col lg:flex-row relative"
                 initial={{ scale: 0.95, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
@@ -166,14 +170,12 @@ export function PlaygroundTile() {
                   <X size={20} className="md:w-6 md:h-6" />
                 </button>
 
-                {/* --- NAVIGATION SIDEBAR (Vertical on Laptop+, Horizontal on Mobile/Tablet) --- */}
-                {/* FIXED: Changed md: to lg: for width and borders */}
+                {/* --- NAVIGATION SIDEBAR --- */}
                 <div className="w-full lg:w-72 xl:w-80 bg-secondary/20 border-b lg:border-b-0 lg:border-r border-border flex flex-col p-6 lg:p-8 flex-shrink-0">
                   <h2 className="text-2xl md:text-3xl lg:text-4xl font-black uppercase tracking-tighter mb-4 lg:mb-8">
                     Play<span className="text-blue-500">Ground</span>
                   </h2>
 
-                  {/* FIXED: Changed md: to lg: for flex direction */}
                   <div className="flex flex-row lg:flex-col gap-3 overflow-x-auto no-scrollbar lg:overflow-visible pb-2 lg:pb-0">
                     {myHobbies.map((hobby) => {
                       const Icon = hobby.icon;
@@ -219,13 +221,13 @@ export function PlaygroundTile() {
                       </p>
                     </div>
 
-                    {/* FIXED: Filter Buttons - Removed flex-wrap, added overflow-x-auto, max-w-full */}
                     <div className="flex-shrink-0 flex items-center gap-1 bg-secondary p-1.5 rounded-full border border-border overflow-x-auto no-scrollbar max-w-full">
                       {[
                         { id: "all", icon: Filter, label: "All" },
                         { id: "audio", icon: Mic, label: "Audio" },
                         { id: "video", icon: Video, label: "Video" },
                         { id: "image", icon: ImageIcon, label: "Photos" },
+                        { id: "pdf", icon: FileText, label: "Docs" },
                       ].map((type) => (
                         <button
                           key={type.id}
@@ -278,6 +280,8 @@ export function PlaygroundTile() {
                                 <Play size={28} fill="currentColor" />
                               ) : item.type === "audio" ? (
                                 <Music size={28} />
+                              ) : item.type === "pdf" ? (
+                                <FileText size={28} />
                               ) : (
                                 <Maximize2 size={28} />
                               )}
@@ -355,7 +359,10 @@ export function PlaygroundTile() {
                         "audio" ? (
                         <div className="text-center w-full">
                           <div className="w-32 h-32 md:w-40 md:h-40 mx-auto bg-blue-500/20 rounded-full flex items-center justify-center mb-8 animate-pulse">
-                            <Music size={60} className="text-blue-500 md:w-20 md:h-20" />
+                            <Music
+                              size={60}
+                              className="text-blue-500 md:w-20 md:h-20"
+                            />
                           </div>
                           <audio
                             src={selectedItem.content[currentSlide].src}
@@ -363,6 +370,12 @@ export function PlaygroundTile() {
                             className="w-full max-w-xl mx-auto"
                           />
                         </div>
+                      ) : selectedItem.content[currentSlide].type === "pdf" ? (
+                        <iframe
+                          src={selectedItem.content[currentSlide].src}
+                          className="w-full h-full rounded-xl bg-white"
+                          title={selectedItem.content[currentSlide].caption}
+                        />
                       ) : (
                         <img
                           src={selectedItem.content[currentSlide].src}
