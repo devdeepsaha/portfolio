@@ -103,8 +103,8 @@ export function ComingSoon() {
                 </button>
 
                 {/* Background Ambient Glows */}
-                <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-b/10 blur-[100px] rounded-full pointer-events-none" />
-                <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-v/10 blur-[100px] rounded-full pointer-events-none" />
+                <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-b/10 blur-[10px]  rounded-full pointer-events-none" />
+                <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-v/10 blur-[10px] rounded-full pointer-events-none" />
 
                 <div className="relative z-10 text-center space-y-8 w-full flex flex-col items-center justify-center">
                   {/* Status Badge */}
