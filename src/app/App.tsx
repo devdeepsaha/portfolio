@@ -55,7 +55,7 @@ export default function App() {
 
           {/* 7. Playground (Coming Soon) */}
           <div className="col-span-1 md:col-span-4 lg:col-span-4 xl:col-span-2 xl:order-7 min-h-[140px] md:h-auto border-2 bg-card rounded-[2rem]">
-            <ComingSoon />
+            <PlaygroundTile />
           </div>
 
           {/* 8. Currently Learning */}
