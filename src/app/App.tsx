@@ -20,10 +20,6 @@ export default function App() {
           name="description"
           content="This is the portfolio of Devdeep Saha — featuring projects, experiments, and things I've built."
         />
-        <meta
-          name="google-site-verification"
-          content="PAYCmm-w6R0jL1vy_FvKzmcHT5874IS4KVVe1rbLXNQ"
-        />
       </Helmet>
 
       <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-start xl:justify-center p-4 md:p-10 font-sans transition-colors duration-500">
