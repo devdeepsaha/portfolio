@@ -143,6 +143,7 @@ export function PlaygroundTile() {
   // Mini player corner drag
   const [corner, setCorner] = useState<Corner>("br");
   const dragStart = useRef<{ x: number; y: number } | null>(null);
+  const [dragPos, setDragPos] = useState<{ x: number; y: number } | null>(null);
 
   // Slideshow timer
   const slideshowTimer = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -264,12 +265,14 @@ export function PlaygroundTile() {
   }, []);
 
   const onMiniMouseDown = (e: React.MouseEvent) => {
+    e.preventDefault();
     dragStart.current = { x: e.clientX, y: e.clientY };
     const onMove = (me: MouseEvent) => {
-      snapToCorner(me.clientX, me.clientY);
+      setDragPos({ x: me.clientX, y: me.clientY });
     };
     const onUp = (me: MouseEvent) => {
       snapToCorner(me.clientX, me.clientY);
+      setDragPos(null);
       dragStart.current = null;
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("mouseup", onUp);
@@ -282,10 +285,12 @@ export function PlaygroundTile() {
     const t = e.touches[0];
     dragStart.current = { x: t.clientX, y: t.clientY };
     const onMove = (te: TouchEvent) => {
-      snapToCorner(te.touches[0].clientX, te.touches[0].clientY);
+      setDragPos({ x: te.touches[0].clientX, y: te.touches[0].clientY });
     };
     const onEnd = (te: TouchEvent) => {
-      snapToCorner(te.changedTouches[0].clientX, te.changedTouches[0].clientY);
+      const touch = te.changedTouches[0];
+      snapToCorner(touch.clientX, touch.clientY);
+      setDragPos(null);
       dragStart.current = null;
       window.removeEventListener("touchmove", onMove);
       window.removeEventListener("touchend", onEnd);
@@ -556,7 +561,6 @@ export function PlaygroundTile() {
                   </div>
                 )}
 
-
                 {/* ── Carousel area ── */}
                 <div
                   className={`flex-1 relative w-full bg-black group/carousel flex items-center justify-center overflow-hidden ${
@@ -748,6 +752,7 @@ export function PlaygroundTile() {
             <MiniPlayer
               floatingAudio={floatingAudio}
               corner={corner}
+              dragPos={dragPos}
               audioRef={audioRef}
               setFloatingAudio={setFloatingAudio}
               onMouseDown={onMiniMouseDown}
@@ -794,6 +799,7 @@ function MarqueeTitle({ text, color }: { text: string; color: string }) {
 function MiniPlayer({
   floatingAudio,
   corner,
+  dragPos,
   audioRef,
   setFloatingAudio,
   onMouseDown,
@@ -801,6 +807,7 @@ function MiniPlayer({
 }: {
   floatingAudio: FloatingAudioPlayer;
   corner: Corner;
+  dragPos: { x: number; y: number } | null;
   audioRef: React.MutableRefObject<HTMLAudioElement | null>;
   setFloatingAudio: React.Dispatch<
     React.SetStateAction<FloatingAudioPlayer | null>
@@ -838,6 +845,7 @@ function MiniPlayer({
       attributes: true,
       attributeFilter: ["class"],
     });
+
     return () => obs.disconnect();
   }, []);
 
@@ -849,21 +857,30 @@ function MiniPlayer({
   const xClr = isDark ? "rgba(255,255,255,0.4)" : "rgba(0,0,0,0.35)";
   const xHover = isDark ? "#ffffff" : "#000000";
 
+  const isDragging = dragPos !== null;
+  const positionStyle: React.CSSProperties = isDragging
+    ? { left: dragPos.x - 140, top: dragPos.y - 60 }
+    : cornerStyle(corner);
+
   return (
     <motion.div
-      layout
+      layout={!isDragging}
       initial={{ opacity: 0, scale: 0.85, y: 16 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.85, y: 16 }}
-      transition={{
-        layout: { type: "spring", stiffness: 800, damping: 35 },
-        opacity: { duration: 0.15 },
-        scale: { duration: 0.15 },
-      }}
+      transition={
+        isDragging
+          ? { duration: 0 }
+          : {
+              layout: { type: "spring", stiffness: 600, damping: 30 },
+              opacity: { duration: 0.15 },
+              scale: { duration: 0.15 },
+            }
+      }
       onMouseDown={onMouseDown}
       onTouchStart={onTouchStart}
       style={{
-        ...cornerStyle(corner),
+        ...positionStyle,
         position: "fixed",
         zIndex: 99999,
         background: bg,
@@ -871,12 +888,20 @@ function MiniPlayer({
         borderRadius: "1.3rem",
         padding: "1.25rem",
         width: "280px",
-        boxShadow: isDark
-          ? "0 20px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.05)"
-          : "0 20px 60px rgba(0,0,0,0.15)",
-        cursor: "grab",
+        boxShadow: isDragging
+          ? isDark
+            ? "0 32px 80px rgba(0,0,0,0.85)"
+            : "0 32px 80px rgba(0,0,0,0.22)"
+          : isDark
+            ? "0 20px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.05)"
+            : "0 20px 60px rgba(0,0,0,0.15)",
+        cursor: isDragging ? "grabbing" : "grab",
         userSelect: "none" as const,
         overflow: "hidden",
+        transform: isDragging ? "scale(1.04)" : "scale(1)",
+        transition: isDragging
+          ? "transform 0.1s ease, box-shadow 0.1s ease"
+          : undefined,
       }}
     >
       <button
@@ -903,10 +928,7 @@ function MiniPlayer({
         <X size={20} strokeWidth={1.5} />
       </button>
 
-      <div
-        className="flex items-center gap-4"
-        onMouseDown={(e) => e.stopPropagation()}
-      >
+      <div className="flex items-center gap-4">
         <div className="flex-shrink-0 w-[80px] h-[80px] rounded-2xl overflow-hidden">
           <img
             src={floatingAudio.cover}
@@ -922,6 +944,7 @@ function MiniPlayer({
             flex: 1,
             height: 80,
             minWidth: 0,
+            pointerEvents: "none",
           }}
         >
           <div style={{ minWidth: 0, paddingTop: 2 }}>
@@ -978,6 +1001,7 @@ function MiniPlayer({
                 position: "relative",
                 top: 14,
                 right: -10,
+                pointerEvents: "auto",
                 boxShadow: isDark
                   ? "0 4px 16px rgba(59,130,246,0.4)"
                   : "0 4px 16px rgba(0,0,0,0.2)",
