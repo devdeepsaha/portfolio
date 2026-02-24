@@ -1,5 +1,11 @@
 import { useEffect, useRef, useCallback } from "react";
 
+declare global {
+  interface Window {
+    gtag?: (...args: any[]) => void;
+  }
+}
+
 export function useHashRouter(
   isOpen: boolean,
   hashPath: string,
@@ -78,7 +84,17 @@ export function useHashInit(
             }
             window.history.pushState(null, "", `#${currentHash}`);
           }
-          setTimeout(() => entry.onMatch(m), 10);
+          setTimeout(() => {
+            entry.onMatch(m);
+
+            if (window.gtag) {
+              window.gtag("event", "page_view", {
+                page_location: window.location.href,
+                page_path: window.location.pathname + window.location.hash,
+                page_title: document.title,
+              });
+            }
+          }, 10);
           return;
         }
       }
@@ -88,6 +104,13 @@ export function useHashInit(
     // --- 2. HASHCHANGE LOGIC (Listens to manual URL edits while app is already open) ---
     const handleHashChange = () => {
       const currentHash = window.location.hash;
+      if (window.gtag) {
+        window.gtag("event", "page_view", {
+          page_location: window.location.href,
+          page_path: window.location.pathname + currentHash,
+          page_title: document.title,
+        });
+      }
       for (const entry of entries) {
         const m = currentHash.match(entry.match);
         if (m) {
