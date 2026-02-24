@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import {
   X,
@@ -26,7 +26,7 @@ import {
   devChoiceIds,
 } from "../ts/projects";
 // FIXED: Import the new powerful hook
-import { useHashRouter } from "../hooks/useHashRouter";
+import { useHashRouter, useHashInit } from "../hooks/useHashRouter";
 
 // --- SWIPER IMPORTS ---
 import { Swiper, SwiperSlide, SwiperRef } from "swiper/react";
@@ -116,27 +116,72 @@ export function CompactProjectsTile() {
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
   // --- FIXED: DEEP LINKING LOGIC ---
-  
-  // LAYER 1: The Main Grid Modal (URL: /#projects)
+
+  // --- FIXED: DEEP LINKING LOGIC ---
+
+  const initConfig = useMemo(
+    () => [
+      {
+        // LAYER 3: Matches #projects/id/lightbox
+        match: /^#projects\/([^/]+)\/lightbox$/,
+        // Dynamically build the parent history using the regex match group `m[1]`
+        parentHashes: (m: RegExpMatchArray) => ["projects", `projects/${m[1]}`],
+        onMatch: (m: RegExpMatchArray) => {
+          const projectId = m[1];
+          const project = myProjects.find((p) => String(p.id) === projectId);
+          if (!project) return;
+          setSelectedProject(project);
+          setIsLightboxOpen(true);
+          setIsOpen(true);
+        },
+      },
+      {
+        // LAYER 2: Matches #projects/id
+        match: /^#projects\/([^/]+)$/,
+        parentHashes: ["projects"],
+        onMatch: (m: RegExpMatchArray) => {
+          const projectId = m[1];
+          const project = myProjects.find((p) => String(p.id) === projectId);
+          if (!project) return;
+          setSelectedProject(project);
+          setIsLightboxOpen(false); // Ensure lightbox is closed if they just hit the detail page
+          setIsOpen(true);
+        },
+      },
+      {
+        // LAYER 1: Matches #projects
+        match: /^#projects$/,
+        parentHashes: [],
+        onMatch: () => {
+          setIsOpen(true);
+          setSelectedProject(null); // Ensure project is closed if they just hit the grid
+        },
+      },
+    ],
+    [],
+  );
+
+  useHashInit(initConfig);
+
+  // Router bindings to handle the back button state changes
   const closeMain = useHashRouter(
-    isOpen, 
-    "projects", 
-    useCallback(() => setIsOpen(false), [])
+    isOpen,
+    "projects",
+    useCallback(() => setIsOpen(false), []),
   );
 
-  // LAYER 2: The Project Detail View (URL: /#projects/[id])
   const closeProject = useHashRouter(
-    !!selectedProject, 
-    `projects/${selectedProject?.id}`, 
-    useCallback(() => setSelectedProject(null), [])
+    !!selectedProject && !isLightboxOpen,
+    `projects/${selectedProject?.id}`,
+    useCallback(() => setSelectedProject(null), []),
   );
 
-  // LAYER 3: The Fullscreen Lightbox (URL: /#projects/[id]/lightbox)
   const closeLightbox = useHashRouter(
-    isLightboxOpen, 
-    `projects/${selectedProject?.id}/lightbox`, 
-    useCallback(() => setIsLightboxOpen(false), [])
+    isLightboxOpen,
+    `projects/${selectedProject?.id}/lightbox`,
+    useCallback(() => setIsLightboxOpen(false), [selectedProject]),
   );
+  // ----------------------------------
   // ----------------------------------
 
   const [activeCategory, setActiveCategory] = useState<Category>("Dev Picks");
@@ -321,12 +366,7 @@ export function CompactProjectsTile() {
                       {/* --- INLINE GALLERY --- */}
                       <div className="rounded-[2.5rem] overflow-hidden border border-border aspect-square relative bg-secondary shadow-xl group/gallery">
                         <Swiper
-                          modules={[
-                            Pagination,
-                            A11y,
-                            EffectCreative,
-                            Autoplay,
-                          ]}
+                          modules={[Pagination, A11y, EffectCreative, Autoplay]}
                           spaceBetween={0}
                           slidesPerView={1}
                           loop={true}

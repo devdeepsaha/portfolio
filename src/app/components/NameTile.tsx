@@ -12,7 +12,7 @@ declare global {
 
 export function NameTile() {
   const [isOpen, setIsOpen] = useState(false);
-  
+
   // FIXED: Added useCallback to prevent the hook from misfiring
   const handleCloseModal = useCallback(() => setIsOpen(false), []);
   useBackButton(isOpen, handleCloseModal);
@@ -139,6 +139,8 @@ export function NameTile() {
             ref={containerRef}
             className="w-full flex-1 min-h-[140px] pointer-events-none text-card-foreground"
           >
+            {/* SEO heading for Google */}
+            <h1 className="sr-only">Devdeep Saha – Portfolio</h1>
             <canvas ref={canvasRef} />
           </div>
 

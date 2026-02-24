@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useRef, useCallback, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import {
   X,
@@ -22,7 +22,7 @@ import {
 } from "lucide-react";
 import { Portal } from "./ui/portal";
 import { myHobbies, HobbyItem, MediaType } from "../ts/hobbies";
-import { useHashRouter } from "../hooks/useHashRouter";
+import { useHashRouter, useHashInit } from "../hooks/useHashRouter";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 type Corner = "br" | "bl" | "tr" | "tl";
@@ -153,16 +153,58 @@ export function PlaygroundTile() {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
   // ── Hash routing ─────────────────────────────────────────────────────────────
+
+ 
+
+  const initConfig = useMemo(
+    () => [
+      {
+        match: /^#playground\/([^/]+)\/([^/]+)$/,
+        parentHashes: ["playground"],
+        onMatch: ([, tab, itemId]: string[]) => {
+          const hobby = myHobbies.find((h) => h.id === tab);
+          if (!hobby) return;
+          const item = hobby.gallery.find((i) => i.id === itemId);
+          if (!item) return;
+          setActiveTab(tab);
+          setSelectedItem(item);
+          setIsOpen(true);
+        },
+      },
+      {
+        match: /^#playground\/([^/]+)$/,
+        parentHashes: ["playground"],
+        onMatch: ([, tab]: string[]) => {
+          if (myHobbies.find((h) => h.id === tab)) {
+            setActiveTab(tab);
+            setIsOpen(true);
+          }
+        },
+      },
+      {
+        match: /^#playground$/,
+        parentHashes: [],
+        onMatch: () => setIsOpen(true),
+      },
+    ],
+    [],
+  );
+
+  useHashInit(initConfig);
+
   const closeMain = useHashRouter(
     isOpen,
     "playground",
     useCallback(() => setIsOpen(false), []),
   );
+
   const closeLightbox = useHashRouter(
     !!selectedItem,
     `playground/${activeTab}/${selectedItem?.id}`,
-    useCallback(() => setSelectedItem(null), []),
+    useCallback(() => setSelectedItem(null), [activeTab]),
   );
+
+  
 
   // ── Derived ──────────────────────────────────────────────────────────────────
   const activeHobby = myHobbies.find((h) => h.id === activeTab) ?? myHobbies[0];

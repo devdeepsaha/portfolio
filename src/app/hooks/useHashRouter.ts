@@ -1,45 +1,103 @@
-// src/hooks/useHashRouter.ts
-import { useEffect } from "react";
+import { useEffect, useRef, useCallback } from "react";
 
 export function useHashRouter(
   isOpen: boolean,
-  hashPath: string, 
-  onBack: () => void
+  hashPath: string,
+  onBack: () => void,
 ) {
-  // Push the specific hash when the state opens
+  const prevIsOpen = useRef(false);
+
   useEffect(() => {
-    if (isOpen) {
-      window.history.pushState({ modalOpen: true }, "", `#${hashPath}`);
+    const wasOpen = prevIsOpen.current;
+    prevIsOpen.current = isOpen;
+
+    if (isOpen && !wasOpen) {
+      const current = window.location.hash.replace(/^#/, "");
+      if (current !== hashPath && !current.startsWith(hashPath + "/")) {
+        window.history.pushState(null, "", `#${hashPath}`);
+      }
     }
   }, [isOpen, hashPath]);
 
-  // Listen for the back button (which changes the hash)
   useEffect(() => {
     if (!isOpen) return;
 
-    const handleHashChange = () => {
-      // If the current URL hash DOES NOT contain our target hash, 
-      // it means the user went back.
-      if (!window.location.hash.includes(hashPath)) {
+    const onPopState = () => {
+      const current = window.location.hash.replace(/^#/, "");
+      if (current !== hashPath && !current.startsWith(hashPath + "/")) {
         onBack();
       }
     };
 
-    window.addEventListener("popstate", handleHashChange);
-
-    return () => {
-      window.removeEventListener("popstate", handleHashChange);
-    };
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
   }, [isOpen, hashPath, onBack]);
 
-  // Provide a clean way to close programmatically (e.g. clicking the X)
-  const closeProgrammatically = () => {
-    if (window.location.hash.includes(hashPath)) {
-      window.history.back(); // Trigger the native back to clear the hash
+  const close = useCallback(() => {
+    const current = window.location.hash.replace(/^#/, "");
+    if (current === hashPath || current.startsWith(hashPath + "/")) {
+      window.history.back();
     } else {
-      onBack(); // Fallback
+      onBack();
     }
-  };
+  }, [hashPath, onBack]);
 
-  return closeProgrammatically;
+  return close;
+}
+
+export function useHashInit(
+  entries: Array<{
+    match: RegExp;
+    // Allow dynamic parent hashes based on the regex match!
+    parentHashes: string[] | ((groups: RegExpMatchArray) => string[]);
+    onMatch: (groups: RegExpMatchArray) => void;
+  }>,
+) {
+  const initialized = useRef(false);
+
+  useEffect(() => {
+    const hash = window.location.hash;
+
+    // --- 1. MOUNT LOGIC (Injects history so back button works for fresh deep links) ---
+    if (!initialized.current && hash) {
+      initialized.current = true;
+      for (const entry of entries) {
+        const m = hash.match(entry.match);
+        if (m) {
+          const currentHash = hash.replace(/^#/, "");
+          const parents =
+            typeof entry.parentHashes === "function"
+              ? entry.parentHashes(m)
+              : entry.parentHashes;
+
+          if (parents.length > 0) {
+            const baseUrl = window.location.pathname + window.location.search;
+            window.history.replaceState(null, "", baseUrl);
+            for (const p of parents) {
+              window.history.pushState(null, "", `#${p}`);
+            }
+            window.history.pushState(null, "", `#${currentHash}`);
+          }
+          setTimeout(() => entry.onMatch(m), 10);
+          return;
+        }
+      }
+      initialized.current = true;
+    }
+
+    // --- 2. HASHCHANGE LOGIC (Listens to manual URL edits while app is already open) ---
+    const handleHashChange = () => {
+      const currentHash = window.location.hash;
+      for (const entry of entries) {
+        const m = currentHash.match(entry.match);
+        if (m) {
+          entry.onMatch(m);
+          break;
+        }
+      }
+    };
+
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
+  }, [entries]);
 }
