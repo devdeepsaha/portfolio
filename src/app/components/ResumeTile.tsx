@@ -15,6 +15,7 @@ import {
 import { Portal } from "./ui/portal";
 import { resumeData } from "../ts/resume-data";
 import { useBackButton } from "../hooks/useBackButton";
+import { getLastProject } from "./utils/analyticsContext";
 
 const cautionStyles = `
   @keyframes slide-stripes {
@@ -36,7 +37,7 @@ const cautionStyles = `
 
 export function ResumeTile() {
   const [isOpen, setIsOpen] = useState(false);
-  
+
   // FIXED: Added useCallback to prevent the hook from misfiring
   const handleCloseModal = useCallback(() => setIsOpen(false), []);
   useBackButton(isOpen, handleCloseModal);
@@ -52,7 +53,12 @@ export function ResumeTile() {
         className="relative overflow-hidden cursor-pointer group h-full min-h-[220px] flex flex-col justify-between shadow-lg rounded-[2rem] border border-black/5"
         style={{ backgroundColor: "#FFD700" }}
         whileHover={{ scale: 1.01 }}
-        onClick={() => setIsOpen(true)}
+        onClick={() => {
+          setIsOpen(true);
+          window.gtag?.("event", "resume_modal_open", {
+            event_category: "engagement",
+          });
+        }}
       >
         <div className="relative z-10 p-6 flex flex-col justify-between h-full">
           <div className="flex justify-between items-start">
@@ -138,6 +144,11 @@ export function ResumeTile() {
                   <a
                     href={header.resumeLink}
                     download
+                    onClick={() => {
+                      window.gtag?.("event", "resume_download", {
+                        from_project: getLastProject() || "direct",
+                      });
+                    }}
                     className="group flex items-center justify-center md:justify-start gap-3 px-8 py-4 bg-[#FFD700] text-black rounded-xl font-black text-sm uppercase tracking-widest hover:bg-[#ffe033] hover:scale-105 transition-all shadow-lg w-full md:w-auto"
                   >
                     <Download
@@ -241,7 +252,6 @@ export function ResumeTile() {
 
                   {/* --- RIGHT COLUMN (Split into 2 Sections) --- */}
                   <div className="space-y-6 pb-8 md:pb-0">
-                    
                     {/* 1. PROFESSIONAL CERTIFICATIONS */}
                     <div className="bg-secondary/30 p-6 rounded-3xl border border-border h-fit">
                       <div className="flex items-center gap-3 mb-6">
@@ -256,6 +266,11 @@ export function ResumeTile() {
                           <a
                             key={index}
                             href={cert.link}
+                            onClick={() => {
+                              window.gtag?.("event", "certification_click", {
+                                certification_name: cert.name,
+                              });
+                            }}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="block group bg-card hover:bg-[#FFD700] border border-border hover:border-[#FFD700] p-5 rounded-2xl transition-all duration-300 shadow-sm"
@@ -295,6 +310,11 @@ export function ResumeTile() {
                           <a
                             key={index}
                             href={cert.link}
+                            onClick={() => {
+                              window.gtag?.("event", "certification_click", {
+                                certification_name: cert.name,
+                              });
+                            }}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="block group bg-card hover:bg-[#FFD700] border border-border hover:border-[#FFD700] p-5 rounded-2xl transition-all duration-300 shadow-sm"
@@ -319,7 +339,6 @@ export function ResumeTile() {
                         ))}
                       </div>
                     </div>
-
                   </div>
                 </div>
               </motion.div>

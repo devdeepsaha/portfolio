@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { Portal } from "./ui/portal";
 import { useBackButton } from "../hooks/useBackButton";
+import { getLastProject } from "./utils/analyticsContext";
 
 const contacts = [
   {
@@ -35,12 +36,17 @@ const contacts = [
 
 export function ContactTile() {
   const [isOpen, setIsOpen] = useState(false);
-  
+
   const handleCloseModal = useCallback(() => setIsOpen(false), []);
   useBackButton(isOpen, handleCloseModal);
 
   const handleEmail = (e: React.MouseEvent) => {
     e.stopPropagation();
+
+    window.gtag?.("event", "contact_click", {
+      contact_type: "email",
+      from_project: getLastProject() || "direct",
+    });
 
     const email = "devdeep120205@gmail.com";
     const subject = encodeURIComponent("Project Inquiry");
@@ -57,7 +63,13 @@ export function ContactTile() {
       <motion.div
         className="bg-card border border-border rounded-[2rem] overflow-hidden cursor-pointer group h-full min-h-[140px] relative p-6 flex flex-col justify-between transition-all hover:border-primary/50"
         whileHover={{ scale: 1.01 }}
-        onClick={() => setIsOpen(true)}
+        onClick={() => {
+          setIsOpen(true);
+
+          window.gtag?.("event", "contact_modal_open", {
+            event_category: "engagement",
+          });
+        }}
       >
         <div className="flex justify-between items-start z-10">
           <div className="bg-primary/10 p-2.5 rounded-full text-primary border border-primary/20 group-hover:scale-110 transition-transform duration-300">
@@ -152,6 +164,12 @@ export function ContactTile() {
                       href={contact.link}
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={() => {
+                        window.gtag?.("event", "contact_click", {
+                          contact_type: contact.name.toLowerCase(),
+                          from_project: getLastProject() || "direct",
+                        });
+                      }}
                       className="flex flex-col items-center justify-center gap-3 bg-secondary/10 p-6 rounded-[2rem] border border-border transition-all group hover:border-primary/50 hover:bg-secondary/20"
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}

@@ -27,6 +27,7 @@ import {
 } from "../ts/projects";
 // FIXED: Import the new powerful hook
 import { useHashRouter, useHashInit } from "../hooks/useHashRouter";
+import { setLastProject } from "./utils/analyticsContext";
 
 // --- SWIPER IMPORTS ---
 import { Swiper, SwiperSlide, SwiperRef } from "swiper/react";
@@ -222,6 +223,14 @@ export function CompactProjectsTile() {
   const openProject = (project: Project) => {
     setSelectedProject(project);
     setInlineIndex(0);
+
+    // 🔥 remember last project
+    setLastProject(project.title);
+
+    window.gtag?.("event", "project_open", {
+      project_name: project.title,
+      project_category: project.category,
+    });
   };
 
   return (
