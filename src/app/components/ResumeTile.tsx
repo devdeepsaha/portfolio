@@ -56,6 +56,7 @@ export function ResumeTile() {
         onClick={() => {
           setIsOpen(true);
           window.gtag?.("event", "resume_modal_open", {
+            project_name: getLastProject() || "direct",
             event_category: "engagement",
           });
         }}

@@ -1,9 +1,9 @@
 let lastProjectViewed: string | null = null;
 
 export function setLastProject(name: string) {
-  lastProjectViewed = name;
+  sessionStorage.setItem("last_project", name);
 }
 
 export function getLastProject() {
-  return lastProjectViewed;
+  return sessionStorage.getItem("last_project");
 }
