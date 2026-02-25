@@ -71,7 +71,7 @@ export const myProjects: Project[] = [
       "Google Gemini API",
       "Custom CSS",
     ],
-    link: "https://pothoprodorshok.onrender.com/",
+    link: "https://dev2.bcclweb.in/",
     pdf: "./projects/web/bccl/report.pdf",
   },
   {
