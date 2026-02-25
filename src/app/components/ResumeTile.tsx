@@ -146,7 +146,7 @@ export function ResumeTile() {
                     download
                     onClick={() => {
                       window.gtag?.("event", "resume_download", {
-                        from_project: getLastProject() || "direct",
+                        project_name: getLastProject() || "direct",
                       });
                     }}
                     className="group flex items-center justify-center md:justify-start gap-3 px-8 py-4 bg-[#FFD700] text-black rounded-xl font-black text-sm uppercase tracking-widest hover:bg-[#ffe033] hover:scale-105 transition-all shadow-lg w-full md:w-auto"

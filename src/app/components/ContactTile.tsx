@@ -45,7 +45,7 @@ export function ContactTile() {
 
     window.gtag?.("event", "contact_click", {
       contact_type: "email",
-      from_project: getLastProject() || "direct",
+      project_name: getLastProject() || "direct",
     });
 
     const email = "devdeep120205@gmail.com";
@@ -167,7 +167,7 @@ export function ContactTile() {
                       onClick={() => {
                         window.gtag?.("event", "contact_click", {
                           contact_type: contact.name.toLowerCase(),
-                          from_project: getLastProject() || "direct",
+                          project_name: getLastProject() || "direct",
                         });
                       }}
                       className="flex flex-col items-center justify-center gap-3 bg-secondary/10 p-6 rounded-[2rem] border border-border transition-all group hover:border-primary/50 hover:bg-secondary/20"
