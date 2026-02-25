@@ -55,6 +55,9 @@ export function ResumeTile() {
         whileHover={{ scale: 1.01 }}
         onClick={() => {
           setIsOpen(true);
+
+          console.log("RESUME LAST PROJECT =", getLastProject());
+
           window.gtag?.("event", "resume_modal_open", {
             project_name: getLastProject() || "direct",
             event_category: "engagement",
