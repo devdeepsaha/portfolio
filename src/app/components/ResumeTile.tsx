@@ -188,7 +188,7 @@ export function ResumeTile() {
                                 {item.degree}
                               </h4>
                               <span
-                                className={`text-xs md:text-sm font-bold uppercase tracking-widest px-3 py-1 rounded w-fit ${
+                                className={` whitespace-nowrap text-xs md:text-sm font-bold uppercase tracking-widest px-3 py-1 rounded w-fit ${
                                   item.isCurrent
                                     ? "bg-[#FFD700] text-black"
                                     : "border border-border text-foreground"
@@ -228,7 +228,7 @@ export function ResumeTile() {
                               <h4 className="text-xl font-bold text-foreground uppercase">
                                 {job.role}
                               </h4>
-                              <span className="text-black text-xs md:text-sm font-bold uppercase tracking-widest bg-[#FFD700] px-3 py-1 rounded w-fit">
+                              <span className="whitespace-nowrap text-black text-xs md:text-sm font-bold uppercase tracking-widest bg-[#FFD700] px-3 py-1 rounded w-fit">
                                 {job.year}
                               </span>
                             </div>
