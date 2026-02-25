@@ -9,7 +9,7 @@ export function ClockTile() {
   const seconds = time.getSeconds().toString().padStart(2, '0');
   const ampm = time.getHours() >= 12 ? 'PM' : 'AM';
 
-  const lastUpdateDate = "Feb 15, 2026"; 
+  const lastUpdateDate = "Feb 25, 2026"; 
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
