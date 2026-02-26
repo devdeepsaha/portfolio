@@ -4,16 +4,62 @@
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "Person",
-        "name": "Devdeep Saha",
-        "url": "https://devdeepsahaportfolio.vercel.app/",
-        "image": "https://devdeepsahaportfolio.vercel.app/pfp/dev1.png",
-        "jobTitle": "Web Developer",
-        "description": "Creative developer exploring web development, design and interactive experiences.",
-        "sameAs": [
-          "https://instagram.com/devdeepsaha",
-          "https://www.linkedin.com/in/devdeep-saha-3b4570260/",
-          "https://github.com/devdeepsaha",
+        "@graph": [
+          {
+            "@type": "Person",
+            "@id": "https://devdeepsahaportfolio.vercel.app/#person",
+            "name": "Devdeep Saha",
+            "alternateName": "Devdeep",
+            "givenName": "Devdeep",
+            "familyName": "Saha",
+            "birthPlace": "India",
+            "nationality": "Indian",
+            "jobTitle": "Web Developer",
+            "description": "Creative developer exploring web development, design and interactive experiences.",
+            "url": "https://devdeepsahaportfolio.vercel.app/",
+            "image": "https://devdeepsahaportfolio.vercel.app/pfp/dev1.png",
+            "alumniOf": {
+              "@type": "CollegeOrUniversity",
+              "name": "Abacus Institute of Engineering and Management"
+            },
+            "knowsAbout": [
+              "Web Development",
+              "React",
+              "UI Design",
+              "Interactive Experiences",
+              "Frontend Development",
+              "Creative Coding"
+            ],
+            "sameAs": [
+              "https://www.linkedin.com/in/devdeep-saha-3b4570260/",
+              "https://github.com/devdeepsaha",
+              "https://instagram.com/devdeepsaha"
+            ],
+            "mainEntityOfPage": {
+              "@id": "https://devdeepsahaportfolio.vercel.app/#website"
+            }
+          },
+
+          {
+            "@type": "Organization",
+            "@id": "https://devdeepsahaportfolio.vercel.app/#organization",
+            "name": "Devdeep Saha",
+            "url": "https://devdeepsahaportfolio.vercel.app/",
+            "logo": "https://devdeepsahaportfolio.vercel.app/banner.jpg",
+            "founder": {
+              "@id": "https://devdeepsahaportfolio.vercel.app/#person"
+            }
+          },
+
+          {
+            "@type": "WebSite",
+            "@id": "https://devdeepsahaportfolio.vercel.app/#website",
+            "url": "https://devdeepsahaportfolio.vercel.app/",
+            "name": "Devdeep Saha Portfolio",
+            "publisher": {
+              "@id": "https://devdeepsahaportfolio.vercel.app/#organization"
+            }
+          }
         ]
       }
     </script>
@@ -39,7 +85,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Devdeep Saha - Portfolio | Web Developer & Designer</title>
-    <meta name="title" content="Devdeep Saha | Portfolio" />
+    <meta
+      name="title"
+      content="Devdeep Saha - Portfolio | Web Developer & Designer"
+    />
     <meta
       name="description"
       content="This is the portfolio of Devdeep Saha — showcasing projects, experiments, and ideas across web development, design, and creative technology."
