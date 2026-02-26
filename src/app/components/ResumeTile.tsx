@@ -17,6 +17,12 @@ import { resumeData } from "../ts/resume-data";
 import { useBackButton } from "../hooks/useBackButton";
 import { getLastProject } from "./utils/analyticsContext";
 
+declare global {
+  interface Window {
+    gtag?: (event: string, eventName: string, eventParams?: Record<string, unknown>) => void;
+  }
+}
+
 const cautionStyles = `
   @keyframes slide-stripes {
     0% { background-position: 0 0; }
