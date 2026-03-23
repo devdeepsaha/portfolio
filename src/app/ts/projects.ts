@@ -14,6 +14,7 @@ export interface Project {
 }
 
 export const myProjects: Project[] = [
+  // --- Web Projects ---
   {
     id: 1,
     title: "Potho Prodorshok",
@@ -144,6 +145,9 @@ Built with performance and responsiveness in mind, the system balances design ae
     link: "https://toolsbydeep.vercel.app/",
     github: "https://github.com/devdeepsaha/toolsbydev",
   },
+  
+
+  // --- 3D Projects ---
   {
     id: 5,
     title: "Donut",
@@ -335,6 +339,8 @@ Through careful tuning of shader settings and compositing techniques, the projec
     `,
     tech: ["Blender", "Cycles", "Shader nodes", "Compositor"],
   },
+
+  // --- Graphics Projects ---
   {
     id: 19,
     title: "animation using powerpoint (notemation)",
