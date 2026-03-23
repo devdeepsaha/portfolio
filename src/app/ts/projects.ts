@@ -146,7 +146,7 @@ Built with performance and responsiveness in mind, the system balances design ae
     github: "https://github.com/devdeepsaha/toolsbydev",
   },
   {
-  id: 5,
+  id: 28,
   title: "LeadFlow",
   category: "Web",
   image: "./projects/web/leadflow/banner.jpg",
@@ -167,12 +167,11 @@ Built with performance and responsiveness in mind, the system balances design ae
   github: "https://github.com/devdeepsaha/lead-gen",
 },
 {
-  id: 6,
+  id: 29,
   title: "Arova Technologies",
   category: "Web",
   image: "./projects/web/arova/banner.jpg",
   gallery: [
-    "./projects/web/arova/banner.jpg",
     "./projects/web/arova/1.jpg",
     "./projects/web/arova/2.jpg",
     "./projects/web/arova/3.jpg",
@@ -190,7 +189,7 @@ Built with performance and responsiveness in mind, the system balances design ae
   pdf: "./projects/web/arova/Arova_Technologies.pdf",
 },
 {
-  id: 7,
+  id: 30,
   title: "Dev Web Studio",
   category: "Web",
   image: "./projects/web/devwebstudio/banner.jpg",
@@ -622,4 +621,4 @@ export const heroSlides = [
   "./projects/3d/indoor/3.jpg",
 ];
 
-export const devChoiceIds = [6, 13, 2, 5, 12, 21, 19, 23, 27];
+export const devChoiceIds = [29, 13, 2, 5, 12, 21, 19, 23, 27];
