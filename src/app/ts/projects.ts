@@ -191,13 +191,13 @@ Built with performance and responsiveness in mind, the system balances design ae
 },
 {
   id: 7,
-  title: "Dev Dev Studio",
+  title: "Dev Web Studio",
   category: "Web",
-  image: "./projects/web/webdevstudio/banner.jpg",
+  image: "./projects/web/devwebstudio/banner.jpg",
   gallery: [
-    "./projects/web/webdevstudio/banner.jpg",
-    "./projects/web/webdevstudio/1.jpg",
-    "./projects/web/webdevstudio/2.jpg",
+    "./projects/web/devwebstudio/banner.jpg",
+    "./projects/web/devwebstudio/1.jpg",
+    "./projects/web/devwebstudio/2.jpg",
   ],
   description: `Built as the digital presence of my web studio to showcase services, communicate value clearly, and support outreach to businesses looking for websites and digital solutions. Designed to feel modern, direct, and conversion-focused while reflecting both technical capability and creative presentation.`,
   tech: [
