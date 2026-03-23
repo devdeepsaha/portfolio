@@ -145,7 +145,71 @@ Built with performance and responsiveness in mind, the system balances design ae
     link: "https://toolsbydeep.vercel.app/",
     github: "https://github.com/devdeepsaha/toolsbydev",
   },
-  
+  {
+  id: 5,
+  title: "LeadFlow",
+  category: "Web",
+  image: "./projects/web/leadflow/banner.jpg",
+  gallery: [
+    "./projects/web/leadflow/banner.jpg",
+    "./projects/web/leadflow/1.jpg",
+    "./projects/web/leadflow/2.jpg",
+  ],
+  description: `Built as a practical outreach CRM to manage and organize 1000+ business leads collected for service-based outreach. Includes CSV lead ingestion, tagging, filtering, outreach tracking, dynamic copy-to-clipboard templates, and JSON backup support to make high-volume outreach faster and more structured.`,
+  tech: [
+    "React",
+    "JavaScript",
+    "CSV Parsing",
+    "JSON",
+    "Local Storage"
+  ],
+  link: "https://leadbydevdeep.vercel.app/",
+  github: "https://github.com/devdeepsaha/lead-gen",
+},
+{
+  id: 6,
+  title: "Arova Technologies",
+  category: "Web",
+  image: "./projects/web/arova/banner.jpg",
+  gallery: [
+    "./projects/web/arova/banner.jpg",
+    "./projects/web/arova/1.jpg",
+    "./projects/web/arova/2.jpg",
+    "./projects/web/arova/3.jpg",
+
+  ],
+  description: `Built as a production-facing SaaS website for Arova Technologies to present healthcare automation solutions, clinic workflow systems, and communication-focused products. Optimized for speed and structure, achieving a 95 Lighthouse performance score while maintaining strong accessibility, SEO, and best-practice metrics.`,
+  tech: [
+    "React",
+    "JavaScript",
+    "Performance Optimization",
+    "Responsive Design"
+  ],
+  link: "https://arovatechnologies.vercel.app/",
+  github: "https://github.com/devdeepsaha/arova",
+  pdf: "./projects/web/arova/Arova_Technologies.pdf",
+},
+{
+  id: 7,
+  title: "Dev Dev Studio",
+  category: "Web",
+  image: "./projects/web/devdevstudio/banner.jpg",
+  gallery: [
+    "./projects/web/devdevstudio/banner.jpg",
+    "./projects/web/devdevstudio/1.jpg",
+    "./projects/web/devdevstudio/2.jpg",
+  ],
+  description: `Built as the digital presence of my web studio to showcase services, communicate value clearly, and support outreach to businesses looking for websites and digital solutions. Designed to feel modern, direct, and conversion-focused while reflecting both technical capability and creative presentation.`,
+  tech: [
+    "React",
+    "JavaScript",
+    "CSS",
+    "UI/UX Design"
+  ],
+  link: "https://devwebstudio.vercel.app/",
+  github: "https://github.com/devdeepsaha/dev-web-studio",
+},
+
 
   // --- 3D Projects ---
   {
