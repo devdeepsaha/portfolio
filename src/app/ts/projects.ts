@@ -404,6 +404,7 @@ Through careful tuning of shader settings and compositing techniques, the projec
   },
 
   // --- Graphics Projects ---
+  
   {
     id: 19,
     title: "animation using powerpoint (notemation)",
@@ -472,6 +473,28 @@ The full magazine is attached below for reference, highlighting the versatility 
       "Image manipulation",
     ],
     pdf: "./projects/graphics/Books/magazine/magazine.pdf",
+  },
+  {
+    id: 31,
+    title: "Magazine cover (Machinage 4.0)",
+    category: "Graphics",
+    image: "./projects/graphics/Books/magazine/banner2.jpg",
+    gallery: [
+      "./projects/graphics/Books/magazine/1.1.png",
+      "./projects/graphics/Books/magazine/1.2.png",
+    ],
+    description: `The official magazine of our college, Machinage 2026, was entirely designed and edited using Microsoft PowerPoint. 
+The project involved leveraging PowerPoint's layout and design capabilities to create a polished, professional-looking magazine that includes articles, images, and advertisements. 
+Through creative use of PowerPoint's features, the magazine aims to engage readers and showcase the talents of our college community while demonstrating that powerful design can be achieved with accessible tools.
+The full magazine is attached below for reference, highlighting the versatility and potential of PowerPoint as a design platform.
+    `,
+    tech: [
+      "Microsoft PowerPoint",
+      "Layout design",
+      "Typography",
+      "Image manipulation",
+    ],
+    pdf: "./projects/graphics/Books/magazine/magazine2.pdf",
   },
   {
     id: 22,
