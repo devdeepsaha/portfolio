@@ -480,7 +480,7 @@ The full magazine is attached below for reference, highlighting the versatility 
     category: "Graphics",
     image: "./projects/graphics/Books/magazine/banner2.jpg",
     gallery: [
-      "./projects/graphics/Books/magazine/1.1.jpg",
+      "./projects/graphics/Books/magazine/1.1.png",
       "./projects/graphics/Books/magazine/1.2.png",
     ],
     description: `The official magazine of our college, Machinage 2026, was entirely designed and edited using Microsoft PowerPoint. 
