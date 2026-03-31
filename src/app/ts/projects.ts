@@ -644,4 +644,4 @@ export const heroSlides = [
   "./projects/3d/indoor/3.jpg",
 ];
 
-export const devChoiceIds = [29, 13, 2, 5, 12, 21, 19, 23, 27];
+export const devChoiceIds = [29, 13, 2, 5, 12, 21, 19, 23, 27,31];
