@@ -58,7 +58,80 @@
             "name": "Devdeep Saha Portfolio",
             "publisher": {
               "@id": "https://devdeepsaha.in/#organization"
-            }
+            },
+            "hasPart": [
+              { "@id": "https://devdeepsaha.in/#projects" },
+              { "@id": "https://devdeepsaha.in/#playground" },
+              { "@id": "https://devdeepsaha.in/#learning" }
+            ]
+          },
+
+          {
+            "@type": "ItemList",
+            "@id": "https://devdeepsaha.in/#sections",
+            "name": "Portfolio Sections",
+            "description": "Bento-grid sections of the Devdeep Saha portfolio. Each item corresponds to a tile on the home page and, where available, is deep-linkable via the URL hash.",
+            "itemListElement": [
+              {
+                "@type": "SiteNavigationElement",
+                "position": 1,
+                "name": "About",
+                "description": "About Devdeep Saha — designer who codes, based in Kolkata.",
+                "url": "https://devdeepsaha.in/"
+              },
+              {
+                "@type": "SiteNavigationElement",
+                "position": 2,
+                "name": "Tech Stack",
+                "description": "React, Next.js, Laravel, Flask, Tailwind, TypeScript, MySQL, Android, Flutter, HTML, CSS, JavaScript.",
+                "url": "https://devdeepsaha.in/"
+              },
+              {
+                "@type": "SiteNavigationElement",
+                "position": 3,
+                "name": "Resume",
+                "description": "Education, experience, and certifications. Immediate joining available.",
+                "url": "https://devdeepsaha.in/"
+              },
+              {
+                "@type": "SiteNavigationElement",
+                "@id": "https://devdeepsaha.in/#projects",
+                "position": 4,
+                "name": "Selected Projects",
+                "description": "Web, 3D, and graphics projects. Filterable by category. Each project is deep-linkable.",
+                "url": "https://devdeepsaha.in/#projects"
+              },
+              {
+                "@type": "SiteNavigationElement",
+                "position": 5,
+                "name": "My Evolution",
+                "description": "Timeline of the journey from student to designer-developer.",
+                "url": "https://devdeepsaha.in/"
+              },
+              {
+                "@type": "SiteNavigationElement",
+                "@id": "https://devdeepsaha.in/#playground",
+                "position": 6,
+                "name": "Playground",
+                "description": "Hobbies and experiments — audio, video, images, PDFs, and blog posts.",
+                "url": "https://devdeepsaha.in/#playground"
+              },
+              {
+                "@type": "SiteNavigationElement",
+                "@id": "https://devdeepsaha.in/#learning",
+                "position": 7,
+                "name": "Currently Learning",
+                "description": "Topics and skills currently being studied.",
+                "url": "https://devdeepsaha.in/#learning"
+              },
+              {
+                "@type": "SiteNavigationElement",
+                "position": 8,
+                "name": "Contact",
+                "description": "Email, GitHub, LinkedIn, and Instagram.",
+                "url": "https://devdeepsaha.in/"
+              }
+            ]
           }
         ]
       }
@@ -96,6 +169,12 @@
 
     <link rel="canonical" href="https://devdeepsaha.in/" />
     <meta name="author" content="Devdeep Saha" />
+    <meta
+      name="robots"
+      content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
+    />
+    <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
 
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://devdeepsaha.in/" />
@@ -133,6 +212,49 @@
 
   <body>
     <div id="root"></div>
+    <noscript>
+      <main>
+        <h1>Devdeep Saha — Designer Who Codes</h1>
+        <p>
+          Portfolio of Devdeep Saha, a designer and web developer based in
+          Kolkata, India. This site is built with React and needs JavaScript
+          for the full experience. Below is a text index of every section for
+          crawlers and readers without JavaScript.
+        </p>
+        <nav aria-label="Portfolio sections">
+          <ul>
+            <li>About — designer who codes, based in Kolkata, IN.</li>
+            <li>
+              Tech Stack — React, Next.js, Laravel, Flask, Tailwind, TypeScript,
+              MySQL, Android Studio, Flutter, HTML, CSS, JavaScript.
+            </li>
+            <li>Resume — education, experience, certifications. Available for immediate joining.</li>
+            <li>
+              <a href="https://devdeepsaha.in/#projects">Selected Projects</a> —
+              web, 3D, and graphics work. Each project has a deep-linkable URL
+              of the form <code>#projects/&lt;id&gt;</code>.
+            </li>
+            <li>My Evolution — timeline of growth as a designer-developer.</li>
+            <li>
+              <a href="https://devdeepsaha.in/#playground">Playground</a> —
+              hobbies and experiments: audio, video, images, PDFs, and blog posts.
+              Individual items deep-link via <code>#playground/&lt;tab&gt;/&lt;id&gt;</code>.
+            </li>
+            <li>
+              <a href="https://devdeepsaha.in/#learning">Currently Learning</a> —
+              topics and skills currently being studied.
+            </li>
+            <li>
+              Contact —
+              <a href="mailto:devdeep120205@gmail.com">devdeep120205@gmail.com</a>,
+              <a href="https://github.com/devdeepsaha">GitHub</a>,
+              <a href="https://www.linkedin.com/in/devdeep-saha-3b4570260/">LinkedIn</a>,
+              <a href="https://instagram.com/devdeepsaha">Instagram</a>.
+            </li>
+          </ul>
+        </nav>
+      </main>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

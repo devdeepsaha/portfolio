@@ -129,8 +129,10 @@ export function NameTile() {
   return (
     <>
       {/* --- TILE FACE --- */}
-      <motion.div
-        className="bg-card text-card-foreground border border-border rounded-[2rem] p-6 sm:p-8 flex flex-col justify-center h-full min-h-[220px] relative overflow-hidden group transition-colors duration-300 cursor-pointer shadow-sm hover:shadow-lg hover:border-primary/50"
+      <motion.button
+        type="button"
+        aria-label="About Devdeep Saha — designer who codes, based in Kolkata"
+        className="bg-card text-card-foreground border border-border rounded-[2rem] p-6 sm:p-8 flex flex-col justify-center h-full w-full min-h-[220px] relative overflow-hidden group transition-colors duration-300 cursor-pointer shadow-sm hover:shadow-lg hover:border-primary/50 text-left"
         whileHover={{ scale: 1.01 }}
         onClick={() => setIsOpen(true)}
       >
@@ -157,7 +159,7 @@ export function NameTile() {
           className="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-all text-current"
           size={24}
         />
-      </motion.div>
+      </motion.button>
 
       {/* --- MODAL --- */}
       <Portal>
@@ -172,6 +174,9 @@ export function NameTile() {
               onClick={() => setIsOpen(false)}
             >
               <motion.div
+                role="dialog"
+                aria-modal="true"
+                aria-label="About Devdeep Saha"
                 // FIXED: Full screen on mobile (100dvh, no border, no radius). Floating on md+.
                 className="bg-card border-none md:border border-border text-card-foreground rounded-none md:rounded-[2.5rem] sm:rounded-[3rem] p-6 pt-20 sm:p-16 max-w-5xl w-full relative h-[100dvh] md:h-auto md:max-h-[90vh] overflow-y-auto no-scrollbar md:shadow-2xl"
                 initial={{ scale: 0.95, opacity: 0, y: 20 }}

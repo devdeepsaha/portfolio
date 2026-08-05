@@ -362,12 +362,17 @@ export function PlaygroundTile() {
       <style>{styles}</style>
 
       {/* TILE */}
-      <motion.div
-        ref={tileRef}
+      <motion.a
+        ref={tileRef as any}
+        href="#playground"
+        aria-label="Open Playground — audio, video, images, PDFs and blog posts"
         onMouseMove={handleMouseMove}
-        className="bg-card border border-border relative rounded-2xl overflow-hidden cursor-pointer group h-full min-h-[120px] flex flex-col justify-between shadow-sm hover:shadow-md hover:border-blue-500/30 transition-all"
+        className="bg-card border border-border relative rounded-2xl overflow-hidden cursor-pointer group h-full min-h-[120px] flex flex-col justify-between shadow-sm hover:shadow-md hover:border-blue-500/30 transition-all no-underline text-inherit"
         whileHover={{ scale: 1.02 }}
-        onClick={() => setIsOpen(true)}
+        onClick={(e) => {
+          e.preventDefault();
+          setIsOpen(true);
+        }}
       >
         <div
           className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
@@ -398,7 +403,7 @@ export function PlaygroundTile() {
             <span className="text-blue-500">Ground</span>
           </h3>
         </div>
-      </motion.div>
+      </motion.a>
 
       {/* PORTAL */}
       <Portal>
@@ -415,6 +420,9 @@ export function PlaygroundTile() {
               onClick={closeMain}
             >
               <motion.div
+                role="dialog"
+                aria-modal="true"
+                aria-label="Playground gallery"
                 className="bg-card text-card-foreground rounded-none w-screen h-screen lg:h-[98vh] lg:w-[98vw] lg:rounded-xl flex flex-col relative overflow-hidden"
                 initial={{ scale: 0.95, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
@@ -554,6 +562,9 @@ export function PlaygroundTile() {
             >
               <motion.div
                 layoutId={selectedItem.id}
+                role="dialog"
+                aria-modal="true"
+                aria-label={selectedItem.title}
                 className="w-screen h-screen lg:h-[95vh] lg:w-[95vw] lg:rounded-xl bg-card overflow-hidden relative flex flex-col border-none lg:border border-border"
                 onClick={(e) => e.stopPropagation()}
               >

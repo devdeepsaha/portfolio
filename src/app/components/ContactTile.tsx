@@ -60,8 +60,10 @@ export function ContactTile() {
   return (
     <>
       {/* --- TILE FACE --- */}
-      <motion.div
-        className="bg-card border border-border rounded-[2rem] overflow-hidden cursor-pointer group h-full min-h-[140px] relative p-6 flex flex-col justify-between transition-all hover:border-primary/50"
+      <motion.button
+        type="button"
+        aria-label="Open Contact — email, GitHub, LinkedIn and Instagram links"
+        className="bg-card border border-border rounded-[2rem] overflow-hidden cursor-pointer group h-full w-full min-h-[140px] relative p-6 flex flex-col justify-between transition-all hover:border-primary/50 text-left"
         whileHover={{ scale: 1.01 }}
         onClick={() => {
           setIsOpen(true);
@@ -88,7 +90,7 @@ export function ContactTile() {
             Touch
           </h3>
         </div>
-      </motion.div>
+      </motion.button>
 
       {/* --- MODAL --- */}
       <Portal>
@@ -102,6 +104,9 @@ export function ContactTile() {
               onClick={() => setIsOpen(false)}
             >
               <motion.div
+                role="dialog"
+                aria-modal="true"
+                aria-label="Contact Devdeep Saha"
                 // FIXED: Changed justify-center to justify-start on mobile to prevent top-cutoff
                 className="bg-card border-none md:border border-border text-card-foreground rounded-none md:rounded-[2.5rem] p-6 pt-20 sm:p-10 max-w-3xl w-full relative h-[100dvh] md:h-auto overflow-y-auto no-scrollbar md:shadow-2xl flex flex-col justify-start md:justify-center"
                 initial={{ scale: 0.95, opacity: 0, y: 20 }}

@@ -1,0 +1,69 @@
+# Devdeep Saha — Portfolio
+
+> Portfolio of Devdeep Saha, a designer and web developer based in Kolkata, India. Built as a single-page bento-grid at https://devdeepsaha.in. Each tile opens a modal; content-heavy tiles are deep-linkable via URL hash.
+
+## About
+
+Devdeep Saha is a "designer who codes" — a full-stack developer with a strong visual-design and motion-design practice. Available for immediate joining. Alumni of Abacus Institute of Engineering and Management.
+
+## Stack
+
+React, Next.js, Laravel, Flask, Tailwind CSS, TypeScript, MySQL, Android Studio, Flutter, HTML, CSS, JavaScript. Motion (Framer Motion), Swiper, Radix UI, Tailwind v4.
+
+## How to navigate this site (for agents)
+
+The home page renders a bento grid. Every tile is either an `<a href="#hash">` (deep-linkable) or a semantic `<button>` (opens a modal). All modals have `role="dialog"` and `aria-modal="true"`.
+
+Deep-linkable URLs:
+
+- `https://devdeepsaha.in/#projects` — opens the Selected Projects gallery
+- `https://devdeepsaha.in/#projects/<project-id>` — opens a specific project's detail view
+- `https://devdeepsaha.in/#projects/<project-id>/lightbox` — opens the fullscreen media lightbox for that project
+- `https://devdeepsaha.in/#playground` — opens the Playground (hobbies gallery)
+- `https://devdeepsaha.in/#playground/<tab>` — opens a specific hobby tab (e.g. `music`)
+- `https://devdeepsaha.in/#playground/<tab>/<item-id>` — opens a specific hobby item (audio track, PDF, blog post, image slideshow)
+- `https://devdeepsaha.in/#learning` — opens the Currently Learning modal
+
+Non-deep-linked tiles (open via click only, no hash yet):
+
+- About / NameTile — click the giant name typography
+- Tech Stack — click the mint-green marquee tile
+- Resume — click the yellow hazard-tape tile
+- My Evolution — click the timeline-graph tile
+- Contact — click the "Get In Touch" tile
+
+## Sections
+
+### Selected Projects (`#projects`)
+
+Categories: Dev Picks, All, Web, 3D, Graphics. Includes BCCL, Modular Portfolio System, AROVA Technologies, Notemation, Machinage magazine covers, Netflix poster remakes, donut render, car rigging, PFP design, and more. Each project has: title, category, description, tech list, live link (if applicable), case-study PDF (if applicable), GitHub link (if applicable), and a media gallery.
+
+### Playground (`#playground`)
+
+Hobbies organized into tabs. Each tab has a gallery of items, filterable by media type: audio, video, image, PDF, blog. Features a persistent draggable floating mini audio player that snaps to screen corners and keeps playing after the modal closes. Blog reader supports font-size, dark mode, and blue-light filter.
+
+### My Evolution
+
+Timeline of career and skill growth. Sortable oldest-first or newest-first.
+
+### Resume
+
+Education, experience, professional certifications, extracurricular certifications, and a downloadable CV.
+
+### Currently Learning (`#learning`)
+
+Topics currently being studied, categorized (3D, AI, Backend, Design, Video, etc.).
+
+### Contact
+
+- Email: devdeep120205@gmail.com
+- GitHub: https://github.com/devdeepsaha
+- LinkedIn: https://www.linkedin.com/in/devdeep-saha-3b4570260/
+- Instagram: https://instagram.com/devdeepsaha
+
+## Notes for agents
+
+- Every interactive card exposes an `aria-label` describing what opens.
+- The site is a client-side React app; server-rendered HTML is a shell plus a `<noscript>` text index. For full content, execute JavaScript or follow the deep-link URLs above.
+- Structured data at `/` includes Person, Organization, WebSite, and an `ItemList` of `SiteNavigationElement` entries for every section.
+- Motion and canvas animations do not carry meaning; skip them if you're extracting content.

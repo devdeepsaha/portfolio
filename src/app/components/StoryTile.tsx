@@ -30,8 +30,10 @@ export function StoryTile() {
   return (
     <>
       {/* --- TILE FACE: MINIMAL GRAPH --- */}
-      <motion.div
-        className="bg-card border border-border rounded-[2rem] overflow-hidden cursor-pointer group h-full relative flex flex-col justify-between shadow-lg transition-all duration-500 hover:shadow-2xl hover:border-emerald-500/20 dark:hover:border-accent/30"
+      <motion.button
+        type="button"
+        aria-label="Open My Evolution — a timeline of how I've grown as a designer and developer"
+        className="bg-card border border-border rounded-[2rem] overflow-hidden cursor-pointer group h-full w-full relative flex flex-col justify-between shadow-lg transition-all duration-500 hover:shadow-2xl hover:border-emerald-500/20 dark:hover:border-accent/30 text-left"
         whileHover={{ scale: 1.005 }}
         onClick={() => setIsOpen(true)}
       >
@@ -109,7 +111,7 @@ export function StoryTile() {
             Read Story <ArrowRight size={14} />
           </div>
         </div>
-      </motion.div>
+      </motion.button>
 
       {/* --- MODAL: TIMELINE --- */}
       <Portal>
@@ -124,6 +126,9 @@ export function StoryTile() {
               onClick={() => setIsOpen(false)}
             >
               <motion.div
+                role="dialog"
+                aria-modal="true"
+                aria-label="My Evolution — timeline"
                 // FIXED: Full screen on mobile (100dvh, no border, no radius). Floating on md+.
                 className="bg-card border-none md:border border-border text-card-foreground rounded-none md:rounded-[2.5rem] p-6 pt-20 sm:p-12 max-w-5xl w-full relative h-[100dvh] md:h-[90vh] overflow-y-auto no-scrollbar md:shadow-2xl"
                 initial={{ scale: 0.95, opacity: 0, y: 20 }}

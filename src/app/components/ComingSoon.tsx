@@ -45,8 +45,10 @@ export function ComingSoon() {
       <style>{styles}</style>
 
       {/* --- TILE FACE --- */}
-      <motion.div
-        className="bg-card border border-border relative rounded-[2rem] overflow-hidden cursor-pointer group h-full min-h-[140px] flex flex-col justify-between shadow-sm transition-all hover:shadow-md hover:border-blue-500/30"
+      <motion.button
+        type="button"
+        aria-label="Open Playground placeholder — work in progress"
+        className="bg-card border border-border relative rounded-[2rem] overflow-hidden cursor-pointer group h-full w-full min-h-[140px] flex flex-col justify-between shadow-sm transition-all hover:shadow-md hover:border-blue-500/30 text-left"
         whileHover={{ scale: 1.01 }}
         whileTap={{ scale: 0.98 }}
         onClick={() => setIsOpen(true)}
@@ -78,7 +80,7 @@ export function ComingSoon() {
             <span className="text-blue-500 dark:text-blue-400">Ground</span>
           </h3>
         </div>
-      </motion.div>
+      </motion.button>
 
       {/* --- MODAL --- */}
       <Portal>
@@ -93,6 +95,9 @@ export function ComingSoon() {
               onClick={handleClose}
             >
               <motion.div
+                role="dialog"
+                aria-modal="true"
+                aria-label="Playground — work in progress"
                 // GPU-accelerated entrance transform
                 className="bg-card border-none md:border border-border text-card-foreground rounded-none md:rounded-[3rem] p-6 pt-20 sm:p-12 max-w-2xl w-full relative h-[100dvh] md:h-auto md:max-h-[85vh] md:shadow-2xl overflow-y-auto no-scrollbar flex flex-col items-center justify-center"
                 initial={{ scale: 0.95, opacity: 0, y: 20 }}

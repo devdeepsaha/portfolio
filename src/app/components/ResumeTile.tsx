@@ -55,8 +55,10 @@ export function ResumeTile() {
       <style>{cautionStyles}</style>
 
       {/* --- TILE FACE --- */}
-      <motion.div
-        className="relative overflow-hidden cursor-pointer group h-full min-h-[220px] flex flex-col justify-between shadow-lg rounded-[2rem] border border-black/5"
+      <motion.button
+        type="button"
+        aria-label="Open Resume — education, experience and certifications"
+        className="relative overflow-hidden cursor-pointer group h-full w-full min-h-[220px] flex flex-col justify-between shadow-lg rounded-[2rem] border border-black/5 text-left"
         style={{ backgroundColor: "#FFD700" }}
         whileHover={{ scale: 1.01 }}
         onClick={() => {
@@ -104,7 +106,7 @@ export function ResumeTile() {
             </div>
           </div>
         </div>
-      </motion.div>
+      </motion.button>
 
       {/* --- MODAL --- */}
       <Portal>
@@ -119,6 +121,9 @@ export function ResumeTile() {
               onClick={() => setIsOpen(false)}
             >
               <motion.div
+                role="dialog"
+                aria-modal="true"
+                aria-label="Resume — career timeline, education, experience"
                 // FIXED: Full screen on mobile (100dvh, no border, no radius). Floating on md+.
                 className="bg-card border-none md:border border-border text-card-foreground rounded-none md:rounded-[2.5rem] p-6 pt-20 sm:p-12 max-w-5xl w-full relative h-[100dvh] md:h-auto md:max-h-[90vh] overflow-y-auto no-scrollbar md:shadow-2xl"
                 initial={{ scale: 0.95, opacity: 0, y: 20 }}

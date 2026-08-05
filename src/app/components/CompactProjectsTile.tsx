@@ -238,10 +238,15 @@ export function CompactProjectsTile() {
       <style>{swiperStyles}</style>
 
       {/* --- TILE FACE --- */}
-      <motion.div
-        className="h-full w-full min-h-[300px] md:min-h-[500px] relative rounded-[2rem] overflow-hidden cursor-pointer group"
+      <motion.a
+        href="#projects"
+        aria-label="Open Selected Projects — featured web, 3D and graphics work"
+        className="h-full w-full min-h-[300px] md:min-h-[500px] relative rounded-[2rem] overflow-hidden cursor-pointer group block no-underline text-inherit"
         whileHover={{ scale: 1.01 }}
-        onClick={() => setIsOpen(true)}
+        onClick={(e) => {
+          e.preventDefault();
+          setIsOpen(true);
+        }}
       >
         <AnimatePresence mode="wait">
           {heroSlides.length > 0 && (
@@ -279,7 +284,7 @@ export function CompactProjectsTile() {
             </h3>
           </div>
         </div>
-      </motion.div>
+      </motion.a>
 
       {/* --- MAIN MODAL --- */}
       <Portal>
@@ -294,6 +299,9 @@ export function CompactProjectsTile() {
               onClick={closeMain}
             >
               <motion.div
+                role="dialog"
+                aria-modal="true"
+                aria-label={selectedProject ? selectedProject.title : "Work gallery"}
                 className="bg-card border-none md:border border-border text-card-foreground rounded-none md:rounded-[2.5rem] p-6 sm:p-10 max-w-7xl w-full h-[100dvh] md:h-[90vh] flex flex-col md:shadow-2xl overflow-hidden relative"
                 initial={{ scale: 0.95, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
@@ -335,11 +343,16 @@ export function CompactProjectsTile() {
                     <div className="overflow-y-auto pr-2 pb-4 no-scrollbar">
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         {filteredProjects.map((project) => (
-                          <motion.div
+                          <motion.a
                             layout
                             key={project.id}
-                            onClick={() => openProject(project)}
-                            className="group cursor-pointer bg-secondary/20 rounded-[2rem] p-3 border border-border hover:border-primary/50 transition-colors"
+                            href={`#projects/${project.id}`}
+                            aria-label={`Open ${project.title} case study`}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              openProject(project);
+                            }}
+                            className="group cursor-pointer bg-secondary/20 rounded-[2rem] p-3 border border-border hover:border-primary/50 transition-colors block no-underline text-inherit"
                           >
                             <div className="aspect-video rounded-[1.5rem] overflow-hidden mb-4 relative">
                               <img
@@ -351,7 +364,7 @@ export function CompactProjectsTile() {
                             <h3 className="px-2 text-2xl font-black text-foreground uppercase">
                               {project.title}
                             </h3>
-                          </motion.div>
+                          </motion.a>
                         ))}
                       </div>
                     </div>
@@ -498,6 +511,9 @@ export function CompactProjectsTile() {
         <AnimatePresence>
           {isLightboxOpen && selectedProject && (
             <motion.div
+              role="dialog"
+              aria-modal="true"
+              aria-label={`${selectedProject.title} — fullscreen gallery`}
               className="fixed inset-0 z-[10000] bg-black/95 backdrop-blur-3xl flex flex-col justify-between"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}

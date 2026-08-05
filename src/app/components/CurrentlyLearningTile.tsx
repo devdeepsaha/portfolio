@@ -77,10 +77,15 @@ export function CurrentlyLearningTile() {
   return (
     <>
       {/* --- TILE FACE --- */}
-      <motion.div
-        className="bg-card border border-border rounded-[2rem] overflow-hidden cursor-pointer group h-full min-h-[180px] relative p-6 flex flex-col justify-between transition-colors hover:border-primary/50"
+      <motion.a
+        href="#learning"
+        aria-label="Open Currently Learning — skills and topics I'm actively studying"
+        className="bg-card border border-border rounded-[2rem] overflow-hidden cursor-pointer group h-full min-h-[180px] relative p-6 flex flex-col justify-between transition-colors hover:border-primary/50 block no-underline text-inherit"
         whileHover={{ scale: 1.01 }}
-        onClick={() => setIsOpen(true)}
+        onClick={(e) => {
+          e.preventDefault();
+          setIsOpen(true);
+        }}
       >
         <div className="flex justify-between items-start">
           <div className="flex items-center gap-2">
@@ -129,7 +134,7 @@ export function CurrentlyLearningTile() {
             );
           })}
         </div>
-      </motion.div>
+      </motion.a>
 
       {/* --- MODAL --- */}
       <Portal>
@@ -144,6 +149,9 @@ export function CurrentlyLearningTile() {
               onClick={closeLearning}
             >
               <motion.div
+                role="dialog"
+                aria-modal="true"
+                aria-label="Currently learning"
                 // FIXED: Full screen height on mobile (100dvh)
                 className="bg-card border-none md:border border-border text-card-foreground rounded-none md:rounded-[2.5rem] p-6 pt-20 sm:p-10 max-w-2xl w-full relative h-[100dvh] md:h-auto md:max-h-[85vh] md:shadow-2xl overflow-y-auto no-scrollbar"
                 initial={{ scale: 0.95, opacity: 0, y: 20 }}

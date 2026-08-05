@@ -34,8 +34,10 @@ export function TechStackTile() {
 
   return (
     <>
-      <motion.div
-        className="h-full w-full p-6 flex flex-col justify-between cursor-pointer group relative overflow-hidden transition-colors"
+      <motion.button
+        type="button"
+        aria-label="Open Tech Stack — React, Next.js, Laravel, Flask, TypeScript and more"
+        className="h-full w-full p-6 flex flex-col justify-between cursor-pointer group relative overflow-hidden transition-colors text-left bg-transparent"
         whileHover={{ scale: 1.01 }}
         onClick={() => setIsOpen(true)}
       >
@@ -78,7 +80,7 @@ export function TechStackTile() {
         </div>
 
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
-      </motion.div>
+      </motion.button>
 
       <Portal>
         <AnimatePresence>
@@ -92,6 +94,9 @@ export function TechStackTile() {
               onClick={() => setIsOpen(false)}
             >
               <motion.div
+                role="dialog"
+                aria-modal="true"
+                aria-label="Tech stack"
                 // FIXED: Full screen on mobile (100dvh, no border, no radius). Floating on md+.
                 className="bg-card border-none md:border border-border text-card-foreground rounded-none md:rounded-[2.5rem] p-6 pt-20 sm:p-12 max-w-3xl w-full relative h-[100dvh] md:h-auto md:max-h-[90vh] overflow-y-auto no-scrollbar md:shadow-2xl"
                 initial={{ scale: 0.95, opacity: 0, y: 20 }}
