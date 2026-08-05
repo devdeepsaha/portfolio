@@ -152,6 +152,16 @@
       gtag("config", "G-61S2EXE0DP");
     </script>
     <meta charset="UTF-8" />
+    <!--
+      CRITICAL: forces every relative URL in the app (asset paths inside
+      data files like "./projects/foo.jpg", plus favicon, plus any src
+      that doesn't start with "/") to resolve against the site root
+      regardless of what the current URL path happens to be. Without this,
+      landing on /projects/arova-technologies (or any non-root path) makes
+      the browser resolve "./projects/foo.jpg" to
+      "/projects/arova-technologies/projects/foo.jpg" — 404 everywhere.
+    -->
+    <base href="/" />
     <meta
       name="google-site-verification"
       content="PAYCmm-w6R0jL1vy_FvKzmcHT5874IS4KVVe1rbLXNQ"
