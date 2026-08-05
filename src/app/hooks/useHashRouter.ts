@@ -55,7 +55,18 @@ export function useHashRouter(
         // Push directly via history API. React Router's BrowserRouter doesn't
         // observe raw pushState calls, so the app doesn't re-render — the
         // modal stays open on top of whatever was rendering before.
-        window.history.pushState({ [OWNED_MARKER]: true }, "", path);
+        //
+        // CRITICAL: hash-style paths must be prefixed with "#". Passing a
+        // bare string like "playground/filmography/2" makes the browser
+        // resolve it as a relative URL against the current document URL —
+        // which corrupts the URL and cascades into 404s for every relative
+        // image, video, and audio path in the app.
+        const pushTarget = isRealPath ? path : `#${path}`;
+        window.history.pushState(
+          { [OWNED_MARKER]: true },
+          "",
+          pushTarget,
+        );
       }
     }
   }, [isOpen, path]);
