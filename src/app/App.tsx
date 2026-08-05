@@ -9,6 +9,7 @@ import { StoryTile } from "./components/StoryTile";
 import { CurrentlyLearningTile } from "./components/CurrentlyLearningTile";
 import { ClockTile } from "./components/ClockTile";
 import { ThemeToggle } from "./components/ThemeToggle";
+import { SEOContentIndex } from "./components/SEOContentIndex";
 import { Helmet } from "react-helmet-async";
 
 export default function App() {
@@ -129,6 +130,8 @@ export default function App() {
             </section>
           </div>
         </main>
+
+        <SEOContentIndex />
       </div>
     </>
   );
