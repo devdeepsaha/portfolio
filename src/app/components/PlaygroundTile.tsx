@@ -20,9 +20,11 @@ import {
   Volume2,
   ChevronDown,
 } from "lucide-react";
+import { useLocation } from "react-router";
 import { Portal } from "./ui/portal";
 import { myHobbies, HobbyItem, MediaType } from "../ts/hobbies";
 import { useHashRouter, useHashInit } from "../hooks/useHashRouter";
+import { slugify } from "../lib/slugs";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 type Corner = "br" | "bl" | "tr" | "tl";
@@ -156,6 +158,9 @@ export function PlaygroundTile() {
 
  
 
+  // Legacy hash URLs (#playground, #playground/<tab>, #playground/<tab>/<id>)
+  // still open the modal so old shared links keep working. The new canonical
+  // form is the real path /playground/<tab>/<item-slug>.
   const initConfig = useMemo(
     () => [
       {
@@ -192,15 +197,45 @@ export function PlaygroundTile() {
 
   useHashInit(initConfig);
 
+  // Real-path cold-load: someone visiting /playground/<tab>/<slug> directly
+  // (deep link, refresh, browser back to a modal URL) should land on home
+  // with the Playground modal open and the right tab + item selected.
+  const location = useLocation();
+  useEffect(() => {
+    const m = location.pathname.match(
+      /^\/playground(?:\/([^/]+)(?:\/([^/]+))?)?\/?$/,
+    );
+    if (!m) return;
+    const [, tabParam, itemSlug] = m;
+    setIsOpen(true);
+    if (tabParam) {
+      const hobby = myHobbies.find((h) => h.id === tabParam);
+      if (hobby) {
+        setActiveTab(hobby.id);
+        if (itemSlug) {
+          const item = hobby.gallery.find(
+            (i) => slugify(i.title) === itemSlug,
+          );
+          if (item) setSelectedItem(item);
+        }
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname]);
+
   const closeMain = useHashRouter(
     isOpen,
-    "/blog",
+    "/playground",
     useCallback(() => setIsOpen(false), []),
   );
 
+  const itemPath = selectedItem
+    ? `/playground/${activeTab}/${slugify(selectedItem.title)}`
+    : `/playground/${activeTab}`;
+
   const closeLightbox = useHashRouter(
     !!selectedItem,
-    `playground/${activeTab}/${selectedItem?.id}`,
+    itemPath,
     useCallback(() => setSelectedItem(null), [activeTab]),
   );
 
@@ -364,7 +399,7 @@ export function PlaygroundTile() {
       {/* TILE */}
       <motion.a
         ref={tileRef as any}
-        href="/blog"
+        href="/playground"
         aria-label="Open Playground — audio, video, images, PDFs and blog posts"
         onMouseMove={handleMouseMove}
         className="bg-card border border-border relative rounded-2xl overflow-hidden cursor-pointer group h-full min-h-[120px] flex flex-col justify-between shadow-sm hover:shadow-md hover:border-blue-500/30 transition-all no-underline text-inherit"

@@ -25,6 +25,12 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/blog/:slug" element={<BlogPage />} />
             <Route path="/story" element={<StoryPage />} />
             <Route path="/learning" element={<LearningPage />} />
+            {/* Playground preserves the bento modal experience on cold load —
+                the route renders App (home) and PlaygroundTile detects the
+                URL and opens the modal with the right tab + item. */}
+            <Route path="/playground" element={<App />} />
+            <Route path="/playground/:tab" element={<App />} />
+            <Route path="/playground/:tab/:item" element={<App />} />
             {/* Fallback: unknown paths (corrupted URLs, old deep links,
                 typos) bounce back to the bento home so the URL bar stays
                 clean and asset resolution stays sane. */}
