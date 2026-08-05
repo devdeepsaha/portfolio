@@ -166,22 +166,29 @@ export function CompactProjectsTile() {
 
   useHashInit(initConfig);
 
-  // Router bindings to handle the back button state changes
+  // Router bindings to handle the back button state changes.
+  // Top-level modal and per-project detail push real URLs so the address bar
+  // shows /projects and /projects/<slug>. The lightbox stays hash-based
+  // because it doesn't have a real route.
   const closeMain = useHashRouter(
     isOpen,
-    "projects",
+    "/projects",
     useCallback(() => setIsOpen(false), []),
   );
 
+  const projectPathBase = selectedProject
+    ? `/projects/${projectSlug(selectedProject)}`
+    : "/projects";
+
   const closeProject = useHashRouter(
     !!selectedProject && !isLightboxOpen,
-    `projects/${selectedProject?.id}`,
+    projectPathBase,
     useCallback(() => setSelectedProject(null), []),
   );
 
   const closeLightbox = useHashRouter(
     isLightboxOpen,
-    `projects/${selectedProject?.id}/lightbox`,
+    `${projectPathBase}#lightbox`,
     useCallback(() => setIsLightboxOpen(false), [selectedProject]),
   );
   // ----------------------------------

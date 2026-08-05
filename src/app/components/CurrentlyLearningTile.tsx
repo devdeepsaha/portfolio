@@ -67,10 +67,10 @@ const getCategoryStyles = (category: string) => {
 export function CurrentlyLearningTile() {
   const [isOpen, setIsOpen] = useState(false);
 
-  // FIXED: Deep linking URL hash: /#learning
+  // Deep linking URL: /learning
   const closeLearning = useHashRouter(
     isOpen,
-    "learning",
+    "/learning",
     useCallback(() => setIsOpen(false), []),
   );
 

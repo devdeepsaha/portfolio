@@ -6,47 +6,71 @@ declare global {
   }
 }
 
+/**
+ * Modal-URL router.
+ *
+ * `path` can be either:
+ *   - a real path starting with "/" (e.g. "/blog") — pushed as a full URL
+ *   - a bare string (e.g. "projects/29/lightbox") — pushed as "#projects/29/lightbox"
+ *
+ * We keep hash form for nested modal state (project detail, lightbox, playground
+ * item) because those states don't have real routes yet. Top-level tile modals
+ * push real paths so the URL bar shows /blog, /projects, /learning instead of
+ * lying with #playground.
+ */
 export function useHashRouter(
   isOpen: boolean,
-  hashPath: string,
+  path: string,
   onBack: () => void,
 ) {
   const prevIsOpen = useRef(false);
+  const isRealPath = path.startsWith("/");
+
+  const readCurrent = () =>
+    isRealPath
+      ? window.location.pathname + window.location.search
+      : window.location.hash.replace(/^#/, "");
+
+  const matches = (current: string) =>
+    current === path || current.startsWith(path + "/");
 
   useEffect(() => {
     const wasOpen = prevIsOpen.current;
     prevIsOpen.current = isOpen;
 
     if (isOpen && !wasOpen) {
-      const current = window.location.hash.replace(/^#/, "");
-      if (current !== hashPath && !current.startsWith(hashPath + "/")) {
-        window.history.pushState(null, "", `#${hashPath}`);
+      const current = readCurrent();
+      if (!matches(current)) {
+        // Push directly via history API. React Router's BrowserRouter doesn't
+        // observe raw pushState calls, so the app doesn't re-render — the
+        // modal stays open on top of whatever was rendering before.
+        window.history.pushState(null, "", path);
       }
     }
-  }, [isOpen, hashPath]);
+  }, [isOpen, path]);
 
   useEffect(() => {
     if (!isOpen) return;
 
     const onPopState = () => {
-      const current = window.location.hash.replace(/^#/, "");
-      if (current !== hashPath && !current.startsWith(hashPath + "/")) {
+      const current = readCurrent();
+      if (!matches(current)) {
         onBack();
       }
     };
 
     window.addEventListener("popstate", onPopState);
     return () => window.removeEventListener("popstate", onPopState);
-  }, [isOpen, hashPath, onBack]);
+  }, [isOpen, path, onBack]);
 
   const close = useCallback(() => {
-    const current = window.location.hash.replace(/^#/, "");
-    if (current === hashPath || current.startsWith(hashPath + "/")) {
+    const current = readCurrent();
+    if (matches(current)) {
       window.history.back();
     } else {
       onBack();
     }
-  }, [hashPath, onBack]);
+  }, [path, onBack]);
 
   return close;
 }

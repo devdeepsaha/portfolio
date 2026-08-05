@@ -194,7 +194,7 @@ export function PlaygroundTile() {
 
   const closeMain = useHashRouter(
     isOpen,
-    "playground",
+    "/blog",
     useCallback(() => setIsOpen(false), []),
   );
 
