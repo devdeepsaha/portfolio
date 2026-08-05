@@ -1,10 +1,20 @@
 import { useEffect, useRef, useCallback } from "react";
+import { useNavigate } from "react-router";
 
 declare global {
   interface Window {
     gtag?: (...args: any[]) => void;
   }
 }
+
+// Marker we stamp onto pushState entries we own. If the current
+// history entry carries this marker, `history.back()` is guaranteed
+// to land on whatever came before we opened the modal (typically the
+// home page). If it doesn't, this tab loaded straight into the modal
+// URL (fresh tab from a middle-click or a shared link) and there's
+// no previous entry to go back to — closing must navigate to `/`
+// explicitly.
+const OWNED_MARKER = "__portfolio_modal_owned__";
 
 /**
  * Modal-URL router.
@@ -25,6 +35,7 @@ export function useHashRouter(
 ) {
   const prevIsOpen = useRef(false);
   const isRealPath = path.startsWith("/");
+  const navigate = useNavigate();
 
   const readCurrent = () =>
     isRealPath
@@ -44,7 +55,7 @@ export function useHashRouter(
         // Push directly via history API. React Router's BrowserRouter doesn't
         // observe raw pushState calls, so the app doesn't re-render — the
         // modal stays open on top of whatever was rendering before.
-        window.history.pushState(null, "", path);
+        window.history.pushState({ [OWNED_MARKER]: true }, "", path);
       }
     }
   }, [isOpen, path]);
@@ -66,11 +77,21 @@ export function useHashRouter(
   const close = useCallback(() => {
     const current = readCurrent();
     if (matches(current)) {
-      window.history.back();
+      const ownedByUs =
+        window.history.state && (window.history.state as any)[OWNED_MARKER];
+      if (ownedByUs) {
+        // We pushed the current entry ourselves — safe to unwind.
+        window.history.back();
+      } else {
+        // Fresh tab / cold link landed straight on the modal URL. Nothing to
+        // go back to. Navigate home via React Router (client-side, no reload).
+        onBack();
+        navigate("/", { replace: true });
+      }
     } else {
       onBack();
     }
-  }, [path, onBack]);
+  }, [path, onBack, navigate]);
 
   return close;
 }
@@ -104,9 +125,17 @@ export function useHashInit(
             const baseUrl = window.location.pathname + window.location.search;
             window.history.replaceState(null, "", baseUrl);
             for (const p of parents) {
-              window.history.pushState(null, "", `#${p}`);
+              window.history.pushState(
+                { [OWNED_MARKER]: true },
+                "",
+                `#${p}`,
+              );
             }
-            window.history.pushState(null, "", `#${currentHash}`);
+            window.history.pushState(
+              { [OWNED_MARKER]: true },
+              "",
+              `#${currentHash}`,
+            );
           }
           setTimeout(() => {
             entry.onMatch(m);
