@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { Helmet } from "react-helmet-async";
 import {
   X,
   Box,
@@ -14,6 +15,7 @@ import { Portal } from "./ui/portal";
 import { myLearning } from "../ts/learning";
 // FIXED: Using the powerful deep-link hook
 import { useHashRouter } from "../hooks/useHashRouter";
+import { canonical } from "../lib/slugs";
 
 const getCategoryStyles = (category: string) => {
   switch (category) {
@@ -76,15 +78,23 @@ export function CurrentlyLearningTile() {
 
   return (
     <>
+      {isOpen && (
+        <Helmet>
+          <link rel="canonical" href={canonical("/learning")} />
+          <title>Currently Learning — Devdeep Saha</title>
+        </Helmet>
+      )}
       {/* --- TILE FACE --- */}
       <motion.a
-        href="#learning"
+        href="/learning"
         aria-label="Open Currently Learning — skills and topics I'm actively studying"
         className="bg-card border border-border rounded-[2rem] overflow-hidden cursor-pointer group h-full min-h-[180px] relative p-6 flex flex-col justify-between transition-colors hover:border-primary/50 block no-underline text-inherit"
         whileHover={{ scale: 1.01 }}
         onClick={(e) => {
-          e.preventDefault();
-          setIsOpen(true);
+          if (e.button === 0 && !e.metaKey && !e.ctrlKey && !e.shiftKey) {
+            e.preventDefault();
+            setIsOpen(true);
+          }
         }}
       >
         <div className="flex justify-between items-start">

@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react"; // FIXED: Imported useCallback
 import { motion, AnimatePresence } from "motion/react";
+import { Helmet } from "react-helmet-async";
 import {
   X,
   History,
@@ -10,6 +11,7 @@ import {
 import { Portal } from "./ui/portal";
 import { myJourney } from "../ts/story";
 import { useBackButton } from "../hooks/useBackButton";
+import { canonical } from "../lib/slugs";
 
 export function StoryTile() {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,6 +31,12 @@ export function StoryTile() {
 
   return (
     <>
+      {isOpen && (
+        <Helmet>
+          <link rel="canonical" href={canonical("/story")} />
+          <title>My Evolution — Devdeep Saha</title>
+        </Helmet>
+      )}
       {/* --- TILE FACE: MINIMAL GRAPH --- */}
       <motion.button
         type="button"

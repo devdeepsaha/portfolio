@@ -1,6 +1,6 @@
 # Devdeep Saha — Portfolio
 
-> Portfolio of Devdeep Saha, a designer and web developer based in Kolkata, India. Built as a single-page bento-grid at https://devdeepsaha.in. Each tile opens a modal; content-heavy tiles are deep-linkable via URL hash.
+> Portfolio of Devdeep Saha, a designer and web developer based in Kolkata, India. Built as a bento-grid single-page app at https://devdeepsaha.in, but every piece of content is also reachable as a standalone, indexable page. Prefer the real URLs below over the hash-based modal URLs.
 
 ## About
 
@@ -10,51 +10,77 @@ Devdeep Saha is a "designer who codes" — a full-stack developer with a strong 
 
 React, Next.js, Laravel, Flask, Tailwind CSS, TypeScript, MySQL, Android Studio, Flutter, HTML, CSS, JavaScript. Motion (Framer Motion), Swiper, Radix UI, Tailwind v4.
 
-## How to navigate this site (for agents)
+## Real URLs (canonical, indexable)
 
-The home page renders a bento grid. Every tile is either an `<a href="#hash">` (deep-linkable) or a semantic `<button>` (opens a modal). All modals have `role="dialog"` and `aria-modal="true"`.
+### Landing and section pages
 
-Deep-linkable URLs:
+- [Home (bento grid)](https://devdeepsaha.in/)
+- [Projects gallery](https://devdeepsaha.in/projects)
+- [Writing / blog index](https://devdeepsaha.in/blog)
+- [My Evolution — story timeline](https://devdeepsaha.in/story)
+- [Currently Learning](https://devdeepsaha.in/learning)
 
-- `https://devdeepsaha.in/#projects` — opens the Selected Projects gallery
-- `https://devdeepsaha.in/#projects/<project-id>` — opens a specific project's detail view
-- `https://devdeepsaha.in/#projects/<project-id>/lightbox` — opens the fullscreen media lightbox for that project
-- `https://devdeepsaha.in/#playground` — opens the Playground (hobbies gallery)
-- `https://devdeepsaha.in/#playground/<tab>` — opens a specific hobby tab (e.g. `music`)
-- `https://devdeepsaha.in/#playground/<tab>/<item-id>` — opens a specific hobby item (audio track, PDF, blog post, image slideshow)
-- `https://devdeepsaha.in/#learning` — opens the Currently Learning modal
+### Individual blog posts
 
-Non-deep-linked tiles (open via click only, no hash yet):
+- [Growing Up Around Music](https://devdeepsaha.in/blog/growing-up-around-music)
+- [How I Fell Into Filmography](https://devdeepsaha.in/blog/how-i-fell-into-filmography)
+- [Stories Within Stories — how I got into reading and writing](https://devdeepsaha.in/blog/stories-within-stories)
+- [Reading Journey — annotated booklist](https://devdeepsaha.in/blog/reading-journey)
 
-- About / NameTile — click the giant name typography
-- Tech Stack — click the mint-green marquee tile
-- Resume — click the yellow hazard-tape tile
-- My Evolution — click the timeline-graph tile
-- Contact — click the "Get In Touch" tile
+### Individual project pages
 
-## Sections
+Web projects:
+- [Potho Prodorshok](https://devdeepsaha.in/projects/potho-prodorshok)
+- [Bharat Coking Coal Ltd.](https://devdeepsaha.in/projects/bharat-coking-coal-ltd)
+- [Modular Portfolio System](https://devdeepsaha.in/projects/modular-portfolio-system)
+- [Old Portfolio Website](https://devdeepsaha.in/projects/old-portfolio-website)
+- [Tools By Deep](https://devdeepsaha.in/projects/tools-by-deep)
+- [LeadFlow](https://devdeepsaha.in/projects/leadflow)
+- [Arova Technologies](https://devdeepsaha.in/projects/arova-technologies)
+- [Dev Web Studio](https://devdeepsaha.in/projects/dev-web-studio)
 
-### Selected Projects (`#projects`)
+3D projects (Blender):
+- [Donut](https://devdeepsaha.in/projects/donut)
+- [NCERT](https://devdeepsaha.in/projects/ncert)
+- [World outside the window](https://devdeepsaha.in/projects/world-outside-the-window)
+- [Jello Dice](https://devdeepsaha.in/projects/jello-dice)
+- [Indoor scene](https://devdeepsaha.in/projects/indoor-scene)
+- [Number animation](https://devdeepsaha.in/projects/number-animation)
+- [Cube animation](https://devdeepsaha.in/projects/cube-animation)
+- [Car rigging](https://devdeepsaha.in/projects/car-rigging)
+- [Winter scene](https://devdeepsaha.in/projects/winter-scene)
+- [Pokeball modelling](https://devdeepsaha.in/projects/pokeball-modelling)
+- [Water physics simulation](https://devdeepsaha.in/projects/water-physics-simulation)
+- [Product animation (Gun)](https://devdeepsaha.in/projects/product-animation-gun)
+- [Lamp modeling and lighting](https://devdeepsaha.in/projects/lamp-modeling-and-lighting)
 
-Categories: Dev Picks, All, Web, 3D, Graphics. Includes BCCL, Modular Portfolio System, AROVA Technologies, Notemation, Machinage magazine covers, Netflix poster remakes, donut render, car rigging, PFP design, and more. Each project has: title, category, description, tech list, live link (if applicable), case-study PDF (if applicable), GitHub link (if applicable), and a media gallery.
+Graphics projects:
+- [Notemation — animation using PowerPoint](https://devdeepsaha.in/projects/animation-using-powerpoint-notemation)
+- [Netflix poster remakes](https://devdeepsaha.in/projects/netflix-poster-remakes)
+- [Magazine cover (Machinage)](https://devdeepsaha.in/projects/magazine-cover-machinage)
+- [Magazine cover (Machinage 4.0)](https://devdeepsaha.in/projects/magazine-cover-machinage-4-0)
+- [Book cover (The Hostel Door)](https://devdeepsaha.in/projects/book-cover-the-hostel-door)
+- [Profile picture design](https://devdeepsaha.in/projects/profile-picture-design)
+- [Logo collection](https://devdeepsaha.in/projects/logo-collection)
+- [Poster collection](https://devdeepsaha.in/projects/poster-collection)
+- [Tee-shirt design](https://devdeepsaha.in/projects/tee-shirt-design)
+- [Poster series (APL)](https://devdeepsaha.in/projects/poster-series-apl)
 
-### Playground (`#playground`)
+## Hash-based modal URLs (still supported, but not canonical)
 
-Hobbies organized into tabs. Each tab has a gallery of items, filterable by media type: audio, video, image, PDF, blog. Features a persistent draggable floating mini audio player that snaps to screen corners and keeps playing after the modal closes. Blog reader supports font-size, dark mode, and blue-light filter.
+The bento tiles on the home page open modals with hash URLs. These work but the canonical version of the same content lives at the real URLs above.
 
-### My Evolution
+- `#projects` / `#projects/<id>` → prefer `/projects` / `/projects/<slug>`
+- `#playground` → prefer `/blog` for blog posts; individual playground media items remain hash-only
+- `#learning` → prefer `/learning`
 
-Timeline of career and skill growth. Sortable oldest-first or newest-first.
+## Structured data
 
-### Resume
+- `/` embeds Person, Organization, WebSite, and an ItemList of SiteNavigationElement entries
+- `/projects/<slug>` embeds a CreativeWork JSON-LD entity
+- `/blog/<slug>` embeds a BlogPosting JSON-LD entity
 
-Education, experience, professional certifications, extracurricular certifications, and a downloadable CV.
-
-### Currently Learning (`#learning`)
-
-Topics currently being studied, categorized (3D, AI, Backend, Design, Video, etc.).
-
-### Contact
+## Contact
 
 - Email: devdeep120205@gmail.com
 - GitHub: https://github.com/devdeepsaha
@@ -63,7 +89,7 @@ Topics currently being studied, categorized (3D, AI, Backend, Design, Video, etc
 
 ## Notes for agents
 
-- Every interactive card exposes an `aria-label` describing what opens.
-- The site is a client-side React app; server-rendered HTML is a shell plus a `<noscript>` text index. For full content, execute JavaScript or follow the deep-link URLs above.
-- Structured data at `/` includes Person, Organization, WebSite, and an `ItemList` of `SiteNavigationElement` entries for every section.
-- Motion and canvas animations do not carry meaning; skip them if you're extracting content.
+- The site is a client-side React app served via SPA fallback. Any path returns `index.html`; the router then renders the matching page.
+- The sitemap at `/sitemap.xml` is auto-generated at build time from the project and blog data files.
+- Every content page includes per-page `<title>`, `<meta name="description">`, `<link rel="canonical">`, and Open Graph tags.
+- The home page also contains a large visually-hidden section (`sr-only`) that dumps all portfolio content as semantic HTML for crawlers that don't render JavaScript.

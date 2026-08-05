@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { Helmet } from "react-helmet-async";
+import { projectSlug, canonical } from "../lib/slugs";
 import {
   X,
   ExternalLink,
@@ -233,19 +235,32 @@ export function CompactProjectsTile() {
     });
   };
 
+  const projectCanonical = selectedProject
+    ? canonical(`/projects/${projectSlug(selectedProject)}`)
+    : null;
+
   return (
     <>
       <style>{swiperStyles}</style>
 
+      {projectCanonical && (
+        <Helmet>
+          <link rel="canonical" href={projectCanonical} />
+          <title>{`${selectedProject!.title} — Devdeep Saha`}</title>
+        </Helmet>
+      )}
+
       {/* --- TILE FACE --- */}
       <motion.a
-        href="#projects"
+        href="/projects"
         aria-label="Open Selected Projects — featured web, 3D and graphics work"
         className="h-full w-full min-h-[300px] md:min-h-[500px] relative rounded-[2rem] overflow-hidden cursor-pointer group block no-underline text-inherit"
         whileHover={{ scale: 1.01 }}
         onClick={(e) => {
-          e.preventDefault();
-          setIsOpen(true);
+          if (e.button === 0 && !e.metaKey && !e.ctrlKey && !e.shiftKey) {
+            e.preventDefault();
+            setIsOpen(true);
+          }
         }}
       >
         <AnimatePresence mode="wait">
@@ -346,11 +361,20 @@ export function CompactProjectsTile() {
                           <motion.a
                             layout
                             key={project.id}
-                            href={`#projects/${project.id}`}
+                            href={`/projects/${projectSlug(project)}`}
                             aria-label={`Open ${project.title} case study`}
                             onClick={(e) => {
-                              e.preventDefault();
-                              openProject(project);
+                              // Only intercept plain left-click. Ctrl/Cmd/middle
+                              // click still opens the real URL in a new tab.
+                              if (
+                                e.button === 0 &&
+                                !e.metaKey &&
+                                !e.ctrlKey &&
+                                !e.shiftKey
+                              ) {
+                                e.preventDefault();
+                                openProject(project);
+                              }
                             }}
                             className="group cursor-pointer bg-secondary/20 rounded-[2rem] p-3 border border-border hover:border-primary/50 transition-colors block no-underline text-inherit"
                           >

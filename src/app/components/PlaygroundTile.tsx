@@ -364,14 +364,16 @@ export function PlaygroundTile() {
       {/* TILE */}
       <motion.a
         ref={tileRef as any}
-        href="#playground"
+        href="/blog"
         aria-label="Open Playground — audio, video, images, PDFs and blog posts"
         onMouseMove={handleMouseMove}
         className="bg-card border border-border relative rounded-2xl overflow-hidden cursor-pointer group h-full min-h-[120px] flex flex-col justify-between shadow-sm hover:shadow-md hover:border-blue-500/30 transition-all no-underline text-inherit"
         whileHover={{ scale: 1.02 }}
         onClick={(e) => {
-          e.preventDefault();
-          setIsOpen(true);
+          if (e.button === 0 && !e.metaKey && !e.ctrlKey && !e.shiftKey) {
+            e.preventDefault();
+            setIsOpen(true);
+          }
         }}
       >
         <div
