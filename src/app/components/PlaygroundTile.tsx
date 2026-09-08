@@ -489,10 +489,15 @@ export function PlaygroundTile() {
                       return (
                         <button
                           key={hobby.id}
-                          onClick={() => {
+                          onClick={(e) => {
                             setActiveTab(hobby.id);
                             setSelectedItem(null);
                             setFilterType("all");
+                            e.currentTarget.scrollIntoView({
+                              behavior: "smooth",
+                              block: "nearest",
+                              inline: "center",
+                            });
                           }}
                           className={`flex items-center gap-1.5 px-3 lg:px-4 py-2 lg:py-3 border-b-2 transition-colors whitespace-nowrap text-xs lg:text-sm font-bold uppercase ${
                             activeTab === hobby.id
@@ -521,7 +526,14 @@ export function PlaygroundTile() {
                       return (
                         <button
                           key={type}
-                          onClick={() => setFilterType(type)}
+                          onClick={(e) => {
+                            setFilterType(type);
+                            e.currentTarget.scrollIntoView({
+                              behavior: "smooth",
+                              block: "nearest",
+                              inline: "center",
+                            });
+                          }}
                           className={`px-2.5 lg:px-3 py-1 rounded-full text-[10px] lg:text-xs font-bold uppercase transition-all whitespace-nowrap flex-shrink-0 ${
                             filterType === type
                               ? "bg-blue-600 text-white shadow-lg shadow-blue-600/30"

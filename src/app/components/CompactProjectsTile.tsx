@@ -362,7 +362,18 @@ export function CompactProjectsTile() {
                         {categories.map((cat) => (
                           <button
                             key={cat}
-                            onClick={() => setActiveCategory(cat)}
+                            onClick={(e) => {
+                              setActiveCategory(cat);
+                              // Slide the clicked tab to the center of the
+                              // horizontally-scrolling row so the tabs after
+                              // it stay visible instead of getting clipped
+                              // off the right edge.
+                              e.currentTarget.scrollIntoView({
+                                behavior: "smooth",
+                                block: "nearest",
+                                inline: "center",
+                              });
+                            }}
                             className={`px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest border transition-all flex items-center gap-2 shrink-0
                                     ${
                                       activeCategory === cat
