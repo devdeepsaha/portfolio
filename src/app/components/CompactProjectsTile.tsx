@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Helmet } from "react-helmet-async";
 import { useLocation } from "react-router";
-import { projectSlug, canonical } from "../lib/slugs";
+import { projectSlug, canonical, findProjectBySlug } from "../lib/slugs";
 import {
   X,
   ExternalLink,
@@ -167,13 +167,24 @@ export function CompactProjectsTile() {
 
   useHashInit(initConfig);
 
-  // Real-path cold-load: someone visiting /projects directly (deep link,
-  // refresh, browser back) should land on home with the Projects modal
-  // open — same experience as clicking the tile.
+  // Real-path cold-load:
+  //   /projects              → open modal on gallery
+  //   /projects/<slug>       → open modal + jump straight to project detail
+  // Refreshing at either URL reopens the modal in the correct state
+  // instead of falling through to a standalone page.
   const location = useLocation();
   useEffect(() => {
-    if (location.pathname === "/projects" || location.pathname === "/projects/") {
-      setIsOpen(true);
+    const m = location.pathname.match(/^\/projects(?:\/([^/]+))?\/?$/);
+    if (!m) return;
+    const slug = m[1];
+    setIsOpen(true);
+    if (slug) {
+      const project = findProjectBySlug(slug);
+      if (project) {
+        setSelectedProject(project);
+        setIsLightboxOpen(false);
+      }
+    } else {
       setSelectedProject(null);
       setIsLightboxOpen(false);
     }
