@@ -6,7 +6,6 @@ import App from "./app/App.tsx";
 import "./styles/index.css";
 import { ThemeProvider } from "./app/components/theme-provider";
 import { ProjectPage } from "./app/pages/ProjectPage";
-import { ProjectsIndex } from "./app/pages/ProjectsIndex";
 import { BlogPage } from "./app/pages/BlogPage";
 import { BlogIndex } from "./app/pages/BlogIndex";
 import { StoryPage } from "./app/pages/StoryPage";
@@ -19,7 +18,10 @@ createRoot(document.getElementById("root")!).render(
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<App />} />
-            <Route path="/projects" element={<ProjectsIndex />} />
+            {/* /projects opens the Projects modal on home (same UX as
+                clicking the tile). Individual /projects/:slug still
+                renders a standalone SEO page. */}
+            <Route path="/projects" element={<App />} />
             <Route path="/projects/:slug" element={<ProjectPage />} />
             <Route path="/blog" element={<BlogIndex />} />
             <Route path="/blog/:slug" element={<BlogPage />} />

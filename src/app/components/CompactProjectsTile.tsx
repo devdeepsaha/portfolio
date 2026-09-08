@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Helmet } from "react-helmet-async";
+import { useLocation } from "react-router";
 import { projectSlug, canonical } from "../lib/slugs";
 import {
   X,
@@ -165,6 +166,19 @@ export function CompactProjectsTile() {
   );
 
   useHashInit(initConfig);
+
+  // Real-path cold-load: someone visiting /projects directly (deep link,
+  // refresh, browser back) should land on home with the Projects modal
+  // open — same experience as clicking the tile.
+  const location = useLocation();
+  useEffect(() => {
+    if (location.pathname === "/projects" || location.pathname === "/projects/") {
+      setIsOpen(true);
+      setSelectedProject(null);
+      setIsLightboxOpen(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname]);
 
   // Router bindings to handle the back button state changes.
   // Top-level modal and per-project detail push real URLs so the address bar
