@@ -169,7 +169,9 @@ export function PlaygroundTile() {
         onMatch: ([, tab, itemId]: string[]) => {
           const hobby = myHobbies.find((h) => h.id === tab);
           if (!hobby) return;
-          const item = hobby.gallery.find((i) => i.id === itemId);
+          const item = hobby.gallery.find(
+            (i) => i.id === itemId || slugify(i.title) === itemId,
+          );
           if (!item) return;
           setActiveTab(tab);
           setSelectedItem(item);
